@@ -3,14 +3,9 @@ import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
 
-//FIXME: Remove this
-
 function App() {
 	const [count, setCount] = useState(0);
 
-	const tes = "hallo"
-
-	// TODO: Remove this
 	return (
 		<>
 			<div>
