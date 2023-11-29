@@ -36,8 +36,14 @@ git clone https://github.com/phil1436/wannadbFrontend.git
 npm install
 ```
 
-4. Make sure to have python installed.
-5. Install the requirements with:
+4. Install husky with:
+
+```bash
+npm run prepare
+```
+
+5. Make sure to have python installed.
+6. Install the requirements with:
 
 ```bash
 cd backend
@@ -66,7 +72,7 @@ npm run backend
 
 ## Visual Studio Code
 
-**I recommend using [Visual Studio Code](https://code.visualstudio.com/) as your editor.**
+**I recommend using [Visual Studio Code](https://code.visualstudio.com/) as your IDE.**
 
 When you open the project in Visual Studio Code it will ask you to install the recommended extensions. I recommend installing them.
 In the [.vscode](.vscode) folder you can find some settings in the [settings.json.template](.vscode/settings.json.template) file. Copy the file and rename it to `settings.json`, so that the settings are applied.
@@ -99,6 +105,7 @@ npm run <script>
 The pre-commit hooks are managed by [husky](https://typicode.github.io/husky/#/).
 
 -   **Format** - Format the code
+-   **Commit message** - Enforce more meaningful commit messages
 -   **Linting** - Check for linting errors
 -   **Tests** - Run the tests
 

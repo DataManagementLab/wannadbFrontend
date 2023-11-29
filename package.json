@@ -10,8 +10,9 @@
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
 		"format": "prettier --write ./src",
+		"format:check": "prettier ./src --check",
 		"test": "vitest run --coverage",
-		"prepare": "husky uninstall",
+		"prepare": "husky install",
 		"test:watch": "vitest",
 		"backend": "cd backend && python main.py -dev && cd ..",
 		"generate": " python generate.py"

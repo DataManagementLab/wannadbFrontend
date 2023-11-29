@@ -1,7 +1,17 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run format
-git add .
+# check if code is formatted
+if ! npm run format:check
+then
+  echo "🚨 Code is not formatted! 😕"
+  echo "Please run 'npm run format' and commit again."
+  exit 1
+fi
+
+
+# check for eslint errors
 npm run lint 
+
+# run tests
 npm test
