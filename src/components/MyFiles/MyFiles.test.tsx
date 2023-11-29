@@ -1,3 +1,3 @@
-test('should update viewFileName state when input value changes', () => {
+test('MyFilesTest', () => {
 	expect(true).toBe(true);
 });

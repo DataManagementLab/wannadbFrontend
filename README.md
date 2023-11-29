@@ -1,20 +1,43 @@
-# wannadb-template
+# wannadbFrontend
 
-A demo for the wannadb-webapp.
+The wannadb as a web app.
+
+---
+
+-   [Links](#links)
+-   [Installation](#installation)
+-   [Usage](#usage)
+-   [Visual Studio Code](#visual-studio-code)
+-   [Scripts](#scripts)
+-   [Pre-commit hooks](#pre-commit-hooks)
+-   [Extensions](#extensions)
+
+---
+
+## Links
+
+-   [TODOS](./todo.md)
+-   [IDEAS](./ideas.md)
 
 ---
 
 ## Installation
 
-1. Make sure to have nodejs installed.
-2. Install the dependencies with:
+1. Clone the repository with:
+
+```bash
+git clone https://github.com/phil1436/wannadbFrontend.git
+```
+
+2. Make sure to have [nodejs](https://nodejs.org/en) and [npm](https://www.npmjs.com/) installed.
+3. Install the dependencies with:
 
 ```bash
 npm install
 ```
 
-3. Make sure to have python installed.
-4. Install the requirements with:
+4. Make sure to have python installed.
+5. Install the requirements with:
 
 ```bash
 cd backend
@@ -28,49 +51,66 @@ pip install -r requirements.txt
 1. Start the frontend with:
 
 ```bash
-npm run dev
+npm start
 ```
 
-2. Start the backend with:
+2. Start the backend with in a new terminal:
 
 ```bash
-cd backend
-python main.py -dev
+npm run backend
 ```
 
 3. Open [localhost:5173](http://localhost:5173) in your browser.
 
+---
+
+## Visual Studio Code
+
+**I recommend using [Visual Studio Code](https://code.visualstudio.com/) as your editor.**
+
+When you open the project in Visual Studio Code it will ask you to install the recommended extensions. I recommend installing them.
+In the [.vscode](.vscode) folder you can find some settings in the [settings.json.template](.vscode/settings.json.template) file. Copy the file and rename it to `settings.json`, so that the settings are applied.
 
 ---
 
+## Scripts
 
-# React + TypeScript + Vite
+Run a script with:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+npm run <script>
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+-   **dev** - Start the frontend development server
+-   **start** - Start the frontend development server
+-   **build** - Build the frontend
+-   **lint** - Check for linting errors
+-   **preview** - Preview the built frontend
+-   **format** - Format the code
+-   **test** - Run the tests
+-   **test:watch** - Run the tests in watch mode
+-   **backend** - Start the backend server
+-   **generate** - Generate a new React component
+
+---
+
+## Pre-commit hooks
+
+The pre-commit hooks are managed by [husky](https://typicode.github.io/husky/#/).
+
+-   **Format** - Format the code
+-   **Linting** - Check for linting errors
+-   **Tests** - Run the tests
+
+> If you cant commit that means that one of the hooks failed. Please fix the error and try again.
+
+---
+
+## Extensions
+
+-   **Vite** - Bundler
+-   **ESLint** - Linting utility for JavaScript and JSX
+-   **Prettier** - Code formatter
+-   **Huksy** - Git hooks
+-   **Vitest** - Test runner
+-   **Jest** - Testing framework
