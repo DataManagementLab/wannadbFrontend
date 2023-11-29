@@ -1,0 +1,7 @@
+{
+	"editor.formatOnSave": true,
+	"editor.formatOnPaste": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"todo-tree.highlights.enabled": false,
+	"editor.stickyScroll.enabled": true
+}

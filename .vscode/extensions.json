@@ -1,0 +1,21 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "dsznajder.es7-react-js-snippets",
+        "burkeholland.simple-react-snippets",
+        "wallabyjs.console-ninja",
+        "rangav.vscode-thunder-client",
+        "wayou.vscode-todo-highlight",
+        "gruntfuggly.todo-tree",
+        "formulahendry.auto-complete-tag",
+        "mgmcdermott.vscode-language-babel",
+        "ecmel.vscode-html-css",
+        "xabikos.javascriptsnippets",
+        "ms-vscode.vscode-typescript-next",
+        "bierner.markdown-preview-github-styles",
+        "cardinal90.multi-cursor-case-preserve",
+        "bradlc.vscode-tailwindcss",
+        "philippbo.vstoolkit"
+    ]
+}
