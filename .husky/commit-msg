@@ -2,7 +2,7 @@
 . "$(dirname -- "$0")/_/husky.sh"
 echo "🚨 Checking commit message..."
 message="$(cat $1)"
-requiredPattern="^(add|cut|fix|bump|make|start|stop|refactor|reformat|optimise|document|merge) .*$"
+requiredPattern="^(add|cut|fix|bump|make|start|stop|refactor|reformat|optimise|document|merge|configured) .*$"
 if ! [[ $message =~ $requiredPattern ]];
 then
   echo "-"
