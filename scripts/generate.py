@@ -1,5 +1,13 @@
 import os
 
+# generate a new React component
+
+name_arg = None
+for arg in os.sys.argv:
+    if arg.endswith(".py"):
+        continue
+    name_arg = arg
+
 COMPONENT_PATH = "./src/components"
 
 TEMPLATES = [
@@ -45,9 +53,18 @@ test('$$name$$Test', () => {
 def main():
     print("***Generate React components**")
     # read input
-    component_name = input("Enter component name: ")
+    if name_arg:
+        component_name = name_arg
+    else:
+        component_name = input("Enter component name: ")
+    component_name = format_name(component_name)
+    # check if name is in camel case
     # create folder
     new_path = COMPONENT_PATH+ "/" + component_name
+    # check if folder exists
+    if os.path.exists(new_path):
+        print("Component already exists!")
+        quit()
     try:
         os.mkdir(new_path)
     except OSError:
@@ -62,6 +79,13 @@ def main():
             print("Created file: ", file_path)
     print("Component created successfully")
     
+def format_name(name):
+    name = name[0].upper() + name[1:]
+    # replace all - and make next letter uppercase
+    while name.find("-") != -1:
+        index = name.find("-")
+        name = name[:index] + name[index+1].upper() + name[index+2:]
+    return name
     
 if __name__ == "__main__":
     main()

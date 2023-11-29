@@ -16,7 +16,7 @@ The wannadb as a web app.
 
 ## Links
 
--   [TODOS](./todo.md)
+-   [TODOS](./todos.md)
 -   [IDEAS](./ideas.md)
 
 ---
@@ -88,15 +88,47 @@ npm run <script>
 ```
 
 -   **dev** - Start the frontend development server
--   **start** - Start the frontend development server
+-   **start** - Pull the latest changes and start the frontend development server
 -   **build** - Build the frontend
 -   **lint** - Check for linting errors
 -   **preview** - Preview the built frontend
 -   **format** - Format the code
+-   **format:check** - Check if the code is formatted
 -   **test** - Run the tests
 -   **test:watch** - Run the tests in watch mode
 -   **backend** - Start the backend server
--   **generate** - Generate a new React component
+-   **generate _\<component-name\>_** - Generate a new React component
+-   **todo _\<todo\>_** - Add a new TODO
+
+---
+
+## Gnerate a new React component
+
+Please only use the following command to generate a new React component:
+
+```bash
+npm run generate <component-name>
+```
+
+This will generate a new React component in the [src/components](src/components) folder. The component will be named `<component-name>`. The component will be a functional component and will be exported by default.
+
+This is for the purpose of consistency. So that all components are generated the same way.
+
+> Example usage: `npm run generate MyFirstComponent`
+
+---
+
+## Add a TODO
+
+If you want to add a TODO please use the following command:
+
+```bash
+npm run todo <todo>
+```
+
+This will add a new TODO to the [todos.md](todos.md) file.
+
+> Example usage: `npm run todo Let user register`
 
 ---
 
@@ -104,10 +136,10 @@ npm run <script>
 
 The pre-commit hooks are managed by [husky](https://typicode.github.io/husky/#/).
 
--   **Format** - Format the code
--   **Commit message** - Enforce more meaningful commit messages
+-   **Format** - Check if the code is formatted correctly
 -   **Linting** - Check for linting errors
 -   **Tests** - Run the tests
+-   **Commit message** - Enforce more meaningful commit messages
 
 > If you cant commit that means that one of the hooks failed. Please fix the error and try again.
 
