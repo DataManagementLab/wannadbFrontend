@@ -5,7 +5,7 @@ import APIService from '../../utils/ApiService';
 import { useLogin } from '../../providers/UserProvider';
 
 /**
- * The login page component
+ * The login component
  */
 function Login() {
 	const [name, setName] = useState('');
