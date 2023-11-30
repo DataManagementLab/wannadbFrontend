@@ -16,4 +16,6 @@ npm run lint
 npm run comment:check
 
 # run tests
-npm test
+npm run test
+
+echo "✅ pre-commit hook finished successfully"
