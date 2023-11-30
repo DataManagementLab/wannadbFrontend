@@ -1,14 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.scss';
 import { useState } from 'react';
-import React from 'react';
-//import { useIsDarkTheme, useToggleTheme } from '../../providers/ThemeProvider';
 import { useGetUsername } from '../../providers/UserProvider';
 
+/**
+ * The navbar component
+ */
 function Navbar() {
-	/* const isDarkTheme = useIsDarkTheme();
-
-    const toggleTheme = useToggleTheme(); */
 	const navigate = useNavigate();
 
 	const getUserName = useGetUsername();

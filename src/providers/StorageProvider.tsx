@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import '../index.scss';
 
 const StorageContext = React.createContext({
@@ -12,6 +12,10 @@ const StorageContext = React.createContext({
 	getFromLS: (_name: string): any => {},
 });
 
+/**
+ * Hook to get whether cookies are allowed
+ * @returns A boolean indicating whether cookies are allowed
+ */
 export function useCookieAllowed() {
 	const context = React.useContext(StorageContext);
 	if (!context) {
@@ -22,6 +26,10 @@ export function useCookieAllowed() {
 	return context.cookieAllowed;
 }
 
+/**
+ * Hook to accept cookies
+ * @returns A function to accept cookies
+ */
 export function useAcceptCookie() {
 	const context = React.useContext(StorageContext);
 	if (!context) {
@@ -32,6 +40,10 @@ export function useAcceptCookie() {
 	return context.acceptCookies;
 }
 
+/**
+ * Hook to reject cookies
+ * @returns A function to reject cookies
+ */
 export function useRejectCookies() {
 	const context = React.useContext(StorageContext);
 	if (!context) {
@@ -41,6 +53,11 @@ export function useRejectCookies() {
 	}
 	return context.rejectCookies;
 }
+
+/**
+ * Hook to store data in local storage
+ * @returns A function to store data in local storage
+ */
 export function useStoreInLS() {
 	const context = React.useContext(StorageContext);
 	if (!context) {
@@ -48,6 +65,11 @@ export function useStoreInLS() {
 	}
 	return context.storeInLS;
 }
+
+/**
+ * Hook to get data from local storage
+ * @returns A function to get data from local storage
+ */
 export function useGetFromLS() {
 	const context = React.useContext(StorageContext);
 	if (!context) {
@@ -55,8 +77,15 @@ export function useGetFromLS() {
 	}
 	return context.getFromLS;
 }
+interface Props {
+	children: ReactNode;
+}
 
-export function StorageProvider({ children }) {
+/**
+ * The storage provider component
+ * @param children The children of the component
+ */
+export function StorageProvider({ children }: Props) {
 	const [cookieAllowed, setCookieAllowed] = React.useState(false);
 	const [display, setDisplay] = React.useState(true);
 
@@ -86,7 +115,7 @@ export function StorageProvider({ children }) {
 		localStorage.setItem(name, value);
 	};
 
-	const getFromLS = (name: string): string => {
+	const getFromLS = (name: string): string | null => {
 		return localStorage.getItem(name);
 	};
 

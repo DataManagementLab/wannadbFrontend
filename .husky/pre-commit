@@ -9,9 +9,11 @@ then
   exit 1
 fi
 
-
 # check for eslint errors
 npm run lint 
+
+# check comments
+npm run comment:check
 
 # run tests
 npm test

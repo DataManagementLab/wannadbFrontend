@@ -5,6 +5,9 @@ import { ChangeEvent, useState } from 'react';
 import APIService from '../../utils/ApiService';
 import { useGetUsername } from '../../providers/UserProvider';
 
+/**
+ * The home page component
+ */
 function Home() {
 	const getUserName = useGetUsername();
 

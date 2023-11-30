@@ -10,7 +10,10 @@ import {
 } from '../../providers/UserProvider';
 import MyFiles from '../MyFiles/MyFiles';
 
-function Home() {
+/**
+ * The profile page component
+ */
+function Profile() {
 	const navigate = useNavigate();
 
 	const getUserName = useGetUsername();
@@ -65,4 +68,4 @@ function Home() {
 	);
 }
 
-export default Home;
+export default Profile;

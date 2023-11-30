@@ -13,6 +13,10 @@ const UserContext = React.createContext({
 	login: (_username: string): void => {},
 });
 
+/**
+ * Hook to get the logged in status of the user
+ * @returns {boolean} the logged in status of the user
+ */
 export function useLoggedIn() {
 	const context = React.useContext(UserContext);
 	if (!context) {
@@ -23,7 +27,7 @@ export function useLoggedIn() {
 
 /**
  * React hook to get the username of the logged in user
- * @returns {string} the username of the logged in user
+ * @returns {function} a function to get the username of the logged in user
  */
 export function useGetUsername() {
 	const context = React.useContext(UserContext);
@@ -33,6 +37,10 @@ export function useGetUsername() {
 	return context.getUsername;
 }
 
+/**
+ * Hook to get the logout function
+ * @returns {function} the logout function
+ */
 export function useLogOut() {
 	const context = React.useContext(UserContext);
 	if (!context) {
@@ -40,6 +48,11 @@ export function useLogOut() {
 	}
 	return context.logOut;
 }
+
+/**
+ * Hook to get the login function
+ * @returns {function} the login function
+ */
 export function useLogin() {
 	const context = React.useContext(UserContext);
 	if (!context) {
@@ -52,6 +65,10 @@ interface Props {
 	children: ReactNode;
 }
 
+/**
+ * The provider for the user context
+ * @param children - the children of the component
+ */
 export function UserProvider({ children }: Props) {
 	const [username, setUsername] = React.useState('');
 	const [loggedIn, setLoggedIn] = React.useState(false);

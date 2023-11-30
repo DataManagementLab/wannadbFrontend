@@ -99,6 +99,7 @@ npm run <script>
 -   **backend** - Start the backend server
 -   **generate _\<component-name\>_** - Generate a new React component
 -   **todo _\<todo\>_** - Add a new TODO
+-   **comment:check** - Check if all functions and classes have a comment
 
 ---
 
@@ -138,6 +139,7 @@ The pre-commit hooks are managed by [husky](https://typicode.github.io/husky/#/)
 
 -   **Format** - Check if the code is formatted correctly
 -   **Linting** - Check for linting errors
+-   **Comment check** - Check if all functions and classes have a comment
 -   **Tests** - Run the tests
 -   **Commit message** - Enforce more meaningful commit messages
 

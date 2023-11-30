@@ -7,6 +7,9 @@ import { useIsDarkTheme, useToggleTheme } from '../../providers/ThemeProvider';
 import Navbar from '../Navbar/Navbar';
 import './Settings.scss';
 
+/**
+ * The settings page component
+ */
 function Settings() {
 	const cookiesAllowed = useCookieAllowed();
 	const allowCookies = useAcceptCookie();

@@ -2,12 +2,16 @@ import { Link } from 'react-router-dom';
 import './Register.scss';
 import { useState } from 'react';
 
+/**
+ * The register page component
+ */
 function Register() {
 	const [name, setName] = useState('');
 	const [password, setPassword] = useState('');
 	const [repeatPassword, setRepeatPassword] = useState('');
 	const [errorMessage, setErrorMessage] = useState(' ');
 
+	// TODO: Implement register functionality
 	const onRegister = () => {
 		if (password !== repeatPassword) {
 			setErrorMessage('Passwords do not match!');

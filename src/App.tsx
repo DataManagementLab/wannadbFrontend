@@ -8,6 +8,7 @@ import { ThemeProvider } from './providers/ThemeProvider';
 import { UserProvider } from './providers/UserProvider';
 import Settings from './components/Settings/Settings';
 
+// The main component of the application
 function App() {
 	return (
 		<div className="wrapper">

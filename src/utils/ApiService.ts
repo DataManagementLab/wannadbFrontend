@@ -1,8 +1,17 @@
 import axios from 'axios';
 
+/**
+ * This class is used to make requests to the backend API.
+ */
 class APIService {
 	static host = import.meta.env.VITE_API_URL;
 
+	/**
+	 * Check if the user can login with the given credentials.
+	 * @param username The username to login
+	 * @param password The password to login
+	 * @returns A promise that resolves to true if the registration was successful, false otherwise.
+	 */
 	static async login(username: string, password: string): Promise<boolean> {
 		try {
 			const resp = await axios.post(`${this.host}/login`, {

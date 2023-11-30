@@ -3,7 +3,17 @@ import './FileViewer.scss';
 import APIService from '../../utils/ApiService';
 import { useGetUsername } from '../../providers/UserProvider';
 
-function FileViewer({ filename, onClose }) {
+interface Props {
+	filename: string;
+	onClose: () => void;
+}
+
+/**
+ * A component to view a file
+ * @param filename The name of the file to view
+ * @param onClose A function to close the file viewer
+ */
+function FileViewer({ filename, onClose }: Props) {
 	const [text, setText] = useState('');
 
 	const getUsername = useGetUsername();

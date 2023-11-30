@@ -6,6 +6,10 @@ interface Props {
 	fileNames: string[];
 }
 
+/**
+ * A component to list all the files of the user and view, delete them
+ * @param filenames A list of the filenames of the user
+ */
 function MyFiles({ fileNames }: Props) {
 	const [viewFileName, setViewFileName] = useState('');
 

@@ -17,7 +17,8 @@
 		"backend": "cd backend && python main.py -dev && cd ..",
 		"generate": "python scripts/generate.py",
 		"g": "python scripts/generate.py",
-		"todo": "python scripts/todo.py"
+		"todo": "python scripts/todo.py",
+		"comment:check": "python scripts/check_comment.py"
 	},
 	"dependencies": {
 		"axios": "^1.6.2",

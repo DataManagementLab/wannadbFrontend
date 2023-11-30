@@ -8,6 +8,10 @@ const ThemeContext = React.createContext({
 	toggleTheme: () => {},
 });
 
+/**
+ * Hook to get the dark theme status
+ * @returns {boolean} the dark theme status
+ */
 export function useIsDarkTheme() {
 	const context = React.useContext(ThemeContext);
 	if (!context) {
@@ -16,6 +20,10 @@ export function useIsDarkTheme() {
 	return context.isDarkTheme;
 }
 
+/**
+ * Hook to get the toggle theme function
+ * @returns {function} a function to toggle the theme
+ */
 export function useToggleTheme() {
 	const context = React.useContext(ThemeContext);
 	if (!context) {
@@ -28,6 +36,10 @@ interface Props {
 	children: ReactNode;
 }
 
+/**
+ * The provider for the theme
+ * @param children The children of the component
+ */
 export function ThemeProvider({ children }: Props) {
 	const [isDarkTheme, setDarkThemeState] = React.useState(false);
 

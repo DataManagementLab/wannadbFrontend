@@ -4,6 +4,9 @@ import { useState } from 'react';
 import APIService from '../../utils/ApiService';
 import { useLogin } from '../../providers/UserProvider';
 
+/**
+ * The login page component
+ */
 function Login() {
 	const [name, setName] = useState('');
 	const [password, setPassword] = useState('');
