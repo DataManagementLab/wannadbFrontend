@@ -10,7 +10,7 @@ then
 fi
 
 # check for eslint errors
-npm run lint 
+npm run lint
 
 # check comments
 npm run comment:check

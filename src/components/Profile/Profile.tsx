@@ -22,7 +22,6 @@ function Profile() {
 
 	const [username] = useState(getUserName());
 	const [fileNames, setFileNames] = useState<string[]>([]);
-
 	const getFiles = async () => {
 		APIService.getFileNames(username).then((res) => {
 			setFileNames(res);

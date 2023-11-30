@@ -37,7 +37,6 @@ fi
 
 # Check if the string contains 2 words
 wordCount=$(echo "$message" | wc -w)
-echo "wordCount: $wordCount"
 if [ $wordCount -lt 2 ]; then
   echo "🚨 Wrong commit message! 😕"
   echo "Error: Commit message should contain at least 2 words."
