@@ -4,6 +4,7 @@ interface Props {
 	heading: string;
 	info: string;
 	onClose: () => void;
+	btnText?: string;
 }
 
 /**
@@ -12,13 +13,19 @@ interface Props {
  * @param info More information about the notification
  * @param onClose The function to call when the notification is closed
  */
-function UserNotification({ heading, info, onClose }: Props) {
+function UserNotification({
+	heading,
+	info,
+	onClose,
+	btnText = 'Close',
+}: Props) {
 	return (
-		<div className="background" onClick={onClose}>
+		<div>
+			<div className="background" onClick={onClose}></div>
 			<div className="UserNotification">
 				<h1>{heading}</h1>
 				<p>{info}</p>
-				<button>Close</button>
+				<button onClick={onClose}>{btnText}</button>
 			</div>
 		</div>
 	);

@@ -1,11 +1,32 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useState } from 'react';
 import '../index.scss';
 import UserNotification from '../components/UserNotification/UserNotification';
+import ChoiceNotification from '../components/ChoiceNotification/ChoiceNotification';
 
 const NotificationContext = React.createContext({
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	show: (_heading: string, _info: string) => {},
+	showNotification: (
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_heading: string,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_info: string,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_buttonText?: string
+	) => {},
+	showChoice: (
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_heading: string,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_info: string,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_onAccept: () => void,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_onReject: () => void,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_acceptText?: string,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		_rejectText?: string
+	) => {},
 });
 
 /**
@@ -19,7 +40,21 @@ export function useShowNotification() {
 			'useShowNotification must be used within a NotificationProvider'
 		);
 	}
-	return context.show;
+	return context.showNotification;
+}
+
+/**
+ * Hook to get the showChoice function
+ * @returns A function to show a choice notification to the user
+ */
+export function useShowChoiceNotification() {
+	const context = React.useContext(NotificationContext);
+	if (!context) {
+		throw new Error(
+			'useShowChoiceNotification must be used within a NotificationProvider'
+		);
+	}
+	return context.showChoice;
 }
 
 interface Props {
@@ -31,40 +66,71 @@ interface Props {
  * @param children The children of the component
  */
 export function NotificationProvider({ children }: Props) {
-	const [visible, setVisible] = React.useState(false);
-	const [heading, setHeading] = React.useState('');
-	const [info, setInfo] = React.useState('');
+	const [element, setElement] = useState<JSX.Element>();
+
+	const [visible, setVisible] = useState(false);
 
 	// Display the notification
-	const show = (pHeading: string, pInfo: string) => {
-		setHeading(pHeading);
-		setInfo(pInfo);
+	const showNotification = (
+		pHeading: string,
+		pInfo: string,
+		btnText = 'Close'
+	) => {
+		setElement(
+			<UserNotification
+				onClose={close}
+				heading={pHeading}
+				info={pInfo}
+				btnText={btnText}
+			></UserNotification>
+		);
+		setVisible(true);
+	};
+
+	// Display a choice dialog
+	const showChoice = (
+		pHeading: string,
+		pInfo: string,
+		pOnAccept: () => void,
+		pOnReject: () => void,
+		pAcceptText = 'Yes',
+		pRejectText = 'No'
+	) => {
+		setElement(
+			<ChoiceNotification
+				heading={pHeading}
+				info={pInfo}
+				onAccept={() => {
+					pOnAccept();
+					close();
+				}}
+				onReject={() => {
+					pOnReject();
+					close();
+				}}
+				acceptText={pAcceptText}
+				rejectText={pRejectText}
+			></ChoiceNotification>
+		);
 		setVisible(true);
 	};
 
 	// Close the notification
 	const close = () => {
 		setVisible(false);
-		setHeading('');
-		setInfo('');
 	};
 
 	return (
 		<>
 			<NotificationContext.Provider
 				value={{
-					show: show,
+					showNotification: showNotification,
+					showChoice: showChoice,
 				}}
 			>
 				{children}
 			</NotificationContext.Provider>
-			{visible && (
-				<UserNotification
-					onClose={close}
-					heading={heading}
-					info={info}
-				></UserNotification>
-			)}
+			<>{visible && element}</>
 		</>
 	);
 }

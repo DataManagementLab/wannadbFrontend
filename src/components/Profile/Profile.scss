@@ -9,4 +9,10 @@
 		font-weight: bold;
 		margin-bottom: 20px;
 	}
+	.orgBtns {
+		display: flex;
+		* {
+			margin-right: 10px;
+		}
+	}
 }

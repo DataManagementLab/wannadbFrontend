@@ -19,7 +19,7 @@ class APIService {
 				username: username,
 				password: password,
 			});
-			// TODO save token
+			//TODO save token
 			if (resp.data.status) {
 				const token = resp.data.token;
 				console.log(token);
@@ -50,6 +50,35 @@ class APIService {
 			return resp.data.status;
 		} catch (err) {
 			return false;
+		}
+	}
+
+	// TODO
+	static async getOrganization(username: string): Promise<string> {
+		try {
+			const url = `${this.host}/get/organization/${username}`;
+			const resp = await axios.get(url);
+			return resp.data.organization;
+		} catch (err) {
+			return '';
+		}
+	}
+
+	// TODO
+	static async createOrg(
+		username: string,
+		orgName: string
+	): Promise<boolean> {
+		try {
+			const url = `${this.host}/create/organization`;
+			const resp = await axios.post(url, {
+				username: username,
+				organization: orgName,
+			});
+			return resp.data.status;
+		} catch (err) {
+			//TODO
+			return true;
 		}
 	}
 

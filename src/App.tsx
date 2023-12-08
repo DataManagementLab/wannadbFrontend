@@ -8,6 +8,7 @@ import { ThemeProvider } from './providers/ThemeProvider';
 import { UserProvider } from './providers/UserProvider';
 import Settings from './components/Settings/Settings';
 import { NotificationProvider } from './providers/NotificationProvider';
+import CreateOrg from './components/CreateOrg/CreateOrg';
 
 // The main component of the application
 function App() {
@@ -21,6 +22,10 @@ function App() {
 								<Routes>
 									<Route path="/" Component={Home} />
 									<Route path="/login" Component={Login} />
+									<Route
+										path="/org/create"
+										Component={CreateOrg}
+									/>
 									<Route
 										path="/register"
 										Component={Register}
