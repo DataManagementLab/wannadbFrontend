@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Register.scss';
+import '../../styles/form.scss';
 import { useState } from 'react';
 import APIService from '../../utils/ApiService';
 import { useShowNotification } from '../../providers/NotificationProvider';
@@ -46,7 +47,7 @@ function Register() {
 	};
 
 	return (
-		<div className="Register">
+		<div className="Register myForm">
 			<h1>
 				wanna<span className="db">db</span> <br />
 				<i>REGISTER</i>

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.scss';
+import '../../styles/form.scss';
 import { useState } from 'react';
 import APIService from '../../utils/ApiService';
 import { useLogin } from '../../providers/UserProvider';
@@ -28,7 +29,7 @@ function Login() {
 	};
 
 	return (
-		<div className="login">
+		<div className="login myForm">
 			<h1>
 				wanna<span className="db">db</span> <br />
 				<i>LOGIN</i>

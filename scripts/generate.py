@@ -1,4 +1,5 @@
 import os
+import json
 
 # generate a new React component
 
@@ -8,77 +9,87 @@ for arg in os.sys.argv:
         continue
     name_arg = arg
 
-COMPONENT_PATH = "./src/components"
+TEMPLATE_PATH = "./templates"
 
-TEMPLATES = [
-    
-{
-    
-"$$name$$.tsx":
-    
-"""
-import './$$name$$.scss';
-
-function $$name$$() {
-    return (
-        <div className="$$name$$">
-            Hello from $$name$$
-        </div>
-    )
-};
-export default $$name$$;
-"""
-
-},
-{
-    
-"$$name$$.scss": 
-    
-"""
-.$$name$$ {
-}
-""",
-},
-{
-"$$name$$.test.tsx":
-    
-"""
-test('$$name$$Test', () => {
-	expect(true).toBe(true);
-});
-""",
-}
-]
 
 def main():
     print("***Generate React components**")
-    # read input
+    
+    # get name
     if name_arg:
         component_name = name_arg
     else:
         component_name = input("Enter component name: ")
     component_name = format_name(component_name)
-    # check if name is in camel case
-    # create folder
-    new_path = COMPONENT_PATH+ "/" + component_name
-    # check if folder exists
-    if os.path.exists(new_path):
-        print("Component already exists!")
+    
+    types = get_template_types()
+    for i in range(len(types)):
+        print(f"{i+1}. {types[i]['name']} - {types[i]['description']}")
+    response = int(input("Enter component type: "))
+    if response > len(types) or response < 1:
+        print("Invalid input: ", response)
         quit()
     try:
-        os.mkdir(new_path)
-    except OSError:
-        print("Creation of the directory %s failed" % new_path)
+        generate_files(types[response-1], component_name)
+    except Exception as error:
+        print("Creation of the component failed:", error)
         quit()
-    for template in TEMPLATES:
-        for key, value in template.items():
-            file_name = key.replace("$$name$$", component_name)
-            file_path = new_path + "/" + file_name
-            with open(file_path, "w") as f:
-                f.write(value.replace("$$name$$", component_name))
-            print("Created file: ", file_path)
     print("Component created successfully")
+
+def get_template_types():
+    types_name = os.listdir(TEMPLATE_PATH)
+    result = []
+    for type in types_name:
+        meta_file = TEMPLATE_PATH + "/" + type + "/meta.json"
+        with open(meta_file, "r") as f:
+            meta = f.read()
+        meta = json.loads(meta)
+        description = meta["description"]
+        # if description is not provided, use the name
+        if not description:
+            description = ""
+        
+        path = meta["path"]
+        if not path:
+            path = "."
+        
+        obj = {
+            "name": type,
+            "description": description,
+            "path": path
+        }
+        result.append(obj)
+    return result
+        
+
+def generate_files(template, component_name):
+    template_base_path = TEMPLATE_PATH + "/" + template["name"]
     
+    path = template["path"].replace("$$name$$", component_name)
+    
+    if not os.path.exists(path):
+        try:
+            os.mkdir(path)
+        except OSError as error:
+            print("Creation of the directory "+path+" failed:", error)
+            quit()
+    
+    files = os.listdir(template_base_path)
+    for file in files:
+        if file == "meta.json":
+            continue
+        file_name = file.replace("$$name$$", component_name)
+        with open(template_base_path + "/" + file, "r") as f:
+            content = f.read()
+        content = content.replace("$$name$$", component_name)
+        new_path = path + "/" + file_name
+        if os.path.exists(new_path):
+            raise Exception("File already exists: ", new_path)
+        with open(new_path, "w") as f:
+            f.write(content)
+        print("Created file: ", new_path)
+        
+
 def format_name(name):
     name = name[0].upper() + name[1:]
     # replace all - and make next letter uppercase

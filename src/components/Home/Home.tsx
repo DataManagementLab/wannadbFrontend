@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import './Home.scss';
 import { ChangeEvent, useState } from 'react';
@@ -10,6 +10,7 @@ import { useGetUsername } from '../../providers/UserProvider';
  */
 function Home() {
 	const getUserName = useGetUsername();
+	const navigate = useNavigate();
 
 	const [username] = useState(getUserName());
 
@@ -47,7 +48,13 @@ function Home() {
 			<div className="Home">
 				<Navbar />
 				<div className="content">
-					<h1 className="title">
+					<h1
+						className="title"
+						style={{ cursor: 'pointer' }}
+						onClick={() => {
+							navigate('/profile');
+						}}
+					>
 						Hi {username.slice(0, -2)}
 						<span className="db">{username.slice(-2)}</span> 👋
 					</h1>

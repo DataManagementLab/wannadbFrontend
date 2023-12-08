@@ -1,0 +1,4 @@
+{
+	"description": "A new Provider that holds shared data across the whole app",
+	"path": "./src/providers"
+}

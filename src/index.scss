@@ -65,8 +65,15 @@ body {
 	--btn-color: #010407;
 	--text-color: #ffffff;
 }
+
 [data-theme='light'] {
 	--bg-color: #e2e2e2;
 	--btn-color: #ffffff;
 	--text-color: #000000;
+}
+
+[data-theme='funky'] {
+	--bg-color: #ee00ff;
+	--btn-color: #2efe08;
+	--text-color: #ff0000;
 }

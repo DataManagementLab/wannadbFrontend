@@ -23,14 +23,30 @@ function Settings() {
 			<Navbar></Navbar>
 			<div className="content">
 				<h1 className="title">
-					<span className="db">Se</span>ttings
+					Se<span className="db">tt</span>ings
 				</h1>
 				<div className="ver">
-					<h2>Appearance</h2>
+					<h2>
+						A
+						<span
+							className="db"
+							onDoubleClick={() => {
+								document.documentElement.setAttribute(
+									'data-theme',
+									'funky'
+								);
+							}}
+						>
+							pp
+						</span>
+						earance
+					</h2>
 					<button className="btn" onClick={toggleTheme}>
 						{isDarkMode ? 'Light Mode' : 'Dark Mode'}
 					</button>
-					<h2>Storage</h2>
+					<h2>
+						Stora<span className="db">ge</span>
+					</h2>
 					{cookiesAllowed ? (
 						<button className="btn" onClick={rejectCookies}>
 							Reject Cookies

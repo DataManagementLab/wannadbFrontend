@@ -1,0 +1,4 @@
+{
+	"description": "A default template for a new component",
+	"path": "./src/components/$$name$$"
+}

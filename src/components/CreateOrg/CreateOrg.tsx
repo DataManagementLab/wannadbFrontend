@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './CreateOrg.scss';
+import '../../styles/form.scss';
 import { useGetUsername, useLoggedIn } from '../../providers/UserProvider';
 import { useEffect, useState } from 'react';
 import APIService from '../../utils/ApiService';
@@ -58,7 +59,7 @@ function CreateOrg() {
 	}, [isLoggedIn, username]);
 
 	return (
-		<div className="CreateOrg">
+		<div className="CreateOrg myForm">
 			<h1>
 				wanna<span className="db">db</span> <br />
 				<i>CREATE ORGANIZATION</i>
