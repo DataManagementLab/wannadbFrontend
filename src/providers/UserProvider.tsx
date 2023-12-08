@@ -76,6 +76,8 @@ export function UserProvider({ children }: Props) {
 	const storeInLS = useStoreInLS();
 	const getFromLS = useGetFromLS();
 
+	// TODO handle user and token
+
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	useEffect(() => {
 		const name = getFromLS('wannadbuser');

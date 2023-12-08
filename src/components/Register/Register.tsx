@@ -1,9 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Register.scss';
 import { useState } from 'react';
+import APIService from '../../utils/ApiService';
+import { useShowNotification } from '../../providers/NotificationProvider';
 
 /**
- * The register page component
+ * A page where the user can register a new account.
  */
 function Register() {
 	const [name, setName] = useState('');
@@ -11,7 +13,9 @@ function Register() {
 	const [repeatPassword, setRepeatPassword] = useState('');
 	const [errorMessage, setErrorMessage] = useState(' ');
 
-	// TODO: Implement register functionality
+	const showNotification = useShowNotification();
+	const navigate = useNavigate();
+
 	const onRegister = () => {
 		if (password !== repeatPassword) {
 			setErrorMessage('Passwords do not match!');
@@ -27,6 +31,18 @@ function Register() {
 			setErrorMessage('Username must be at least 3 characters long!');
 			return;
 		}
+
+		// All inputs are valid, register the user at the backend
+
+		APIService.register(name, password).then((success) => {
+			if (!success) {
+				setErrorMessage('Username already taken!');
+				return;
+			}
+			showNotification('Success', 'You have successfully registered!');
+			setErrorMessage(' ');
+			navigate('/login');
+		});
 	};
 
 	return (
