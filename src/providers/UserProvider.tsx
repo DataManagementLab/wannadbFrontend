@@ -1,10 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useEffect, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import '../index.scss';
-import { useGetFromLS, useStoreInLS } from './StorageProvider';
 
 const UserContext = React.createContext({
-	isLoggedIn: false,
+	isLoggedIn: (): boolean => {
+		return false;
+	},
 	getUsername: (): string => {
 		return '';
 	},
@@ -70,43 +71,27 @@ interface Props {
  * @param children - the children of the component
  */
 export function UserProvider({ children }: Props) {
-	const [username, setUsername] = React.useState('');
-	const [loggedIn, setLoggedIn] = React.useState(false);
-
-	const storeInLS = useStoreInLS();
-	const getFromLS = useGetFromLS();
-
-	// TODO handle user and token
-
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	useEffect(() => {
-		const name = getFromLS('wannadbuser');
-		if (name && name !== '') {
-			setUsername(name);
-			setLoggedIn(true);
-		}
-	});
-
 	const login = (username: string) => {
-		setUsername(username);
-		setLoggedIn(true);
-		storeInLS('wannadbuser', username);
+		sessionStorage.setItem('wannadbuser', username);
 	};
 
 	const logOut = () => {
-		setLoggedIn(false);
-		setUsername('');
-		storeInLS('wannadbuser', '');
+		sessionStorage.removeItem('wannadbuser');
+		sessionStorage.removeItem('user-token');
 	};
 
 	const getUsername = (): string => {
-		return username;
+		return sessionStorage.getItem('wannadbuser') || '';
+	};
+
+	const isLoggedIn = (): boolean => {
+		return sessionStorage.getItem('user-token') !== null;
 	};
 
 	return (
 		<UserContext.Provider
 			value={{
-				isLoggedIn: loggedIn,
+				isLoggedIn: isLoggedIn,
 				getUsername: getUsername,
 				logOut: logOut,
 				login: login,

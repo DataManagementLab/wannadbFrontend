@@ -19,13 +19,12 @@ class APIService {
 				username: username,
 				password: password,
 			});
-			//TODO save token
-			if (resp.data.status) {
+			if (resp.status === 200) {
 				const token = resp.data.token;
-				console.log(token);
+				sessionStorage.setItem('user-token', token);
 			}
 
-			return resp.data.status;
+			return resp.status === 200;
 		} catch (err) {
 			return false;
 		}
@@ -47,7 +46,7 @@ class APIService {
 				username: username,
 				password: password,
 			});
-			return resp.data.status;
+			return resp.status === 201;
 		} catch (err) {
 			return false;
 		}
@@ -82,19 +81,35 @@ class APIService {
 		}
 	}
 
-	// TODO
-	static async upload(
-		username: string,
-		name: string,
-		data: string
-	): Promise<string> {
+	/**
+	 * Upload files to the server.
+	 * @param data Array of files to upload
+	 * @returns A string with the status of the upload
+	 */
+	static async upload(data: Blob[]): Promise<string> {
 		try {
-			const resp = await axios.post(`${this.host}/upload`, {
-				user: username,
-				name: name,
-				data: data,
+			const body = new FormData();
+			for (let i = 0; i < data.length; i++) {
+				body.append('file', data[i]);
+			}
+			body.append('authorization', this.getUserToken());
+
+			// TODO: get organization id from backend
+			body.append('organisationId', '1');
+
+			const resp = await axios.post(`${this.host}/data/upload`, body, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
 			});
-			return resp.data.message;
+			console.log(resp);
+			if (resp.status === 201) {
+				return 'File uploaded successfully';
+			}
+			if (resp.status === 207) {
+				return 'File uploaded partially successfully';
+			}
+			return 'Error uploading file';
 		} catch (err) {
 			return 'Error uploading file';
 		}
@@ -122,6 +137,10 @@ class APIService {
 			.catch(() => {
 				return 'Error getting file content!';
 			});
+	}
+
+	static getUserToken(): string {
+		return sessionStorage.getItem('user-token') || '';
 	}
 }
 

@@ -1,9 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import './Home.scss';
-import { ChangeEvent, useState } from 'react';
-import APIService from '../../utils/ApiService';
+import { useState } from 'react';
 import { useGetUsername } from '../../providers/UserProvider';
+import FileUpload from '../FileUpload/FileUpload';
 
 /**
  * The home page component
@@ -14,35 +14,6 @@ function Home() {
 
 	const [username] = useState(getUserName());
 
-	const [file, setFile] = useState<string | ArrayBuffer | null>(null);
-	const [fileName, setFileName] = useState<string | ArrayBuffer | null>(null);
-
-	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-		// Get the selected file
-		const selectedFile = event.target.files && event.target.files[0];
-
-		if (selectedFile) {
-			// Read the file content
-			const reader = new FileReader();
-			reader.onload = (e) => {
-				// Set the file content to state
-				setFile(e.target?.result as string);
-				setFileName(selectedFile.name);
-			};
-			reader.readAsText(selectedFile);
-		}
-	};
-
-	const handleUpload = () => {
-		APIService.upload(username, fileName as string, file as string).then(
-			(res) => {
-				alert(res);
-				setFile(null);
-				setFileName(null);
-			}
-		);
-	};
-
 	if (username !== '') {
 		return (
 			<div className="Home">
@@ -50,7 +21,7 @@ function Home() {
 				<div className="content">
 					<h1
 						className="title"
-						style={{ cursor: 'pointer' }}
+						style={{ cursor: 'pointer', marginBottom: '40px' }}
 						onClick={() => {
 							navigate('/profile');
 						}}
@@ -58,21 +29,10 @@ function Home() {
 						Hi {username.slice(0, -2)}
 						<span className="db">{username.slice(-2)}</span> 👋
 					</h1>
-					<input
-						type="file"
-						onChange={handleFileChange}
-						accept=".txt"
-					/>
-					<div className="ver">
-						<button
-							className="btn uploadFile"
-							style={{ width: '200px' }}
-							onClick={handleUpload}
-							disabled={!file}
-						>
-							Upload File
-						</button>
-					</div>
+					<h2>
+						File <span className="db">Up</span>load
+					</h2>
+					<FileUpload></FileUpload>
 				</div>
 			</div>
 		);
