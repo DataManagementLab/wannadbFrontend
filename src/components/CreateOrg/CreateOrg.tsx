@@ -38,14 +38,14 @@ function CreateOrg() {
 			);
 			return;
 		}
-		APIService.createOrg(username, name).then((suc) => {
-			if (!suc) {
+		APIService.createOrganization(name).then((id) => {
+			if (!id) {
 				setErrorMessage('Organization already exists');
 				return;
 			}
 			showNotification(
 				'Organization created!',
-				'Organization ' + name + ' created successfully.'
+				'Organization ' + name + ' created successfully. (' + id + ')'
 			);
 			navigate('/profile');
 		});

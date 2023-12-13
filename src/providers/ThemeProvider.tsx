@@ -49,7 +49,6 @@ export function ThemeProvider({ children }: Props) {
 	const setDarkTheme = (value: boolean) => {
 		setDarkThemeState(value);
 		storeInLS('dark-theme', value.toString());
-
 		if (value) {
 			document.documentElement.setAttribute('data-theme', 'dark');
 			return;
@@ -68,7 +67,8 @@ export function ThemeProvider({ children }: Props) {
 			);
 			setDarkTheme(systemTheme.matches);
 		}
-	});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	const toggleTheme = () => {
 		setDarkTheme(!isDarkTheme);

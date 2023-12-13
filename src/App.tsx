@@ -23,7 +23,7 @@ function App() {
 									<Route path="/" Component={Home} />
 									<Route path="/login" Component={Login} />
 									<Route
-										path="/org/create"
+										path="/organization/create"
 										Component={CreateOrg}
 									/>
 									<Route
@@ -38,6 +38,7 @@ function App() {
 										path="/profile"
 										Component={Profile}
 									/>
+									<Route path="*" Component={Home} />
 								</Routes>
 							</BrowserRouter>
 						</UserProvider>

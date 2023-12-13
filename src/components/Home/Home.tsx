@@ -2,9 +2,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar/Navbar';
 import './Home.scss';
 import { useState } from 'react';
-import { useGetUsername } from '../../providers/UserProvider';
+import { useGetUsername, useLogOut } from '../../providers/UserProvider';
 import FileUpload from '../FileUpload/FileUpload';
-import MatchingEditor from '../MatchingEditor/MatchingEditor';
 
 /**
  * The home page component
@@ -12,6 +11,7 @@ import MatchingEditor from '../MatchingEditor/MatchingEditor';
 function Home() {
 	const getUserName = useGetUsername();
 	const navigate = useNavigate();
+	const logOut = useLogOut();
 
 	const [username] = useState(getUserName());
 
@@ -20,7 +20,6 @@ function Home() {
 			<div className="Home">
 				<Navbar />
 				<div className="content">
-					<MatchingEditor></MatchingEditor>
 					<h1
 						className="title"
 						style={{ cursor: 'pointer', marginBottom: '40px' }}
@@ -35,6 +34,21 @@ function Home() {
 						File <span className="db">Up</span>load
 					</h2>
 					<FileUpload></FileUpload>
+					{
+						// TODO: Only for development
+					}
+					<button
+						className="btn"
+						style={{
+							marginTop: '100px',
+						}}
+						onClick={() => {
+							logOut();
+							window.location.reload();
+						}}
+					>
+						Logout
+					</button>
 				</div>
 			</div>
 		);

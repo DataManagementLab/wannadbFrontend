@@ -73,6 +73,7 @@ function Profile() {
 						<>
 							{/* //TODO */}
 							<button className="btn">View</button>
+							<button className="btn">Add Member</button>
 							<button
 								className="btn"
 								onClick={() => {
@@ -96,9 +97,7 @@ function Profile() {
 						</>
 					) : (
 						<>
-							{/* //TODO */}
-							<button className="btn">Join</button>
-							<Link className="btn" to="/org/create">
+							<Link className="btn" to="/organization/create">
 								Create New
 							</Link>
 						</>

@@ -63,21 +63,33 @@ class APIService {
 		}
 	}
 
-	// TODO
-	static async createOrg(
-		username: string,
+	/**
+	 * Create a new organization.
+	 * @param orgName The name of the organization to create
+	 * @returns The ID of the created organization or undefined if the creation failed
+	 */
+	static async createOrganization(
 		orgName: string
-	): Promise<boolean> {
+	): Promise<string | undefined> {
 		try {
-			const url = `${this.host}/create/organization`;
+			const url = `${this.host}/creatOrganisation`;
 			const resp = await axios.post(url, {
-				username: username,
-				organization: orgName,
+				authorization: this.getUserToken(),
+				organisationName: orgName,
 			});
-			return resp.data.status;
+			if (resp.status === 200) {
+				sessionStorage.setItem(
+					'organisation',
+					JSON.stringify({
+						name: orgName,
+						id: resp.data.organisation_id,
+					})
+				);
+				return resp.data.organisation_id;
+			}
+			return undefined;
 		} catch (err) {
-			//TODO
-			return true;
+			return undefined;
 		}
 	}
 
