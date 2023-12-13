@@ -1,0 +1,20 @@
+.MatchingEditor {
+	.text {
+		font-size: 20px;
+		background-color: var(--btn-color);
+		width: 90%;
+		padding: 20px 20px;
+		border-radius: 15px;
+	}
+	.word {
+		cursor: pointer;
+	}
+	.selected {
+		background-color: yellow;
+		color: black;
+		border-radius: 2px;
+	}
+	.btnBox {
+		margin-top: 20px;
+	}
+}

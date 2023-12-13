@@ -4,6 +4,7 @@ import './Home.scss';
 import { useState } from 'react';
 import { useGetUsername } from '../../providers/UserProvider';
 import FileUpload from '../FileUpload/FileUpload';
+import MatchingEditor from '../MatchingEditor/MatchingEditor';
 
 /**
  * The home page component
@@ -19,6 +20,7 @@ function Home() {
 			<div className="Home">
 				<Navbar />
 				<div className="content">
+					<MatchingEditor></MatchingEditor>
 					<h1
 						className="title"
 						style={{ cursor: 'pointer', marginBottom: '40px' }}

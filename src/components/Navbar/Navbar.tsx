@@ -13,23 +13,30 @@ function Navbar() {
 
 	const [username] = useState(getUserName());
 
+	const [testStyle, setTestStyle] = useState({});
+
 	return (
 		<div className="Navbar">
-			<div className="logo" onClick={() => navigate('/')}>
+			<div
+				className="logo"
+				onClick={() => navigate('/')}
+				style={testStyle}
+			>
 				wanna<span className="db">db</span>
 			</div>
 			<div className="links">
-				{/* <div className="toggle-switch">
-                    <label className="switch-label">
-                        {React.createElement('input', {
-                            type: 'checkbox',
-                            defaultChecked: !isDarkTheme,
-                            onChange: toggleTheme,
-                            className: 'checkbox',
-                        })}
-                        <span className="slider"></span>
-                    </label>
-                </div> */}
+				<div
+					className="test"
+					onDoubleClick={() => {
+						if (JSON.stringify(testStyle) === '{}') {
+							setTestStyle({
+								animation: 'spin 1s linear infinite',
+							});
+							return;
+						}
+						setTestStyle({});
+					}}
+				></div>
 				<Link to="/">Home</Link>
 				<a
 					href="https://www.youtube.com/watch?v=A7AjtPGt2rM"

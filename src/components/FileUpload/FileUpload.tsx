@@ -1,7 +1,10 @@
 import { ChangeEvent, useState } from 'react';
 import APIService from '../../utils/ApiService';
 import './FileUpload.scss';
-import { useShowNotification } from '../../providers/NotificationProvider';
+import {
+	useShowNotification,
+	useShowChoiceNotification,
+} from '../../providers/NotificationProvider';
 
 /**
  * A component where the user can upload files
@@ -11,24 +14,41 @@ function FileUpload() {
 	const [stagedFiles, setstagedFiles] = useState<File[]>([]);
 
 	const showNotification = useShowNotification();
+	const showChoiceNotification = useShowChoiceNotification();
 
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
 		// Get the selected file
 		const selectedFiles = event.target.files;
 		if (selectedFiles === null) return;
-		console.log(selectedFiles);
-		// Read the file content
-		/* const reader = new FileReader();
-		reader.onload = () => {
-			// Set the file content to state
-			setFile(selectedFiles);
-			//setFileName(selectedFiles.name);
-		};
-		reader.readAsText(selectedFiles); */
 		setstagedFiles([...selectedFiles, ...Array.from(stagedFiles)]);
 	};
 
-	const addFile = () => {
+	const addFile = (force: boolean = false) => {
+		if (stagedFiles.length === 0) {
+			return;
+		}
+		if (!force) {
+			for (const stagedFile of stagedFiles) {
+				for (const file of files) {
+					if (
+						file.name === stagedFile.name &&
+						file.size === stagedFile.size &&
+						file.lastModified === stagedFile.lastModified
+					) {
+						showChoiceNotification(
+							'File upload',
+							`The file ${stagedFile.name} is already in the list. Do you want to add it anyway?`,
+							() => addFile(true),
+							() => {},
+							'Yes',
+							'No'
+						);
+						return;
+					}
+				}
+			}
+		}
+
 		setFiles([...files, ...stagedFiles]);
 		setstagedFiles([]);
 	};
@@ -65,7 +85,7 @@ function FileUpload() {
 				<button
 					className="btn"
 					style={{ marginLeft: '-50px' }}
-					onClick={addFile}
+					onClick={() => addFile()}
 				>
 					Add
 				</button>
@@ -88,14 +108,16 @@ function FileUpload() {
 				))}
 			</ul>
 			<div className="ver">
-				<button
-					className="btn uploadFile"
-					style={{ width: '200px' }}
-					onClick={handleUpload}
-					disabled={files.length === 0}
-				>
-					Upload File
-				</button>
+				{files.length > 0 && (
+					<button
+						className="btn uploadFile"
+						style={{ width: '200px' }}
+						onClick={handleUpload}
+						disabled={files.length === 0}
+					>
+						Upload File
+					</button>
+				)}
 			</div>
 		</div>
 	);

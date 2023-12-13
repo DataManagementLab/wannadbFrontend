@@ -9,15 +9,19 @@
 
 input[type='file']::file-selector-button {
 	margin-right: 20px;
-	border: none;
 	background: var(--btn-color);
-	padding: 10px 20px;
-	border-radius: 10px;
+	padding: 5px 20px;
+	border-radius: 5px;
 	color: var(--text-color);
 	cursor: pointer;
 	transition: 0.2s ease-in-out;
+	font-size: 20px;
+	border: 2px solid var(--text-color);
+	font-weight: bold;
 }
 
 input[type='file']::file-selector-button:hover {
 	background: #083d60;
+	color: white;
+	border: 2px solid #083d60;
 }
