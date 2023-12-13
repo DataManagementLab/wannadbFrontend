@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"start": "git pull && python3 scripts/createTable.py && vite",
+		"start": "git pull && npm install && npm run create && vite --open",
 		"build": "tsc && vite build",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
@@ -18,7 +18,9 @@
 		"generate": "python3 scripts/generate.py",
 		"g": "python3 scripts/generate.py",
 		"todo": "python3 scripts/todo.py",
-		"comment:check": "python3 scripts/check_comment.py"
+		"comment:check": "python3 scripts/check_comment.py",
+		"create": "npm run create:tables",
+		"create:tables": "python3 scripts/create_table.py"
 	},
 	"dependencies": {
 		"axios": "^1.6.2",
