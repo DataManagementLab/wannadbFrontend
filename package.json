@@ -5,7 +5,8 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"start": "git pull && npm install && npm run create && vite --open",
+		"serve": "vite",
+		"start": "git pull && npm install && npm run backend:check && npm run backend:create && vite --open",
 		"build": "tsc && vite build",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
@@ -14,13 +15,13 @@
 		"test": "vitest run --coverage",
 		"test:watch": "vitest",
 		"prepare": "husky install",
-		"backend": "cd backend && python3 main.py -dev && cd ..",
-		"generate": "python3 scripts/generate.py",
-		"g": "python3 scripts/generate.py",
-		"todo": "python3 scripts/todo.py",
-		"comment:check": "python3 scripts/check_comment.py",
-		"create": "npm run create:tables",
-		"create:tables": "python3 scripts/create_table.py"
+		"generate": "python scripts/generate.py",
+		"g": "python scripts/generate.py",
+		"todo": "python scripts/todo.py",
+		"comment:check": "python scripts/check_comment.py",
+		"backend:check": "python scripts/check_backend.py",
+		"backend:create": "npm run backend:create:tables",
+		"backend:create:tables": "python scripts/create_table.py"
 	},
 	"dependencies": {
 		"axios": "^1.6.2",

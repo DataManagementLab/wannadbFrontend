@@ -29,7 +29,7 @@ The wannadb as a web app.
 git clone https://github.com/phil1436/wannadbFrontend.git
 ```
 
-2. Make sure to have [nodejs](https://nodejs.org/en)> and [npm](https://www.npmjs.com/) installed.
+2. Make sure to have [nodejs](https://nodejs.org/en), [npm](https://www.npmjs.com/) and [python](https://www.python.org/) installed.
 3. Install the dependencies with:
 
 ```bash
@@ -42,31 +42,21 @@ npm install
 npm run prepare
 ```
 
-5. Make sure to have python installed.
-6. Install the requirements with:
-
-```bash
-cd backend
-pip install -r requirements.txt
-```
-
 ---
 
-## Usage
+## Start
 
-1. Start the frontend with:
-
-```bash
-npm start
-```
-
-2. Start the backend with in a new terminal:
+Tp start the frontend development server run:
 
 ```bash
-npm run backend
+npm run start
 ```
 
-3. Open [localhost:5173](http://localhost:5173) in your browser.
+This script will make preparations to start the newest version.
+
+_Check the console for instructions!_
+
+> Note that also the backend server should be running. Otherwise the frontend will not work correctly. See [here](https://github.com/lw86ruwo/wannadbBackend) for more information.
 
 ---
 
@@ -88,6 +78,7 @@ npm run <script>
 ```
 
 -   **dev** - Start the frontend development server
+-   **serve** - Start the frontend development server
 -   **start** - Pull the latest changes and start the frontend development server
 -   **build** - Build the frontend
 -   **lint** - Check for linting errors
@@ -100,6 +91,8 @@ npm run <script>
 -   **generate _\<component-name\>_** - Generate a new React component
 -   **todo _\<todo\>_** - Add a new TODO
 -   **comment:check** - Check if all functions and classes have a comment
+-   **backend:check** - Checks if the backend is running
+-   **backend:create** - Creates all the necessary resources in the backend
 
 ---
 
