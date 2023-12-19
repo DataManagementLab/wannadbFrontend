@@ -6,6 +6,7 @@ import {
 	beforeAll,
 	afterAll,
 	expectTypeOf,
+	assert,
 } from 'vitest';
 import 'src/utils/sessionStoragePolifill.js';
 
@@ -30,10 +31,11 @@ function generateRandomString(length: number): string {
 describe('APIService', () => {
 	const salt = generateRandomString(10);
 	const alternative = generateRandomString(10);
+	let saltOrganisationID: number | undefined = undefined;
 
 	beforeAll(async () => {
 		await APIService.register(salt, salt);
-		await APIService.createOrganization(salt);
+		saltOrganisationID = await APIService.createOrganization(salt);
 	});
 
 	afterAll(async () => {
@@ -72,17 +74,39 @@ describe('APIService', () => {
 
 		expect(token).toBe(null);
 	});
-	test('should get organization successfully', async () => {
+	test('should get organizations successfully', async () => {
 		await APIService.login(salt, salt);
 		const organizationId = await APIService.getOrganizations();
 		expectTypeOf(organizationId).not.toBeBoolean();
 		expect(organizationId).toBeDefined();
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
+		if (!organizationId || organizationId.length === 0) {
+			assert(false);
+		}
+
 		expect(typeof organizationId[0]).toBe('number');
+		expect(organizationId[0]).toBeGreaterThan(0);
+	});
+	test('should get organizations successfully', async () => {
+		await APIService.login(salt, salt);
+		const organizations = await APIService.getOrganizationNames();
+		assert(organizations);
+		assert(typeof organizations != 'boolean');
+		expect(organizations[0].id > 0).true;
+		expect(typeof organizations[0].name).toBe('string');
+	});
+	test('should get organization successfully', async () => {
+		await APIService.login(salt, salt);
+		assert(saltOrganisationID);
+		const organizationName =
+			await APIService.getNameForOrganization(saltOrganisationID);
+		expectTypeOf(organizationName).not.toBeBoolean();
+		expect(organizationName).toBeDefined();
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
-		expect(organizationId[0]).toBeGreaterThan(10);
+		expect(typeof organizationName[0]).toBe('string');
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		expect(organizationName[0].length).toBeGreaterThan(0);
 	});
 	test('should create organization successfully', async () => {
 		await APIService.login(salt, salt);

@@ -9,10 +9,25 @@
 		font-weight: bold;
 		margin-bottom: 20px;
 	}
-	.orgBtns {
+	.orgs {
 		display: flex;
+		flex-direction: column;
+		.create {
+			max-width: 150px;
+		}
+	}
+	.orgItem {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		p {
+			font-size: 20px;
+			line-height: 20px;
+			font-weight: bold;
+			min-width: 200px;
+		}
 		* {
-			margin-right: 10px;
+			margin-right: 15px;
 		}
 	}
 }

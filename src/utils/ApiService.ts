@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Organization from './Organization';
 
 /**
  * This class is used to make requests to the backend API.
@@ -11,26 +12,6 @@ class APIService {
 	 * @param schema The username to login
 	 * @returns A promise that resolves to true if the login was successful, false otherwise.
 	 */
-	static async createTables(schema: string): Promise<boolean> {
-		try {
-			const url = `${this.host}/dev/createTables/${schema}`;
-			const resp = await axios.post(url);
-			return resp.status === 200;
-		} catch (err) {
-			return false;
-		}
-	}
-
-	static async dropTables(schema: string): Promise<boolean> {
-		try {
-			const url = `${this.host}/dev/dropTables/${schema}`;
-			const resp = await axios.post(url);
-			return resp.status === 200;
-		} catch (err) {
-			return false;
-		}
-	}
-
 	static async login(username: string, password: string): Promise<boolean> {
 		const url = `${this.host}/login`;
 		const resp = await axios.post(url, {
@@ -106,7 +87,7 @@ class APIService {
 		}
 	}
 
-	static async getOrganizations(): Promise<number[] | boolean | undefined> {
+	static async getOrganizations(): Promise<number[] | undefined> {
 		try {
 			const url = `${this.host}/getOrganisations`;
 			const resp = await axios.get(url, {
@@ -117,7 +98,45 @@ class APIService {
 			if (resp.status == 200) {
 				return resp.data.organisation_ids as number[];
 			}
-			if (resp.status == 204) return false;
+			if (resp.status == 204) return undefined;
+		} catch (err) {
+			return undefined;
+		}
+	}
+
+	static async getOrganizationNames(): Promise<Organization[] | undefined> {
+		try {
+			const url = `${this.host}/getOrganisationNames`;
+			const resp = await axios.get<{
+				organisations: Organization[];
+			}>(url, {
+				headers: {
+					Authorization: this.getUserToken(),
+				},
+			});
+			if (resp.status == 200) {
+				return resp.data.organisations;
+			}
+			if (resp.status == 404) return undefined;
+		} catch (err) {
+			return undefined;
+		}
+	}
+
+	static async getNameForOrganization(
+		id: number
+	): Promise<string | undefined> {
+		try {
+			const url = `${this.host}/getOrganisationName/${id}`;
+			const resp = await axios.get(url, {
+				headers: {
+					Authorization: this.getUserToken(),
+				},
+			});
+			if (resp.status == 200) {
+				return resp.data.organisation_name as string;
+			}
+			if (resp.status == 404) return undefined;
 		} catch (err) {
 			return undefined;
 		}
@@ -130,7 +149,7 @@ class APIService {
 	 */
 	static async createOrganization(
 		orgName: string
-	): Promise<string | undefined> {
+	): Promise<number | undefined> {
 		try {
 			const url = `${this.host}/createOrganisation`;
 			const resp = await axios.post(
@@ -149,10 +168,10 @@ class APIService {
 					'organisation',
 					JSON.stringify({
 						name: orgName,
-						id: resp.data.organisation_id,
+						id: resp.data.organisation_id as number,
 					})
 				);
-				return resp.data.organisation_id;
+				return resp.data.organisation_id as number;
 			}
 		} catch (err) {
 			return undefined;
@@ -180,7 +199,6 @@ class APIService {
 					Authorization: this.getUserToken(),
 				},
 			});
-			console.log(resp);
 			if (resp.status === 201) {
 				return 'File uploaded successfully';
 			}

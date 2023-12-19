@@ -9,6 +9,7 @@ import { UserProvider } from './providers/UserProvider';
 import Settings from './components/Settings/Settings';
 import { NotificationProvider } from './providers/NotificationProvider';
 import CreateOrg from './components/CreateOrg/CreateOrg';
+import { OrganizationProvider } from './providers/OrganizationProvider';
 
 // The main component of the application
 function App() {
@@ -17,31 +18,36 @@ function App() {
 			<NotificationProvider>
 				<StorageProvider>
 					<ThemeProvider>
-						<UserProvider>
-							<BrowserRouter>
-								<Routes>
-									<Route path="/" Component={Home} />
-									<Route path="/login" Component={Login} />
-									<Route
-										path="/organization/create"
-										Component={CreateOrg}
-									/>
-									<Route
-										path="/register"
-										Component={Register}
-									/>
-									<Route
-										path="/settings"
-										Component={Settings}
-									/>
-									<Route
-										path="/profile"
-										Component={Profile}
-									/>
-									<Route path="*" Component={Home} />
-								</Routes>
-							</BrowserRouter>
-						</UserProvider>
+						<OrganizationProvider>
+							<UserProvider>
+								<BrowserRouter>
+									<Routes>
+										<Route path="/" Component={Home} />
+										<Route
+											path="/login"
+											Component={Login}
+										/>
+										<Route
+											path="/organization/create"
+											Component={CreateOrg}
+										/>
+										<Route
+											path="/register"
+											Component={Register}
+										/>
+										<Route
+											path="/settings"
+											Component={Settings}
+										/>
+										<Route
+											path="/profile"
+											Component={Profile}
+										/>
+										<Route path="*" Component={Home} />
+									</Routes>
+								</BrowserRouter>
+							</UserProvider>
+						</OrganizationProvider>
 					</ThemeProvider>
 				</StorageProvider>
 			</NotificationProvider>
