@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import APIService from '../../utils/ApiService';
 import Navbar from '../Navbar/Navbar';
 import './Profile.scss';
 import { useEffect, useState } from 'react';
@@ -10,6 +9,11 @@ import {
 } from '../../providers/UserProvider';
 import MyFiles from '../MyFiles/MyFiles';
 import { useShowChoiceNotification } from '../../providers/NotificationProvider';
+import Organization from '../../utils/Organization';
+import {
+	useGetOrganizations,
+	useUpdateOrganizations,
+} from '../../providers/OrganizationProvider';
 
 /**
  * The profile page component
@@ -23,27 +27,17 @@ function Profile() {
 	const logOut = useLogOut();
 
 	const [username] = useState(getUserName());
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [fileNames, setFileNames] = useState<string[]>([]);
-	const [organizationName, setOrganizationName] = useState<string>('');
 
-	const getFiles = () => {
-		APIService.getFileNames(username).then((res) => {
-			setFileNames(res);
-		});
-	};
-
-	const getOrganizationName = () => {
-		APIService.getOrganization(username).then((res) => {
-			setOrganizationName(res);
-		});
-	};
+	const getOrganizations = useGetOrganizations();
+	const updateOrganizations = useUpdateOrganizations();
 
 	useEffect(() => {
 		if (!isLoggedIn) {
 			navigate('/');
 		}
-		getFiles();
-		getOrganizationName();
+		updateOrganizations();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isLoggedIn, username]);
 
@@ -56,52 +50,50 @@ function Profile() {
 					<span className="db">{username.slice(-2)}</span>
 				</h1>
 				<h2>
-					<span className="db">My</span>Organization
+					<span className="db">My</span>Organizations
 				</h2>
-				{organizationName !== '' ? (
-					<p>
-						<b>{organizationName}</b>
-					</p>
-				) : (
+				{getOrganizations().length === 0 && (
 					<p>
 						<i>You are not a member of any organization.</i>
 					</p>
 				)}
 
-				<div className="orgBtns">
-					{organizationName !== '' ? (
-						<>
-							{/* //TODO */}
-							<button className="btn">View</button>
-							<button className="btn">Add Member</button>
-							<button
-								className="btn"
-								onClick={() => {
-									showChoice(
-										'Leave Organization',
-										'Are you sure you want to leave ' +
-											organizationName +
-											'?',
-										() => {
-											// TODO: Leave organization
-											console.log('Leave');
-										},
-										() => {},
-										'Leave',
-										'Cancel'
-									);
-								}}
-							>
-								Leave
-							</button>
-						</>
-					) : (
-						<>
-							<Link className="btn" to="/organization/create">
-								Create New
-							</Link>
-						</>
-					)}
+				<div className="orgs">
+					{getOrganizations().length > 0 &&
+						getOrganizations().map((org: Organization) => (
+							<li key={org.id} className="orgItem">
+								<p key={org.id + 'Name'}>{org.name}</p>
+								<button className="btn">View</button>
+								<button className="btn">Add Member</button>
+								<button
+									className="btn"
+									onClick={() => {
+										showChoice(
+											'Leave Organization',
+											'Are you sure you want to leave ' +
+												org.name +
+												'?',
+											() => {
+												// TODO: Leave organization
+												console.log('Leave');
+											},
+											() => {},
+											'Leave',
+											'Cancel'
+										);
+									}}
+								>
+									Leave
+								</button>
+							</li>
+						))}
+					<Link
+						className="btn create"
+						to="/organization/create"
+						style={{ marginTop: '25px' }}
+					>
+						Create New
+					</Link>
 				</div>
 				<h2>
 					<span className="db">My</span>Files

@@ -65,10 +65,8 @@ function FileUpload() {
 
 	const handleUpload = () => {
 		if (files.length === 0) return;
-		console.log(files);
 		APIService.upload(files).then((res) => {
 			showNotification('File upload', res);
-
 			setFiles([]);
 		});
 	};
