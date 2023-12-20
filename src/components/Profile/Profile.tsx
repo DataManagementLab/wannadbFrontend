@@ -63,10 +63,12 @@ function Profile() {
 						getOrganizations().map((org: Organization) => (
 							<li key={org.id} className="orgItem">
 								<p key={org.id + 'Name'}>{org.name}</p>
-								<button className="btn">View</button>
-								<button className="btn">Add Member</button>
-								<button
-									className="btn"
+								<i className="bi bi-eye icon">{/*VIEW*/}</i>
+								<i className="bi bi-plus-lg icon">
+									{/*ADD MEMBER*/}
+								</i>
+								<i
+									className="bi bi-box-arrow-left icon"
 									onClick={() => {
 										showChoice(
 											'Leave Organization',
@@ -83,8 +85,8 @@ function Profile() {
 										);
 									}}
 								>
-									Leave
-								</button>
+									{/* Leave */}
+								</i>
 							</li>
 						))}
 					<Link

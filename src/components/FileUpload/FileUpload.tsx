@@ -5,6 +5,7 @@ import {
 	useShowNotification,
 	useShowChoiceNotification,
 } from '../../providers/NotificationProvider';
+import { useGetOrganizations } from '../../providers/OrganizationProvider';
 
 /**
  * A component where the user can upload files
@@ -12,6 +13,7 @@ import {
 function FileUpload() {
 	const [files, setFiles] = useState<File[]>([]);
 	const [stagedFiles, setstagedFiles] = useState<File[]>([]);
+	const [selectedOrg, setSelectedOrg] = useState(-1);
 
 	const showNotification = useShowNotification();
 	const showChoiceNotification = useShowChoiceNotification();
@@ -22,6 +24,8 @@ function FileUpload() {
 		if (selectedFiles === null) return;
 		setstagedFiles([...selectedFiles, ...Array.from(stagedFiles)]);
 	};
+
+	const getOrganizations = useGetOrganizations();
 
 	const addFile = (force: boolean = false) => {
 		if (stagedFiles.length === 0) {
@@ -65,26 +69,69 @@ function FileUpload() {
 
 	const handleUpload = () => {
 		if (files.length === 0) return;
-		APIService.upload(files).then((res) => {
+		APIService.upload(files, selectedOrg).then((res) => {
 			showNotification('File upload', res);
 			setFiles([]);
 		});
 	};
 
+	if (getOrganizations().length === 0) {
+		return (
+			<p>
+				<i>
+					You have to be a member of an organization to upload files.
+					You can create a new organization{' '}
+					<a href="/organization/create">here</a>.
+				</i>
+			</p>
+		);
+	}
+
 	return (
 		<div className="FileUpload">
-			<div className="hor">
+			<div className="hor mb">
+				<p>
+					<b>Select a Organization:</b>
+				</p>
+				<select
+					className="btn"
+					style={{
+						width: '200px',
+						marginLeft: '20px',
+					}}
+					name="organization"
+					id="organization"
+					onChange={(e) => {
+						console.log(e.target.value);
+						const name = e.target.value;
+						const organization = getOrganizations().find(
+							(org) => org.name === name
+						);
+						if (organization === undefined) return;
+						setSelectedOrg(organization.id);
+					}}
+				>
+					{getOrganizations().map((organization) => (
+						<option
+							value={organization.name}
+							key={organization.id}
+							selected={organization.id === selectedOrg}
+						>
+							{organization.name}
+						</option>
+					))}
+				</select>
+			</div>
+			<div className="hor mb">
 				<input
 					type="file"
 					onChange={handleFileChange}
 					accept=".txt"
 					multiple={true}
 				/>
-				<button
-					className="btn"
-					style={{ marginLeft: '-50px' }}
-					onClick={() => addFile()}
-				>
+			</div>
+			<div className="hor mb">
+				<button className="btn" onClick={() => addFile()}>
 					Add
 				</button>
 				<button className="btn" onClick={discardFiles}>

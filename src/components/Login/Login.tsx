@@ -4,6 +4,7 @@ import '../../styles/form.scss';
 import { useState } from 'react';
 import APIService from '../../utils/ApiService';
 import { useLogin } from '../../providers/UserProvider';
+import { useUpdateOrganizations } from '../../providers/OrganizationProvider';
 
 /**
  * The login component
@@ -16,11 +17,14 @@ function Login() {
 	const navigate = useNavigate();
 	const login = useLogin();
 
+	const updateOrganizations = useUpdateOrganizations();
+
 	const onLogin = () => {
 		APIService.login(name, password).then((data) => {
 			if (data) {
 				setErrorMessage(' ');
 				login(name);
+				updateOrganizations();
 				navigate('/');
 			} else {
 				setErrorMessage('Invalid username or password!');
