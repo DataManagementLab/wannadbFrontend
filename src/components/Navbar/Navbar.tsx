@@ -38,12 +38,14 @@ function Navbar() {
 					}}
 				></div>
 				<Link to="/">Home</Link>
-				<a
+				<Link to="/about">About</Link>
+				{/* 				<a
 					href="https://www.youtube.com/watch?v=A7AjtPGt2rM"
 					target="_blank"
 				>
 					About
 				</a>
+ */}{' '}
 				<Link to="/settings">Settings</Link>
 				{username !== '' ? (
 					<Link to={'/profile'}>

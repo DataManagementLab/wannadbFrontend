@@ -10,6 +10,7 @@ import Settings from './components/Settings/Settings';
 import { NotificationProvider } from './providers/NotificationProvider';
 import CreateOrg from './components/CreateOrg/CreateOrg';
 import { OrganizationProvider } from './providers/OrganizationProvider';
+import About from './components/About/About';
 
 // The main component of the application
 function App() {
@@ -38,6 +39,10 @@ function App() {
 										<Route
 											path="/settings"
 											Component={Settings}
+										/>
+										<Route
+											path="/about"
+											Component={About}
 										/>
 										<Route
 											path="/profile"
