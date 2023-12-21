@@ -14,6 +14,7 @@ import {
 	useGetOrganizations,
 	useUpdateOrganizations,
 } from '../../providers/OrganizationProvider';
+import APIService from '../../utils/ApiService';
 
 /**
  * The profile page component
@@ -50,7 +51,8 @@ function Profile() {
 					<span className="db">{username.slice(-2)}</span>
 				</h1>
 				<h2>
-					<span className="db">My</span>Organizations
+					<span className="db">My</span>Organization
+					{getOrganizations().length !== 1 && 's'}
 				</h2>
 				{getOrganizations().length === 0 && (
 					<p>
@@ -62,7 +64,17 @@ function Profile() {
 					{getOrganizations().length > 0 &&
 						getOrganizations().map((org: Organization) => (
 							<li key={org.id} className="orgItem">
-								<p key={org.id + 'Name'}>{org.name}</p>
+								<p key={org.id + 'Name'}>
+									{org.name}
+									<span
+										style={{
+											opacity: '0.2',
+											fontWeight: '200',
+										}}
+									>
+										{'#' + org.id}
+									</span>
+								</p>
 								<i className="bi bi-eye icon">{/*VIEW*/}</i>
 								{getUserName() + 'Org' !== org.name && (
 									<>
@@ -78,8 +90,11 @@ function Profile() {
 														org.name +
 														'?',
 													() => {
-														// TODO: Leave organization
-														console.log('Leave');
+														APIService.leaveOrganization(
+															org.id
+														).then(() => {
+															updateOrganizations();
+														});
 													},
 													() => {},
 													'Leave',

@@ -96,6 +96,10 @@ class APIService {
 		}
 	}
 
+	/**
+	 * Get all organizations the user is part of.
+	 * @returns A promise that resolves to all organizations id the user is part of
+	 */
 	static async getOrganizations(): Promise<number[] | undefined> {
 		try {
 			const url = `${this.host}/getOrganisations`;
@@ -113,6 +117,10 @@ class APIService {
 		}
 	}
 
+	/**
+	 * Get all organizations the user is part of.
+	 * @returns A promise that resolves to all organizations the user is part of
+	 */
 	static async getOrganizationNames(): Promise<Organization[] | undefined> {
 		try {
 			const url = `${this.host}/getOrganisationNames`;
@@ -132,6 +140,11 @@ class APIService {
 		}
 	}
 
+	/**
+	 * Get the name of an organization with the given id.
+	 * @param id THe id of the organization
+	 * @returns A promise that resolves to the name of the organization with the given id
+	 */
 	static async getNameForOrganization(
 		id: number
 	): Promise<string | undefined> {
@@ -184,6 +197,34 @@ class APIService {
 			}
 		} catch (err) {
 			return undefined;
+		}
+	}
+
+	/**
+	 * Create a new organization.
+	 * @param orgName The name of the organization to create
+	 * @returns The ID of the created organization or undefined if the creation failed
+	 */
+	static async leaveOrganization(orgId: number): Promise<boolean> {
+		try {
+			const url = `${this.host}/leaveOrganisation`;
+			const resp = await axios.post(
+				url,
+				{
+					organisationId: orgId,
+				},
+				{
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
+			if (resp.status === 200) {
+				return resp.data.status;
+			}
+			return false;
+		} catch (err) {
+			return false;
 		}
 	}
 
