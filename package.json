@@ -22,7 +22,8 @@
 		"comment:check": "python scripts/check_comment.py",
 		"backend:check": "python scripts/check_backend.py",
 		"backend:create": "npm run backend:create:tables",
-		"backend:create:tables": "python scripts/create_table.py"
+		"backend:create:tables": "python scripts/create_table.py",
+		"txt:create": "python scripts/create_txt.py"
 	},
 	"dependencies": {
 		"axios": "^1.6.2",

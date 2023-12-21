@@ -93,6 +93,7 @@ npm run <script>
 -   **comment:check** - Check if all functions and classes have a comment
 -   **backend:check** - Checks if the backend is running
 -   **backend:create** - Creates all the necessary resources in the backend
+-   **txt:create** - Create some sample text files
 
 ---
 
