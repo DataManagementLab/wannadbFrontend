@@ -6,12 +6,14 @@ import {
 	useShowChoiceNotification,
 } from '../../providers/NotificationProvider';
 import { useGetOrganizations } from '../../providers/OrganizationProvider';
+import FileViewer from '../FileViewer/FileViewer';
 
 /**
  * A component where the user can upload files
  */
 function FileUpload() {
 	const [files, setFiles] = useState<File[]>([]);
+	const [viewFile, setViewFile] = useState<File | undefined>(undefined);
 	const [stagedFiles, setstagedFiles] = useState<File[]>([]);
 	const [selectedOrg, setSelectedOrg] = useState(-1);
 
@@ -89,6 +91,14 @@ function FileUpload() {
 
 	return (
 		<div className="FileUpload">
+			{viewFile !== undefined && (
+				<FileViewer
+					file={viewFile}
+					onClose={() => {
+						setViewFile(undefined);
+					}}
+				/>
+			)}
 			{getOrganizations().length === 1 && (
 				<p>
 					<b>Organization:</b> {getOrganizations()[0].name}
@@ -133,7 +143,7 @@ function FileUpload() {
 				<input
 					type="file"
 					onChange={handleFileChange}
-					accept=".txt"
+					accept=".txt,.bson"
 					multiple={true}
 				/>
 			</div>
@@ -145,20 +155,20 @@ function FileUpload() {
 					Discard
 				</button>
 			</div>
-			<ul className="stagedFiles">
-				{files.map((file, index) => (
-					<li className="file" key={index}>
-						{file.name}
-						<button
-							className="btn"
-							style={{ marginLeft: '20px' }}
-							onClick={() => removeFile(index)}
-						>
-							Remove
-						</button>
-					</li>
-				))}
-			</ul>
+			{files.map((file, index) => (
+				<li className="file" key={index}>
+					<div className="dot"></div>
+					<p>{file.name}</p>
+					<i
+						className="bi bi-eye icon"
+						onClick={() => setViewFile(file)}
+					></i>
+					<i
+						className="bi bi-x-circle icon"
+						onClick={() => removeFile(index)}
+					></i>
+				</li>
+			))}
 			<div className="ver">
 				{files.length > 0 && (
 					<button
@@ -167,7 +177,7 @@ function FileUpload() {
 						onClick={handleUpload}
 						disabled={files.length === 0}
 					>
-						Upload File
+						Upload File{files.length > 1 && 's'}
 					</button>
 				)}
 			</div>

@@ -64,29 +64,33 @@ function Profile() {
 							<li key={org.id} className="orgItem">
 								<p key={org.id + 'Name'}>{org.name}</p>
 								<i className="bi bi-eye icon">{/*VIEW*/}</i>
-								<i className="bi bi-plus-lg icon">
-									{/*ADD MEMBER*/}
-								</i>
-								<i
-									className="bi bi-box-arrow-left icon"
-									onClick={() => {
-										showChoice(
-											'Leave Organization',
-											'Are you sure you want to leave ' +
-												org.name +
-												'?',
-											() => {
-												// TODO: Leave organization
-												console.log('Leave');
-											},
-											() => {},
-											'Leave',
-											'Cancel'
-										);
-									}}
-								>
-									{/* Leave */}
-								</i>
+								{getUserName() + 'Org' !== org.name && (
+									<>
+										<i className="bi bi-plus-lg icon">
+											{/*ADD MEMBER*/}
+										</i>
+										<i
+											className="bi bi-box-arrow-left icon"
+											onClick={() => {
+												showChoice(
+													'Leave Organization',
+													'Are you sure you want to leave ' +
+														org.name +
+														'?',
+													() => {
+														// TODO: Leave organization
+														console.log('Leave');
+													},
+													() => {},
+													'Leave',
+													'Cancel'
+												);
+											}}
+										>
+											{/* Leave */}
+										</i>
+									</>
+								)}
 							</li>
 						))}
 					<Link

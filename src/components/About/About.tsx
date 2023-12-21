@@ -27,18 +27,21 @@ function About() {
 				</p>
 				<div className="hor linkIcons">
 					<a
+						className="icon"
 						target="_blank"
 						href="https://www.youtube.com/watch?v=A7AjtPGt2rM"
 					>
 						<i className="bi bi-youtube icon"></i>
 					</a>
 					<a
+						className="icon"
 						target="_blank"
 						href="https://github.com/DataManagementLab/wannadb"
 					>
 						<i className="bi bi-github icon"></i>
 					</a>
 					<a
+						className="icon"
 						target="_blank"
 						href="https://dl.gi.de/items/7c629993-1e41-4d58-8ee4-5c2e0c20d23a"
 					>
