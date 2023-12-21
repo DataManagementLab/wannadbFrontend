@@ -7,6 +7,7 @@
 		"dev": "vite",
 		"serve": "vite",
 		"start": "git pull && npm install && npm run backend:check && npm run backend:create && vite --open",
+		"start:offline": "npm install && npm run backend:check && npm run backend:create && vite --open",
 		"build": "tsc && vite build",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
