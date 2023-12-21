@@ -14,15 +14,16 @@ function About() {
 					<span className="db">db</span>?
 				</h1>
 				<p style={{ width: '50%', fontSize: '20px' }}>
-					WannaDB allows users to explore unstructured text
-					collections by automatically organizing the relevant
-					information nuggets in a table. It supports ad-hoc SQL
-					queries over text collections using a novel two-phased
-					approach: First, a superset of information nuggets is
-					extracted from the texts using existing extractors such as
-					named entity recognizers. The extractions are then
-					interactively matched to a structured table definition as
-					requested by the user.
+					WannaDB represents a method for efficiently searching and
+					analyzing large collections of text. With this tool, it is
+					possible to apply SQL queries directly to texts, similar to
+					a database query. It transforms unstructured text data into
+					structured, easily understandable information. Instead of
+					manually searching through endless texts, WannaDB allows for
+					targeted inquiries for specific information and presents
+					them in a clear format. This tool is ideal for anyone who
+					wants to quickly and effortlessly extract desired data from
+					extensive texts.
 				</p>
 				<div className="hor linkIcons">
 					<a

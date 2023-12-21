@@ -34,7 +34,7 @@ describe('APIService', () => {
 	let saltOrganisationID: number | undefined = undefined;
 
 	beforeAll(async () => {
-		await APIService.register(salt, salt);
+		await APIService.register(salt, salt, false);
 		saltOrganisationID = await APIService.createOrganization(salt);
 	});
 
@@ -66,14 +66,18 @@ describe('APIService', () => {
 	});
 
 	test('registers a user successfully and sets the user token', async () => {
-		const result = await APIService.register(alternative, alternative);
+		const result = await APIService.register(
+			alternative,
+			alternative,
+			false
+		);
 		expect(result).toBe(true);
 		const token = APIService.getUserToken();
 		expect(typeof token).toBe('string');
 		await APIService.deleteUser(alternative, alternative);
 	});
 	test('should delete a user successfully and clear the user token', async () => {
-		await APIService.register(alternative, alternative);
+		await APIService.register(alternative, alternative, false);
 		const token1 = APIService.getUserToken();
 		expect(typeof token1).toBe('string');
 		const result = await APIService.deleteUser(alternative, alternative);

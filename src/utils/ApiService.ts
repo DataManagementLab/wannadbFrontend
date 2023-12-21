@@ -39,7 +39,8 @@ class APIService {
 	 */
 	static async register(
 		username: string,
-		password: string
+		password: string,
+		addOrg = true
 	): Promise<boolean | undefined> {
 		try {
 			const url = `${this.host}/register`;
@@ -50,6 +51,9 @@ class APIService {
 			if (resp.status === 201) {
 				const token = resp.data.token;
 				sessionStorage.setItem('user-token', token);
+				if (addOrg) {
+					await this.createOrganization(username + 'Org');
+				}
 				return true;
 			}
 			return false;

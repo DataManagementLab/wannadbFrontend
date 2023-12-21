@@ -38,6 +38,10 @@ function CreateOrg() {
 			);
 			return;
 		}
+		if (name.toLowerCase().endsWith('org')) {
+			setErrorMessage('Organization name cannot end with "Org"');
+			return;
+		}
 		APIService.createOrganization(name).then((id) => {
 			if (!id) {
 				setErrorMessage('Organization already exists');

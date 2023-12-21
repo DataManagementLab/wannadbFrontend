@@ -89,39 +89,46 @@ function FileUpload() {
 
 	return (
 		<div className="FileUpload">
-			<div className="hor mb">
+			{getOrganizations().length === 1 && (
 				<p>
-					<b>Select a Organization:</b>
+					<b>Organization:</b> {getOrganizations()[0].name}
 				</p>
-				<select
-					className="btn"
-					style={{
-						width: '200px',
-						marginLeft: '20px',
-					}}
-					name="organization"
-					id="organization"
-					onChange={(e) => {
-						console.log(e.target.value);
-						const name = e.target.value;
-						const organization = getOrganizations().find(
-							(org) => org.name === name
-						);
-						if (organization === undefined) return;
-						setSelectedOrg(organization.id);
-					}}
-				>
-					{getOrganizations().map((organization) => (
-						<option
-							value={organization.name}
-							key={organization.id}
-							selected={organization.id === selectedOrg}
-						>
-							{organization.name}
-						</option>
-					))}
-				</select>
-			</div>
+			)}
+			{getOrganizations().length > 1 && (
+				<div className="hor mb">
+					<p>
+						<b>Select a Organization:</b>
+					</p>
+					<select
+						className="btn"
+						style={{
+							width: '200px',
+							marginLeft: '20px',
+						}}
+						name="organization"
+						id="organization"
+						onChange={(e) => {
+							console.log(e.target.value);
+							const name = e.target.value;
+							const organization = getOrganizations().find(
+								(org) => org.name === name
+							);
+							if (organization === undefined) return;
+							setSelectedOrg(organization.id);
+						}}
+					>
+						{getOrganizations().map((organization) => (
+							<option
+								value={organization.name}
+								key={organization.id}
+								selected={organization.id === selectedOrg}
+							>
+								{organization.name}
+							</option>
+						))}
+					</select>
+				</div>
+			)}
 			<div className="hor mb">
 				<input
 					type="file"
