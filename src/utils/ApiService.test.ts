@@ -54,6 +54,17 @@ describe('APIService', () => {
 		const token = APIService.getUserToken();
 		expect(typeof token).toBe('string');
 	});
+
+	test('login attempt for false user data fails', async () => {
+		const result = await APIService.login(salt, '');
+		expect(result).toBe(false);
+		let token: string | null = null;
+		expect(() => (token = APIService.getUserToken())).toThrowError(
+			'User not logged in'
+		);
+		expect(token).toBe(null);
+	});
+
 	test('registers a user successfully and sets the user token', async () => {
 		const result = await APIService.register(alternative, alternative);
 		expect(result).toBe(true);

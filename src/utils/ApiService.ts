@@ -13,17 +13,22 @@ class APIService {
 	 * @returns A promise that resolves to true if the login was successful, false otherwise.
 	 */
 	static async login(username: string, password: string): Promise<boolean> {
-		const url = `${this.host}/login`;
-		const resp = await axios.post(url, {
-			username: username,
-			password: password,
-		});
-		if (resp.status === 200) {
-			const token = resp.data.token;
-			sessionStorage.setItem('user-token', token);
-		}
+		try {
+			const url = `${this.host}/login`;
+			const resp = await axios.post(url, {
+				username: username,
+				password: password,
+			});
+			if (resp.status === 200) {
+				const token = resp.data.token;
+				sessionStorage.setItem('user-token', token);
+			}
 
-		return resp.status === 200;
+			return resp.status === 200;
+		} catch (e) {
+			sessionStorage.removeItem('user-token');
+			return false;
+		}
 	}
 
 	/**
