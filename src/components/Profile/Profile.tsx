@@ -28,8 +28,8 @@ function Profile() {
 	const logOut = useLogOut();
 
 	const [username] = useState(getUserName());
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [fileNames, setFileNames] = useState<string[]>([]);
+
+	const [fileNames] = useState<string[]>([]);
 
 	const getOrganizations = useGetOrganizations();
 	const updateOrganizations = useUpdateOrganizations();
@@ -64,7 +64,13 @@ function Profile() {
 					{getOrganizations().length > 0 &&
 						getOrganizations().map((org: Organization) => (
 							<li key={org.id} className="orgItem">
-								<p key={org.id + 'Name'}>
+								<p
+									key={org.id + 'Name'}
+									onClick={() => {
+										navigate('/organization/' + org.id);
+									}}
+									style={{ cursor: 'pointer' }}
+								>
 									{org.name}
 									<span
 										style={{
@@ -75,10 +81,25 @@ function Profile() {
 										{'#' + org.id}
 									</span>
 								</p>
-								<i className="bi bi-eye icon">{/*VIEW*/}</i>
+								<i
+									className="bi bi-eye icon"
+									onClick={() => {
+										navigate('/organization/' + org.id);
+									}}
+								>
+									{/*VIEW*/}
+								</i>
 								{getUserName() + 'Org' !== org.name && (
 									<>
-										<i className="bi bi-plus-lg icon">
+										<i
+											className="bi bi-plus-lg icon"
+											onClick={() => {
+												navigate(
+													'/organization/add/' +
+														org.id
+												);
+											}}
+										>
 											{/*ADD MEMBER*/}
 										</i>
 										<i

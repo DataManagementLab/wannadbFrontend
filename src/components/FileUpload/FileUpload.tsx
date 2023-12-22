@@ -118,7 +118,6 @@ function FileUpload() {
 						name="organization"
 						id="organization"
 						onChange={(e) => {
-							console.log(e.target.value);
 							const name = e.target.value;
 							const organization = getOrganizations().find(
 								(org) => org.name === name
@@ -131,7 +130,6 @@ function FileUpload() {
 							<option
 								value={organization.name}
 								key={organization.id}
-								selected={organization.id === selectedOrg}
 							>
 								{organization.name}
 							</option>

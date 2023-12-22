@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './CreateOrg.scss';
 import '../../styles/form.scss';
 import { useGetUsername, useLoggedIn } from '../../providers/UserProvider';
@@ -80,9 +80,15 @@ function CreateOrg() {
 				<button className="btn" onClick={onCreateOrg}>
 					Create
 				</button>
-				<Link className="btn" to="/profile">
+				<button
+					className="btn"
+					onClick={() => {
+						// go back to last page
+						window.history.back();
+					}}
+				>
 					Back
-				</Link>
+				</button>
 			</div>
 		</div>
 	);

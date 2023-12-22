@@ -6,6 +6,8 @@ import Register from './components/Register/Register';
 import Settings from './components/Settings/Settings';
 import About from './components/About/About';
 import Profile from './components/Profile/Profile';
+import OrgPage from './components/OrgPage/OrgPage';
+import AddToOrg from './components/AddToOrg/AddToOrg';
 
 /**
  * All of our routes are defined here.
@@ -17,6 +19,8 @@ function Routes() {
 				<Route path="/" Component={Home} />
 				<Route path="/login" Component={Login} />
 				<Route path="/organization/create" Component={CreateOrg} />
+				<Route path="/organization/add/:id" Component={AddToOrg} />
+				<Route path="/organization/:id" Component={OrgPage} />
 				<Route path="/register" Component={Register} />
 				<Route path="/settings" Component={Settings} />
 				<Route path="/about" Component={About} />

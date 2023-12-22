@@ -7,7 +7,9 @@ const OrganizationContext = React.createContext({
 	getOrganizations: (): Organization[] => {
 		return [];
 	},
-	updateOrganizations: () => {},
+	updateOrganizations: async (): Promise<Organization[]> => {
+		return [];
+	},
 });
 
 /**
@@ -58,15 +60,15 @@ export function OrganizationProvider({ children }: Props) {
 		return organizations;
 	};
 
-	const updateOrganizations = () => {
-		APIService.getOrganizationNames().then((response) => {
-			if (!response) {
-				setOrganizations([]);
-				return;
-			}
-			response = response.filter((org) => org.id > 0);
-			setOrganizations(response);
-		});
+	const updateOrganizations = async () => {
+		let response = await APIService.getOrganizationNames();
+		if (!response) {
+			setOrganizations([]);
+			return [];
+		}
+		response = response.filter((org) => org.id > 0);
+		setOrganizations(response);
+		return response;
 	};
 
 	return (

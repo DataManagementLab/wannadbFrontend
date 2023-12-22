@@ -20,13 +20,14 @@ class APIService {
 				password: password,
 			});
 			if (resp.status === 200) {
-				const token = resp.data.token;
-				sessionStorage.setItem('user-token', token);
+				sessionStorage.setItem('user-token', resp.data.token);
+				return true;
 			}
 
-			return resp.status === 200;
+			this.clearUserToken();
+			return false;
 		} catch (e) {
-			sessionStorage.removeItem('user-token');
+			this.clearUserToken();
 			return false;
 		}
 	}
@@ -206,6 +207,7 @@ class APIService {
 	 * @returns The ID of the created organization or undefined if the creation failed
 	 */
 	static async leaveOrganization(orgId: number): Promise<boolean> {
+		// ey NILS mach ma TEST hier
 		try {
 			const url = `${this.host}/leaveOrganisation`;
 			const resp = await axios.post(
@@ -226,6 +228,68 @@ class APIService {
 		} catch (err) {
 			return false;
 		}
+	}
+
+	/**
+	 * Get all members of an organization.
+	 * @param orgId The ID of the organization
+	 * @returns A string array with the usernames of all members of the organization
+	 * 			or undefined if the organization does not exist or something went wrong
+	 */
+	static async getMembersForOrganization(
+		orgId: number
+	): Promise<string[] | undefined> {
+		// ey NILS mach ma TEST hier
+		try {
+			const url = `${this.host}/getOrganisationMembers/${orgId}`;
+			const resp = await axios.get(url, {
+				headers: {
+					Authorization: this.getUserToken(),
+				},
+			});
+			if (resp.status === 200) {
+				return resp.data.members as string[];
+			}
+			return undefined;
+		} catch (err) {
+			return undefined;
+		}
+	}
+
+	/**
+	 * Add a new member to an organization.
+	 * @param orgId The id of the organization
+	 * @param newUsername The username of the user to add
+	 * @returns The error message or an empty string if the user was added successfully
+	 */
+	static async addMemberToOrganization(
+		orgId: number,
+		newUsername: string
+	): Promise<string> {
+		// ey NILS mach ma TEST hier
+
+		const url = `${this.host}/addUserToOrganisation`;
+		const resp = await axios
+			.post(
+				url,
+				{
+					organisationId: orgId,
+					newUser: newUsername,
+				},
+				{
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				}
+			)
+			.catch((err) => {
+				return err.response;
+			});
+		if (resp.status === 200) {
+			return '';
+		}
+
+		return resp.data.error;
 	}
 
 	/**
@@ -285,7 +349,12 @@ class APIService {
 			});
 	}
 
-	static getUserToken(): string | null {
+	/**
+	 * Get the authentication token of the current user.
+	 * @returns THe authentication token of the current user
+	 * @throws Error if the user is not logged in
+	 */
+	static getUserToken(): string {
 		const token = sessionStorage.getItem('user-token');
 		if (token == null) {
 			throw new Error('User not logged in');
@@ -293,6 +362,10 @@ class APIService {
 		return token;
 	}
 
+	/**
+	 * Set the authentication token of the current user.
+	 * @param token The token
+	 */
 	static setUserToken(token: string) {
 		if (token === '') {
 			throw new Error('not a valid token');
@@ -300,6 +373,9 @@ class APIService {
 		sessionStorage.setItem('user-token', token);
 	}
 
+	/**
+	 * Clear the authentication token of the current user.
+	 */
 	static clearUserToken() {
 		sessionStorage.removeItem('user-token');
 	}
