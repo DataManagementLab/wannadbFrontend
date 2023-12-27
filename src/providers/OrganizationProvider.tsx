@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { ReactNode, useEffect } from 'react';
-import Organization from '../utils/Organization';
+import Organization from '../types/Organization';
 import APIService from '../utils/ApiService';
 
 const OrganizationContext = React.createContext({

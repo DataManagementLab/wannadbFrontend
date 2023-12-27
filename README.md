@@ -6,9 +6,12 @@ The wannadb as a web app.
 
 -   [Links](#links)
 -   [Installation](#installation)
--   [Usage](#usage)
+-   [Start](#start)
+-   [Project structure](#project-structure)
 -   [Visual Studio Code](#visual-studio-code)
 -   [Scripts](#scripts)
+-   [Gnerate a new React component](#gnerate-a-new-react-component)
+-   [Add a TODO](#add-a-todo)
 -   [Pre-commit hooks](#pre-commit-hooks)
 -   [Extensions](#extensions)
 
@@ -57,6 +60,20 @@ This script will make preparations to start the newest version.
 _Check the console for instructions!_
 
 > Note that also the backend server should be running. Otherwise the frontend will not work correctly. See [here](https://github.com/lw86ruwo/wannadbBackend) for more information.
+
+---
+
+## Project structure
+
+-   **[scripts](scripts)** - Scripts for the project
+-   **[src](src)** - The source code
+    -   **[components](src/components)** - The React components
+    -   **[providers](src/providers)** - Custom React providers
+    -   **[styles](src/styles)** - The styles
+    -   **[types](src/types)** - Typescript types
+    -   **[utils](src/utils)** - Utility classes and functions
+    -   **[views](src/views)** - The views
+-   **[templates](templates)** - Template for new React components
 
 ---
 

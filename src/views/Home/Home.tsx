@@ -1,9 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from '../Navbar/Navbar';
 import './Home.scss';
 import { useState } from 'react';
 import { useGetUsername, useLogOut } from '../../providers/UserProvider';
-import FileUpload from '../FileUpload/FileUpload';
+import Navbar from '../../components/Navbar/Navbar';
+import FileUpload from '../../components/FileUpload/FileUpload';
 
 /**
  * The home page component

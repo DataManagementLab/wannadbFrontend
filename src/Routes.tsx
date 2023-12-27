@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes as ReactRoutes } from 'react-router-dom';
-import Home from './components/Home/Home';
-import CreateOrg from './components/CreateOrg/CreateOrg';
-import Login from './components/Login/Login';
-import Register from './components/Register/Register';
-import Settings from './components/Settings/Settings';
-import About from './components/About/About';
-import Profile from './components/Profile/Profile';
-import OrgPage from './components/OrgPage/OrgPage';
-import AddToOrg from './components/AddToOrg/AddToOrg';
+import Home from './views/Home/Home';
+import CreateOrg from './views/CreateOrg/CreateOrg';
+import Login from './views/Login/Login';
+import Register from './views/Register/Register';
+import AddToOrg from './views/AddToOrg/AddToOrg';
+import Profile from './views/Profile/Profile';
+import OrgPage from './views/OrgPage/OrgPage';
+import Settings from './views/Settings/Settings';
+import About from './views/About/About';
 
 /**
  * All of our routes are defined here.
@@ -18,10 +18,10 @@ function Routes() {
 			<ReactRoutes>
 				<Route path="/" Component={Home} />
 				<Route path="/login" Component={Login} />
+				<Route path="/register" Component={Register} />
 				<Route path="/organization/create" Component={CreateOrg} />
 				<Route path="/organization/add/:id" Component={AddToOrg} />
 				<Route path="/organization/:id" Component={OrgPage} />
-				<Route path="/register" Component={Register} />
 				<Route path="/settings" Component={Settings} />
 				<Route path="/about" Component={About} />
 				<Route path="/profile" Component={Profile} />

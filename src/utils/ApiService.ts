@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Organization from './Organization';
+import Organization from '../types/Organization';
 
 /**
  * This class is used to make requests to the backend API.

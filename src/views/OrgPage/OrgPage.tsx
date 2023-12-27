@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Navbar from '../Navbar/Navbar';
 import { useLoggedIn, useGetUsername } from '../../providers/UserProvider';
 import './OrgPage.scss';
 import { useUpdateOrganizations } from '../../providers/OrganizationProvider';
-import Organization from '../../utils/Organization';
+import Organization from '../../types/Organization';
 import { useShowChoiceNotification } from '../../providers/NotificationProvider';
 import APIService from '../../utils/ApiService';
+import Navbar from '../../components/Navbar/Navbar';
 
 /**
  * A page that displays information about an organization.

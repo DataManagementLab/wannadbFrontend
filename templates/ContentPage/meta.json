@@ -1,4 +1,4 @@
 {
 	"description": "A standalone page with the navbar and content already fitted",
-	"path": "./src/components/$$name$$"
+	"path": "./src/views/$$name$$"
 }
