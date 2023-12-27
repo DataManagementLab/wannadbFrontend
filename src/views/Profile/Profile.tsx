@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from '../Navbar/Navbar';
 import './Profile.scss';
 import { useEffect, useState } from 'react';
 import {
@@ -7,14 +6,15 @@ import {
 	useLogOut,
 	useLoggedIn,
 } from '../../providers/UserProvider';
-import MyFiles from '../MyFiles/MyFiles';
 import { useShowChoiceNotification } from '../../providers/NotificationProvider';
-import Organization from '../../utils/Organization';
+import Organization from '../../types/Organization';
 import {
 	useGetOrganizations,
 	useUpdateOrganizations,
 } from '../../providers/OrganizationProvider';
 import APIService from '../../utils/ApiService';
+import Navbar from '../../components/Navbar/Navbar';
+import MyFiles from '../../components/MyFiles/MyFiles';
 
 /**
  * The profile page component

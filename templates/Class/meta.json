@@ -1,4 +1,4 @@
 {
-	"description": "A typescript utility class",
-	"path": "./src/utils"
+	"description": "A new type definition",
+	"path": "./src/types"
 }

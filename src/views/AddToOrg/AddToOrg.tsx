@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './AddToOrg.scss';
 import '../../styles/form.scss';
 import { useEffect, useState } from 'react';
-import Organization from '../../utils/Organization';
+import Organization from '../../types/Organization';
 import { useLoggedIn } from '../../providers/UserProvider';
 import { useUpdateOrganizations } from '../../providers/OrganizationProvider';
 import APIService from '../../utils/ApiService';

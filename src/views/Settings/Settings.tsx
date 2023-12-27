@@ -1,10 +1,10 @@
+import Navbar from '../../components/Navbar/Navbar';
 import {
 	useAcceptCookie,
 	useCookieAllowed,
 	useRejectCookies,
 } from '../../providers/StorageProvider';
 import { useIsDarkTheme, useToggleTheme } from '../../providers/ThemeProvider';
-import Navbar from '../Navbar/Navbar';
 import './Settings.scss';
 
 /**
