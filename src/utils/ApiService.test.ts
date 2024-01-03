@@ -95,7 +95,6 @@ describe('APIService', () => {
 		expect(() => (token = APIService.getUserToken())).toThrowError(
 			'User not logged in'
 		);
-
 		expect(token).toBe(null);
 	});
 	test('shouldnt not be able to delete user that is not registered', async () => {
@@ -109,7 +108,6 @@ describe('APIService', () => {
 		if (!organizationId || organizationId.length === 0) {
 			assert(false);
 		}
-
 		expect(typeof organizationId[0]).toBe('number');
 		expect(organizationId[0]).toBeGreaterThan(0);
 	});
@@ -120,6 +118,7 @@ describe('APIService', () => {
 		assert(typeof organizations != 'boolean');
 		expect(organizations[0].id > 0).true;
 		expect(typeof organizations[0].name).toBe('string');
+		expect(organizations[0].id).toBe(saltOrganisationID);
 	});
 	test('should get organization successfully', async () => {
 		await APIService.login(salt, salt);
@@ -165,13 +164,17 @@ describe('APIService', () => {
 		}
 		expect(b).toBe(true);
 	});
-	/*	
+
 	test('should get members of organisation correctly', async () => {
-		await APIService.login(salt,salt);
-		const memberList = await APIService.getMembersForOrganization(saltOrganisationID as number);
-		expect(memberList).toBe(['salt']);
+		await APIService.login(salt, salt);
+		const memberList = await APIService.getMembersForOrganization(
+			saltOrganisationID as number
+		);
+		expect(memberList).toBeDefined();
+		expect(memberList).toStrictEqual([salt]);
 	});
-	*/
+	// missing negative test for getMembersForOrganization
+
 	test('should not be able ot leave organisation if not a member', async () => {
 		await APIService.login(salt, salt);
 		const eaterID = await APIService.createOrganization('deatheaters');
@@ -181,31 +184,32 @@ describe('APIService', () => {
 		);
 		expect(await APIService.getOrganizationNames()).toBe(undefined);
 		await APIService.login(salt, salt);
-		console.log(await APIService.getOrganizationNames());
 	});
 
-	/*
-	test('should add member to orga successsfully',async () => {
-		await APIService.register('testuser','test');
-		await APIService.login(salt,salt);
+	test('should add member to orga successsfully', async () => {
+		await APIService.register('testuser', 'test');
+		await APIService.login(salt, salt);
 		//const userList = ['salt','testuser'];
 		assert(saltOrganisationID);
-		await APIService.addMemberToOrganization(saltOrganisationID,'testuser');
-		const memberList = await APIService.getMembersForOrganization(saltOrganisationID as number)!;
+		//assert(await APIService.getMembersForOrganization)
+		await APIService.addMemberToOrganization(
+			saltOrganisationID,
+			'testuser'
+		);
+		const memberList = await APIService.getMembersForOrganization(
+			saltOrganisationID as number
+		)!;
 		expectTypeOf(memberList).toBeArray;
 		let b = false;
-		if(memberList === undefined){
-			console.log('this shit undefined yo')
-		}
-		
-		memberList.forEach(member => {
-			if(member === 'testuser'){
+		assert(memberList);
+		memberList.forEach((member) => {
+			if (member === 'testuser') {
 				b = true;
 			}
-			expect(b).toBe(true);	
-			
+			expect(b).toBe(true);
 		});
-		*/
+	});
+
 	test('should upload files successfully', async () => {
 		const data = [new Blob(['file content'], { type: 'text/plain' })];
 		await APIService.login(salt, salt);
@@ -215,12 +219,12 @@ describe('APIService', () => {
 		const result = await APIService.upload(data, organisationId[0]);
 		expect(result).toBe('File uploaded successfully');
 	});
-	/*
+
 	test('should not get file names if there is no file', async () => {
 		const fileNames = await APIService.getFileNames(salt);
-		expect(fileNames).toBe([]);
+		expect(fileNames).toStrictEqual([]);
 	});
-*/
+
 	test('should get file names successfully', async () => {
 		const fileNames = await APIService.getFileNames(salt);
 		expect(fileNames).toBeDefined();
