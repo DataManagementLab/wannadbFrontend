@@ -2,7 +2,7 @@
 
 def get_server_url():
     url = ''
-    with open('.env', 'r') as f:
+    with open('.env.development', 'r') as f:
         line = f.readline()
         if line.startswith('VITE_API_URL'):
             url = line.split('=')[1].strip()
