@@ -207,7 +207,6 @@ class APIService {
 	 * @returns The ID of the created organization or undefined if the creation failed
 	 */
 	static async leaveOrganization(orgId: number): Promise<boolean> {
-		// ey NILS mach ma TEST hier
 		try {
 			const url = `${this.host}/leaveOrganisation`;
 			const resp = await axios.post(
@@ -239,7 +238,6 @@ class APIService {
 	static async getMembersForOrganization(
 		orgId: number
 	): Promise<string[] | undefined> {
-		// ey NILS mach ma TEST hier
 		try {
 			const url = `${this.host}/getOrganisationMembers/${orgId}`;
 			const resp = await axios.get(url, {
@@ -266,8 +264,6 @@ class APIService {
 		orgId: number,
 		newUsername: string
 	): Promise<string> {
-		// ey NILS mach ma TEST hier
-
 		const url = `${this.host}/addUserToOrganisation`;
 		const resp = await axios
 			.post(
