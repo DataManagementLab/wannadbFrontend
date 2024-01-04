@@ -6,6 +6,8 @@ interface Props {
 	fileNames: string[];
 }
 
+// TODO component is unused
+
 /**
  * A component to list all the files of the user and view, delete them
  * @param filenames A list of the filenames of the user
@@ -25,7 +27,7 @@ function MyFiles({ fileNames }: Props) {
 		<>
 			{viewFileName != '' && (
 				<FileViewer
-					filename={viewFileName}
+					file={new File([], viewFileName)}
 					onClose={() => {
 						setViewFileName('');
 					}}
