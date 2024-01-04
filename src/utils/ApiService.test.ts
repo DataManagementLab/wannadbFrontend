@@ -150,9 +150,7 @@ describe('APIService', () => {
 		await APIService.login(salt, salt);
 		let orgaID: number | undefined = undefined;
 		orgaID = await APIService.createOrganization('deatheaters');
-		//expect(typeof orgaID).toBe('number');
 		await APIService.leaveOrganization(orgaID as number);
-		//überprüfuen ob 'deatheaters' noch n der liste der organisationnen
 		const orgaList = await APIService.getOrganizations();
 		assert(orgaList);
 		let b = true;
@@ -189,9 +187,7 @@ describe('APIService', () => {
 	test('should add member to orga successsfully', async () => {
 		await APIService.register('testuser', 'test');
 		await APIService.login(salt, salt);
-		//const userList = ['salt','testuser'];
 		assert(saltOrganisationID);
-		//assert(await APIService.getMembersForOrganization)
 		await APIService.addMemberToOrganization(
 			saltOrganisationID,
 			'testuser'
