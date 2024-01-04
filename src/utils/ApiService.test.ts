@@ -142,9 +142,7 @@ describe('APIService', () => {
 	});
 	test('creating organization with already existing name fails', async () => {
 		await APIService.login(salt, salt);
-		//const oldID = saltOrganisationID;
 		expect(await APIService.createOrganization(salt)).toBeUndefined();
-		//fehlt ggf noch ne überprüfung ob sich an der alten orga nix geändert hat
 	});
 	test('should leave organisation successfully', async () => {
 		await APIService.login(salt, salt);
