@@ -29,7 +29,7 @@ The wannadb as a web app.
 1. Clone the repository with:
 
 ```bash
-git clone https://github.com/phil1436/wannadbFrontend.git
+git clone https://github.com/cophilot/wannadbFrontend.git
 ```
 
 2. Make sure to have [nodejs](https://nodejs.org/en), [npm](https://www.npmjs.com/) and [python](https://www.python.org/) installed.
