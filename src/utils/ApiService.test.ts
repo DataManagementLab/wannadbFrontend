@@ -200,8 +200,8 @@ describe('APIService', () => {
 			if (member === 'testuser') {
 				b = true;
 			}
-			expect(b).toBe(true);
 		});
+		expect(b).toBe(true);
 	});
 
 	test('should upload files successfully', async () => {
