@@ -1,21 +1,22 @@
 import { useState } from 'react';
-import FileViewer from '../FileViewer/FileViewer';
 import './MyFiles.scss';
+import MyDocument from '../../types/MyDocument';
+import DocumentViewer from '../DocumentViewer/DocumentViewer';
 
 interface Props {
-	fileNames: string[];
+	documents: MyDocument[];
 }
-
-// TODO component is unused
 
 /**
  * A component to list all the files of the user and view, delete them
- * @param filenames A list of the filenames of the user
+ * @param documents A list of documents to display
  */
-function MyFiles({ fileNames }: Props) {
-	const [viewFileName, setViewFileName] = useState('');
+function MyFiles({ documents }: Props) {
+	const [viewDocument, setViewDocument] = useState<MyDocument | undefined>(
+		undefined
+	);
 
-	if (fileNames.length == 0) {
+	if (documents.length == 0) {
 		return (
 			<div className="MyFiles">
 				<i>No files uploaded</i>
@@ -25,34 +26,33 @@ function MyFiles({ fileNames }: Props) {
 
 	return (
 		<>
-			{viewFileName != '' && (
-				<FileViewer
-					file={new File([], viewFileName)}
+			{viewDocument && (
+				<DocumentViewer
+					document={viewDocument}
 					onClose={() => {
-						setViewFileName('');
+						setViewDocument(undefined);
 					}}
 				/>
 			)}
 			<div className="MyFiles">
-				{fileNames.map((fileName) => (
-					<div className="file hor" key={fileName}>
+				{documents.map((document) => (
+					<div className="file hor" key={document.id}>
 						<p className="name">
-							{fileName.split('.')[0]}
+							{document.name.split('.')[0]}
 							<span className="db">
-								{fileName.split('.')[1] != undefined
-									? '.' + fileName.split('.')[1]
+								{document.name.split('.')[1] != undefined
+									? '.' + document.name.split('.')[1]
 									: ''}
 							</span>
 						</p>
-						<button
-							className="view btn"
+						<i
+							className="bi bi-eye icon"
 							onClick={() => {
-								setViewFileName(fileName);
+								setViewDocument(document);
 							}}
 						>
-							View
-						</button>
-						<button className="delete btn">Delete</button>
+							{/* View */}
+						</i>
 					</div>
 				))}
 			</div>

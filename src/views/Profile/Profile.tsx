@@ -14,7 +14,6 @@ import {
 } from '../../providers/OrganizationProvider';
 import APIService from '../../utils/ApiService';
 import Navbar from '../../components/Navbar/Navbar';
-import MyFiles from '../../components/MyFiles/MyFiles';
 
 /**
  * The profile page component
@@ -28,8 +27,6 @@ function Profile() {
 	const logOut = useLogOut();
 
 	const [username] = useState(getUserName());
-
-	const [fileNames] = useState<string[]>([]);
 
 	const getOrganizations = useGetOrganizations();
 	const updateOrganizations = useUpdateOrganizations();
@@ -137,10 +134,6 @@ function Profile() {
 						Create New
 					</Link>
 				</div>
-				<h2>
-					<span className="db">My</span>Files
-				</h2>
-				<MyFiles fileNames={fileNames} />
 				<div
 					className="ver"
 					style={{ width: '200px', marginTop: '25px' }}

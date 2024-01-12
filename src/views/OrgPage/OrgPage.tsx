@@ -7,6 +7,9 @@ import Organization from '../../types/Organization';
 import { useShowChoiceNotification } from '../../providers/NotificationProvider';
 import APIService from '../../utils/ApiService';
 import Navbar from '../../components/Navbar/Navbar';
+import MyDocument from '../../types/MyDocument';
+import MyFiles from '../../components/MyFiles/MyFiles';
+import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
 
 /**
  * A page that displays information about an organization.
@@ -16,6 +19,7 @@ function OrgPage() {
 		new Organization('Error', -1)
 	);
 	const [members, setMembers] = useState<string[]>([]);
+	const [documents, setDocuments] = useState<MyDocument[]>([]);
 
 	const navigate = useNavigate();
 	const isLoggedIn = useLoggedIn();
@@ -23,6 +27,7 @@ function OrgPage() {
 	const updateOrganizations = useUpdateOrganizations();
 	const getUsername = useGetUsername();
 	const showChoice = useShowChoiceNotification();
+	const setLoadingScreen = useSetLoadingScreen();
 
 	const { id } = useParams();
 
@@ -30,6 +35,7 @@ function OrgPage() {
 		if (!isLoggedIn || !id) {
 			navigate('/');
 		}
+		setLoadingScreen(true, 'Loading organization...');
 		updateOrganizations().then((orgs) => {
 			const org = id
 				? orgs.find((org) => org.id === parseInt(id))
@@ -47,6 +53,10 @@ function OrgPage() {
 					return;
 				}
 				setMembers(members);
+			});
+			APIService.getDocumentForOrganization(org.id).then((docs) => {
+				setDocuments(docs);
+				setLoadingScreen(false);
 			});
 		});
 
@@ -116,6 +126,8 @@ function OrgPage() {
 						</li>
 					))}
 				</ul>
+				<h2>Document{documents.length > 1 ? 's' : ''}</h2>
+				<MyFiles documents={documents} />
 				<button
 					className="btn mt"
 					onClick={() => {
