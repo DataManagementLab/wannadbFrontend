@@ -15,7 +15,11 @@ npm run lint
 # check comments
 npm run comment:check
 
+
 # run tests
 npm run test
+
+# check if app is buildable
+npm run build
 
 echo "✅ pre-commit hook finished successfully"
