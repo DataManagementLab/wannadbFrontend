@@ -7,11 +7,14 @@ import {
 } from '../../providers/NotificationProvider';
 import { useGetOrganizations } from '../../providers/OrganizationProvider';
 import FileViewer from '../FileViewer/FileViewer';
+import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
 
 /**
  * A component where the user can upload files
  */
 function FileUpload() {
+	const getOrganizations = useGetOrganizations();
+
 	const [files, setFiles] = useState<File[]>([]);
 	const [viewFile, setViewFile] = useState<File | undefined>(undefined);
 	const [stagedFiles, setstagedFiles] = useState<File[]>([]);
@@ -19,6 +22,7 @@ function FileUpload() {
 
 	const showNotification = useShowNotification();
 	const showChoiceNotification = useShowChoiceNotification();
+	const setLoadingScreen = useSetLoadingScreen();
 
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
 		// Get the selected file
@@ -26,8 +30,6 @@ function FileUpload() {
 		if (selectedFiles === null) return;
 		setstagedFiles([...selectedFiles, ...Array.from(stagedFiles)]);
 	};
-
-	const getOrganizations = useGetOrganizations();
 
 	const addFile = (force: boolean = false) => {
 		if (stagedFiles.length === 0) {
@@ -71,7 +73,14 @@ function FileUpload() {
 
 	const handleUpload = () => {
 		if (files.length === 0) return;
-		APIService.upload(files, selectedOrg).then((res) => {
+
+		let orgId = selectedOrg;
+		if (orgId === -1) {
+			orgId = getOrganizations()[0].id;
+		}
+		setLoadingScreen(true, 'Uploading files...', 'Please wait');
+		APIService.upload(files, orgId).then((res) => {
+			setLoadingScreen(false);
 			showNotification('File upload', res);
 			setFiles([]);
 		});

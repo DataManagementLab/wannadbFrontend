@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Organization from '../types/Organization';
+import MyDocument from '../types/MyDocument';
 
 /**
  * This class is used to make requests to the backend API.
@@ -300,15 +301,19 @@ class APIService {
 			for (let i = 0; i < data.length; i++) {
 				body.append('file', data[i]);
 			}
-
+			console.log(organisationId);
 			body.append('organisationId', organisationId.toString());
 
-			const resp = await axios.post(`${this.host}/data/upload`, body, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-					Authorization: this.getUserToken(),
-				},
-			});
+			const resp = await axios.post(
+				`${this.host}/data/upload/file`,
+				body,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
 			if (resp.status === 201) {
 				return 'File uploaded successfully';
 			}
@@ -318,6 +323,33 @@ class APIService {
 			return 'Error uploading file';
 		} catch (err) {
 			return 'Error uploading file';
+		}
+	}
+
+	/**
+	 * Get all documents that are uploaded for the corresponding organization.
+	 * @param organizationID The ID of the organization
+	 * @returns A promise that resolves to all documents of the organization
+	 */
+	static async getDocumentForOrganization(
+		organizationID: number
+	): Promise<MyDocument[]> {
+		// NILS MACH MA TEST
+		try {
+			const response = await axios.get(
+				`${this.host}/data/organization/get/files/${organizationID}`,
+				{
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
+			if (response.status === 200) {
+				return response.data as MyDocument[];
+			}
+			return [];
+		} catch (err) {
+			return [];
 		}
 	}
 

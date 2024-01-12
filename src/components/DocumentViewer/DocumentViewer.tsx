@@ -1,25 +1,25 @@
 import { useState } from 'react';
-import './FileViewer.scss';
+import './DocumentViewer.scss';
+import MyDocument from '../../types/MyDocument';
 
 interface Props {
 	onClose: () => void;
-	file: File;
+	document: MyDocument;
 }
 
 /**
  * A component to view a file
- * @param file The name of the file to view
+ * @param document The name of the file to view
  * @param onClose A function to close the file viewer
  */
-function FileViewer({ onClose, file }: Props) {
-	const [text, setText] = useState('');
-	file.text().then((text) => setText(text));
+function DocumentViewer({ onClose, document }: Props) {
+	const [text, setText] = useState(document.content);
 
 	return (
 		<div>
 			<div className="background" onClick={onClose}></div>
-			<div className="FileViewer">
-				<h1>{file.name}</h1>
+			<div className="DocumentViewer">
+				<h1>{document.name}</h1>
 				<textarea
 					className="text"
 					value={text}
@@ -34,4 +34,4 @@ function FileViewer({ onClose, file }: Props) {
 	);
 }
 
-export default FileViewer;
+export default DocumentViewer;
