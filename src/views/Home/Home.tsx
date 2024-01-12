@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useGetUsername, useLogOut } from '../../providers/UserProvider';
 import Navbar from '../../components/Navbar/Navbar';
 import FileUpload from '../../components/FileUpload/FileUpload';
+import AttributeAdder from '../../components/AttributeAdder/AttributeAdder';
 
 /**
  * The home page component
@@ -34,6 +35,7 @@ function Home() {
 						File <span className="db">Up</span>load
 					</h2>
 					<FileUpload></FileUpload>
+					<AttributeAdder></AttributeAdder>
 					{
 						// TODO: Only for development
 					}
