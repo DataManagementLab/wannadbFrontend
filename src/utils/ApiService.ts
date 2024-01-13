@@ -143,6 +143,29 @@ class APIService {
 	}
 
 	/**
+	 * Search for usernames that start with the given prefix.
+	 * @param prefix The prefix of the username to search for
+	 * @returns A list of usernames that start with the given prefix
+	 */
+	static async getUserNameSuggestion(prefix: string): Promise<string[]> {
+		// NILS MACH MA TEST
+		try {
+			const url = `${this.host}/get/user/suggestion/${prefix}`;
+			const resp = await axios.get(url, {
+				headers: {
+					Authorization: this.getUserToken(),
+				},
+			});
+			if (resp.status == 200) {
+				return resp.data.usernames as string[];
+			}
+			return [];
+		} catch (err) {
+			return [];
+		}
+	}
+
+	/**
 	 * Get the name of an organization with the given id.
 	 * @param id THe id of the organization
 	 * @returns A promise that resolves to the name of the organization with the given id
@@ -353,28 +376,37 @@ class APIService {
 		}
 	}
 
-	// TODO
-	static getFileNames(username: string): Promise<string[]> {
-		return axios
-			.get(`${this.host}/get/file/names/${username}`)
-			.then((resp) => {
-				return resp.data;
-			})
-			.catch(() => {
-				return [];
-			});
-	}
-
-	// TODO
-	static getFileContent(username: string, filename: string): Promise<string> {
-		return axios
-			.get(`${this.host}/get/file/content/${username}/${filename}`)
-			.then((resp) => {
-				return resp.data;
-			})
-			.catch(() => {
-				return 'Error getting file content!';
-			});
+	/**
+	 * Update the content of a document.
+	 * @param documentId The ID of the document
+	 * @param newContent The new content of the document
+	 * @returns If the update was successful
+	 */
+	static async updateDocumentContent(
+		documentId: number,
+		newContent: string
+	): Promise<boolean> {
+		// NILS MACH MA TEST
+		try {
+			const response = await axios.post(
+				`${this.host}/data/update/file/content`,
+				{
+					documentId: documentId,
+					newContent: newContent,
+				},
+				{
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
+			if (response.status === 200) {
+				return response.data.status;
+			}
+			return false;
+		} catch (err) {
+			return false;
+		}
 	}
 
 	/**

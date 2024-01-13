@@ -17,6 +17,9 @@ function AddToOrg() {
 	);
 	const [errorMessage, setErrorMessage] = useState(' ');
 	const [username, setUsername] = useState('');
+	const [usernameSuggestions, setUsernameSuggestions] = useState<string[]>(
+		[]
+	);
 
 	const navigate = useNavigate();
 	const isLoggedIn = useLoggedIn();
@@ -58,6 +61,26 @@ function AddToOrg() {
 			});
 	};
 
+	const onChange = (value: string) => {
+		setUsername(value);
+		if (value.length < 3) {
+			setUsernameSuggestions([]);
+			return;
+		} else if (value.length === 3) {
+			APIService.getUserNameSuggestion(value).then((suggestions) => {
+				setUsernameSuggestions(suggestions);
+			});
+		}
+	};
+
+	const filterSuggestions = (suggestions: string[]) => {
+		return suggestions.filter(
+			(suggestion, index) =>
+				suggestion.toLowerCase().includes(username.toLowerCase()) &&
+				index < 5
+		);
+	};
+
 	return (
 		<div className="AddToOrg myForm">
 			<h1>
@@ -71,11 +94,29 @@ function AddToOrg() {
 					type="text"
 					placeholder="Username"
 					value={username}
-					onChange={(e) => setUsername(e.target.value)}
+					onChange={(e) => onChange(e.target.value)}
 				/>
+				{usernameSuggestions.length > 0 && (
+					<div className="suggestions">
+						{filterSuggestions(usernameSuggestions).map(
+							(suggestion) => (
+								<button
+									className="suggestion btn"
+									onClick={() => {
+										setUsername(suggestion);
+										setUsernameSuggestions([]);
+									}}
+								>
+									{suggestion}
+								</button>
+							)
+						)}
+					</div>
+				)}
 				<button className="btn" onClick={onSubmit}>
 					Add
 				</button>
+
 				<button
 					className="btn"
 					onClick={() => {
