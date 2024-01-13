@@ -20,7 +20,7 @@ function CreateOrg() {
 	const getUserName = useGetUsername();
 	const isLoggedIn = useLoggedIn();
 
-	const randomOrgName = getRandomOrgName();
+	const [randomOrgName] = useState(getRandomOrgName());
 
 	const [username] = useState(getUserName());
 

@@ -18,7 +18,7 @@ function Register() {
 	const showNotification = useShowNotification();
 	const navigate = useNavigate();
 
-	const randomUserName = getRandomUsername();
+	const [randomUserName] = useState(getRandomUsername());
 
 	const onRegister = () => {
 		if (password !== repeatPassword) {
