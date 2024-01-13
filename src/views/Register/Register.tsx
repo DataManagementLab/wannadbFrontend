@@ -4,6 +4,7 @@ import '../../styles/form.scss';
 import { useState } from 'react';
 import APIService from '../../utils/ApiService';
 import { useShowNotification } from '../../providers/NotificationProvider';
+import getRandomUsername from '../../data/getRandomUsername';
 
 /**
  * A page where the user can register a new account.
@@ -16,6 +17,8 @@ function Register() {
 
 	const showNotification = useShowNotification();
 	const navigate = useNavigate();
+
+	const randomUserName = getRandomUsername();
 
 	const onRegister = () => {
 		if (password !== repeatPassword) {
@@ -54,6 +57,25 @@ function Register() {
 			</h1>
 			<div>
 				<p className="errorMsg">{errorMessage}</p>
+				<p
+					style={{
+						textAlign: 'center',
+						fontSize: '14px',
+						marginTop: '0',
+					}}
+				>
+					<i>
+						No idea?
+						<br />
+						Why not try
+						<span
+							style={{ cursor: 'pointer', fontWeight: 'bold' }}
+							onClick={() => setName(randomUserName)}
+						>
+							{randomUserName}
+						</span>
+					</i>
+				</p>
 				<input
 					type="text"
 					placeholder="Username"

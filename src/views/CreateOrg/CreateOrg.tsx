@@ -5,6 +5,7 @@ import { useGetUsername, useLoggedIn } from '../../providers/UserProvider';
 import { useEffect, useState } from 'react';
 import APIService from '../../utils/ApiService';
 import { useShowNotification } from '../../providers/NotificationProvider';
+import getRandomOrgName from '../../data/getRandomOrgName';
 
 /**
  * A page to create an organization
@@ -18,6 +19,8 @@ function CreateOrg() {
 
 	const getUserName = useGetUsername();
 	const isLoggedIn = useLoggedIn();
+
+	const randomOrgName = getRandomOrgName();
 
 	const [username] = useState(getUserName());
 
@@ -70,6 +73,25 @@ function CreateOrg() {
 			</h1>
 			<div>
 				<p className="errorMsg">{errorMessage}</p>
+				<p
+					style={{
+						textAlign: 'center',
+						fontSize: '14px',
+						marginTop: '0',
+					}}
+				>
+					<i>
+						No idea?
+						<br />
+						Why not try
+						<span
+							style={{ cursor: 'pointer', fontWeight: 'bold' }}
+							onClick={() => setName(randomOrgName)}
+						>
+							{randomOrgName}
+						</span>
+					</i>
+				</p>
 				<input
 					type="text"
 					placeholder="Organization Name"
