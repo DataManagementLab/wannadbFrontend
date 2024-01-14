@@ -10,6 +10,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import MyDocument from '../../types/MyDocument';
 import MyFiles from '../../components/MyFiles/MyFiles';
 import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
+import FileUpload from '../../components/FileUpload/FileUpload';
 
 /**
  * A page that displays information about an organization.
@@ -128,8 +129,21 @@ function OrgPage() {
 				</ul>
 				<h2>Document{documents.length > 1 ? 's' : ''}</h2>
 				<MyFiles documents={documents} />
+				<h2>Upload</h2>
+				<FileUpload
+					organizationProp={organization}
+					afterUpload={() => {
+						// refresh documents
+						APIService.getDocumentForOrganization(
+							organization.id
+						).then((docs) => {
+							setDocuments(docs);
+						});
+					}}
+				></FileUpload>
 				<button
-					className="btn mt"
+					className="btn"
+					style={{ marginBottom: '100px', marginTop: '50px' }}
 					onClick={() => {
 						window.history.back();
 					}}

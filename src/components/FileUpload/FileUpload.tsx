@@ -8,24 +8,28 @@ import {
 import { useGetOrganizations } from '../../providers/OrganizationProvider';
 import FileViewer from '../FileViewer/FileViewer';
 import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
+import Organization from '../../types/Organization';
+
+interface Props {
+	organizationProp: Organization | undefined;
+	afterUpload?: () => void;
+}
 
 /**
  * A component where the user can upload files
  */
-function FileUpload() {
-	const getOrganizations = useGetOrganizations();
-
+function FileUpload({ organizationProp, afterUpload }: Props) {
 	const [files, setFiles] = useState<File[]>([]);
 	const [viewFile, setViewFile] = useState<File | undefined>(undefined);
 	const [stagedFiles, setstagedFiles] = useState<File[]>([]);
-	const [selectedOrg, setSelectedOrg] = useState(-1);
+	const [selectedOrg, setSelectedOrg] = useState(organizationProp?.id ?? -1);
 
+	const getOrganizations = useGetOrganizations();
 	const showNotification = useShowNotification();
 	const showChoiceNotification = useShowChoiceNotification();
 	const setLoadingScreen = useSetLoadingScreen();
 
 	const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-		// Get the selected file
 		const selectedFiles = event.target.files;
 		if (selectedFiles === null) return;
 		setstagedFiles([...selectedFiles, ...Array.from(stagedFiles)]);
@@ -75,14 +79,19 @@ function FileUpload() {
 		if (files.length === 0) return;
 
 		let orgId = selectedOrg;
-		if (orgId === -1) {
+		if (organizationProp !== undefined) {
+			orgId = organizationProp.id;
+		} else if (orgId === -1) {
 			orgId = getOrganizations()[0].id;
 		}
 		setLoadingScreen(true, 'Uploading files...', 'Please wait');
 		APIService.upload(files, orgId).then((res) => {
 			setLoadingScreen(false);
-			showNotification('File upload', res);
-			setFiles([]);
+			setTimeout(() => {
+				showNotification('File upload', res);
+				setFiles([]);
+				afterUpload?.();
+			}, 100);
 		});
 	};
 
@@ -113,7 +122,7 @@ function FileUpload() {
 					<b>Organization:</b> {getOrganizations()[0].name}
 				</p>
 			)}
-			{getOrganizations().length > 1 && (
+			{organizationProp == undefined && getOrganizations().length > 1 && (
 				<div className="hor mb">
 					<p>
 						<b>Select a Organization:</b>
@@ -121,8 +130,8 @@ function FileUpload() {
 					<select
 						className="btn"
 						style={{
-							width: '200px',
 							marginLeft: '20px',
+							padding: '5px',
 						}}
 						name="organization"
 						id="organization"
@@ -180,11 +189,12 @@ function FileUpload() {
 				{files.length > 0 && (
 					<button
 						className="btn uploadFile"
-						style={{ width: '200px' }}
+						style={{ width: '220px' }}
 						onClick={handleUpload}
 						disabled={files.length === 0}
 					>
-						Upload File{files.length > 1 && 's'}
+						<i className="bi bi-cloud-arrow-up-fill icon mr"></i>
+						Upload
 					</button>
 				)}
 			</div>

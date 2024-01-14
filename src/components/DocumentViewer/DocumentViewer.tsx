@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './DocumentViewer.scss';
 import MyDocument from '../../types/MyDocument';
-import { useShowNotification } from '../../providers/NotificationProvider';
+import {
+	useShowNotification,
+	useShowChoiceNotification,
+} from '../../providers/NotificationProvider';
 import APIService from '../../utils/ApiService';
 
 interface Props {
@@ -16,8 +19,33 @@ interface Props {
  */
 function DocumentViewer({ onClose, document }: Props) {
 	const [text, setText] = useState(document.content);
+	const [unsaved, setUnsaved] = useState(false);
 
 	const showNotification = useShowNotification();
+	const showChoiceNotification = useShowChoiceNotification();
+
+	useEffect(() => {
+		if (text !== document.content) {
+			setUnsaved(true);
+		} else {
+			setUnsaved(false);
+		}
+	}, [document.content, text]);
+
+	const close = () => {
+		if (!unsaved) {
+			onClose();
+			return;
+		}
+		showChoiceNotification(
+			'Unsaved changes',
+			'You have unsaved changes. Are you sure you want to close the document?',
+			() => {
+				onClose();
+			},
+			() => {}
+		);
+	};
 
 	const onUpdate = () => {
 		if (text === document.content) {
@@ -25,16 +53,18 @@ function DocumentViewer({ onClose, document }: Props) {
 				'No changes made',
 				'No changes were made to the document'
 			);
+			setUnsaved(false);
 			return;
 		}
 
 		APIService.updateDocumentContent(document.id, text).then((status) => {
 			if (status) {
 				showNotification(
-					'Document updated',
+					'Document saved',
 					'The document was updated successfully'
 				);
 				document.content = text;
+				setUnsaved(false);
 			} else {
 				showNotification(
 					'Error',
@@ -46,20 +76,21 @@ function DocumentViewer({ onClose, document }: Props) {
 
 	return (
 		<div>
-			<div className="background" onClick={onClose}></div>
+			<div className="background" onClick={close}></div>
 			<div className="DocumentViewer">
 				<h1>{document.name}</h1>
 				<textarea
 					className="text"
 					value={text}
 					onChange={(e) => setText(e.target.value)}
+					spellCheck={false}
 				></textarea>
 				<div className="hor">
-					<button className="btn" onClick={onUpdate}>
-						Update
-					</button>
-					<button className="btn" onClick={onClose}>
+					<button className="btn" onClick={close}>
 						Close
+					</button>
+					<button className="btn" onClick={onUpdate}>
+						Save{unsaved ? '*' : ''}
 					</button>
 				</div>
 			</div>

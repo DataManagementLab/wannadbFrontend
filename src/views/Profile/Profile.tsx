@@ -100,7 +100,7 @@ function Profile() {
 											{/*ADD MEMBER*/}
 										</i>
 										<i
-											className="bi bi-box-arrow-left icon"
+											className="bi bi-door-closed icon"
 											onClick={() => {
 												showChoice(
 													'Leave Organization',
@@ -131,7 +131,7 @@ function Profile() {
 						to="/organization/create"
 						style={{ marginTop: '25px' }}
 					>
-						Create New
+						<i className="bi bi-plus-square icon mr"></i>New
 					</Link>
 				</div>
 				<div
@@ -145,7 +145,7 @@ function Profile() {
 							navigate('/');
 						}}
 					>
-						Logout
+						<i className="bi bi-box-arrow-left mr"></i>Logout
 					</button>
 				</div>
 			</div>

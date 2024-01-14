@@ -31,12 +31,12 @@ function Home() {
 						<span className="db">{username.slice(-2)}</span> 👋
 					</h1>
 					<h2>
-						File <span className="db">Up</span>load
+						Document <span className="db">Up</span>load
 					</h2>
-					<FileUpload></FileUpload>
+					<FileUpload organizationProp={undefined}></FileUpload>
 					{/* <AttributeAdder></AttributeAdder> */}
 					{
-						// TODO: Only for development
+						// TODO: Only for development (remove later)
 					}
 					<button
 						className="btn"
@@ -48,7 +48,7 @@ function Home() {
 							window.location.reload();
 						}}
 					>
-						Logout
+						<i className="bi bi-box-arrow-left mr"></i>Logout
 					</button>
 				</div>
 			</div>

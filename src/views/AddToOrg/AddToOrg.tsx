@@ -106,6 +106,7 @@ function AddToOrg() {
 										setUsername(suggestion);
 										setUsernameSuggestions([]);
 									}}
+									key={suggestion}
 								>
 									{suggestion}
 								</button>

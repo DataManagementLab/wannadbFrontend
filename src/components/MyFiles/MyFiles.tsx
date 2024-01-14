@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './MyFiles.scss';
 import MyDocument from '../../types/MyDocument';
 import DocumentViewer from '../DocumentViewer/DocumentViewer';
+import { useShowChoiceNotification } from '../../providers/NotificationProvider';
 
 interface Props {
 	documents: MyDocument[];
@@ -12,6 +13,8 @@ interface Props {
  * @param documents A list of documents to display
  */
 function MyFiles({ documents }: Props) {
+	const showChoiceNotification = useShowChoiceNotification();
+
 	const [viewDocument, setViewDocument] = useState<MyDocument | undefined>(
 		undefined
 	);
@@ -23,6 +26,18 @@ function MyFiles({ documents }: Props) {
 			</div>
 		);
 	}
+
+	const removeDocument = (document: MyDocument) => {
+		showChoiceNotification(
+			'Delete document',
+			`Are you sure you want to delete ${document.name}?`,
+			() => {
+				// TODO: delete document
+				alert('Not implemented yet!');
+			},
+			() => {}
+		);
+	};
 
 	return (
 		<>
@@ -46,12 +61,20 @@ function MyFiles({ documents }: Props) {
 							</span>
 						</p>
 						<i
-							className="bi bi-eye icon"
+							className="bi bi-pencil icon"
 							onClick={() => {
 								setViewDocument(document);
 							}}
 						>
 							{/* View */}
+						</i>
+						<i
+							className="bi bi-x-circle icon"
+							onClick={() => {
+								removeDocument(document);
+							}}
+						>
+							{/* REMOVE */}
 						</i>
 					</div>
 				))}
