@@ -43,6 +43,28 @@ input {
 	}
 }
 
+.lnk {
+	max-width: 400px;
+	border-radius: 5px;
+	border: none;
+	background-color: var(--btn-color);
+	color: var(--text-color);
+	font-size: 20px;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	padding: 0px 20px;
+	line-height: 35px;
+	font-weight: bold;
+	border: 2px solid var(--text-color);
+	&:hover {
+		background-color: #083d60;
+		color: #ffffff;
+		scale: 1.05;
+		border: 2px solid #083d60;
+	}
+}
+
 .ipt {
 	margin: 0;
 	height: 40px;
@@ -85,6 +107,10 @@ input {
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
 	backdrop-filter: blur(5px);
+}
+
+.cPointer {
+	cursor: pointer;
 }
 
 .mb {
