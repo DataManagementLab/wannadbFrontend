@@ -29,9 +29,9 @@ function CreateOrg() {
 			setErrorMessage('Organization name cannot be empty');
 			return;
 		}
-		if (name.length > 20) {
+		if (name.length > 30) {
 			setErrorMessage(
-				'Organization name cannot be longer than 20 characters'
+				'Organization name cannot be longer than 30 characters'
 			);
 			return;
 		}

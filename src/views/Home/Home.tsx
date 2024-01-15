@@ -70,6 +70,7 @@ function Home() {
 						className="btn"
 						style={{ width: '100px' }}
 					>
+						<i className="bi bi-box-arrow-in-right mr icon"></i>
 						Login
 					</Link>
 				</div>

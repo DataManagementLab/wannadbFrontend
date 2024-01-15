@@ -178,7 +178,9 @@ describe('APIService', () => {
 		expect(await APIService.leaveOrganization(eaterID as number)).toBe(
 			false
 		);
-		expect(await APIService.getOrganizationNames()).toBe(undefined);
+		//TODO does this make sense?
+		//expect(await APIService.getOrganizationNames()).toStrictEqual([]);
+		expect(await APIService.getOrganizationNames()).toBeUndefined();
 		await APIService.login(salt, salt);
 	});
 

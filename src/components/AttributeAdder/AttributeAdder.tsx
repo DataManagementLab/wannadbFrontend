@@ -3,12 +3,13 @@ import './AttributeAdder.scss';
 
 interface Props {
 	populateAble: boolean;
+	onListChange: (list: string[]) => void;
 }
 
 /**
  * A component that allows the user to add attributes to there document base
  */
-function AttributeAdder({ populateAble = true }: Props) {
+function AttributeAdder({ populateAble = true, onListChange }: Props) {
 	const [attList, setAttList] = useState<string[]>([]);
 	const [inputvalue, setInputValue] = useState<string>('');
 
@@ -16,11 +17,16 @@ function AttributeAdder({ populateAble = true }: Props) {
 		if (attList.includes(att) || att.trim() === '') {
 			return;
 		}
-		setAttList([...attList, att]);
+		setAttributeList([...attList, att]);
 	};
 
 	const deleteAttribute = (att: string) => {
-		setAttList(attList.filter((a) => a !== att));
+		setAttributeList(attList.filter((a) => a !== att));
+	};
+
+	const setAttributeList = (list: string[]) => {
+		onListChange(list);
+		setAttList(list);
 	};
 
 	const handlekeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
