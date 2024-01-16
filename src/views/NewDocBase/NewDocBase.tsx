@@ -64,11 +64,45 @@ function NewDocBase() {
 				'Please wait'
 			);
 
-			setInterval(() => {
+			const updateInterval = setInterval(() => {
 				APIService.getTaskStatus(
 					sessionStorage.getItem('docbaseId')!
 				).then((res) => {
-					console.log(res);
+					if (res == undefined) {
+						setLoadingScreen(false);
+						showNotification(
+							'Error',
+							'Failed to create Docbase ' + name
+						);
+						clearInterval(updateInterval);
+						return;
+					}
+					// when task was successful
+					if (res.state === 'SUCCESS') {
+						setLoadingScreen(false);
+						showNotification(
+							'Success',
+							'Successfully created Docbase ' + name
+						);
+						console.log(res);
+
+						clearInterval(updateInterval);
+						navigate('/organization/' + organization.id);
+						return;
+					}
+
+					// set info msg
+					let info = res.msg + ' (' + res.state + ')...';
+					if (res.msg === '') {
+						info = res.state + '...';
+					}
+
+					// update loading screen
+					setLoadingScreen(
+						true,
+						'Creating Docbase ' + name + '...',
+						info
+					);
 				});
 			}, 1000);
 		});

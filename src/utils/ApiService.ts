@@ -436,6 +436,14 @@ class APIService {
 		}
 	}
 
+	/**
+	 * Create a new documentbase.
+	 * @param organizationId The ID of the organization
+	 * @param baseName The name for the docbase
+	 * @param documentIDs An array of the document IDs that should be used for the docbase
+	 * @param attributes An array of the attributes that should be used for the docbase
+	 * @returns The ID of the created task or undefined if the creation failed
+	 */
 	static async documentBase(
 		organizationId: number,
 		baseName: string,
@@ -460,16 +468,18 @@ class APIService {
 					},
 				}
 			);
-			console.log(resp);
-			console.log('DATA');
-			console.log(resp.data);
-
 			return resp.data.task_id;
 		} catch (err) {
 			return undefined;
 		}
 	}
 
+	/**
+	 * Get the status of a task.
+	 * @param taskId The ID for the task
+	 * @returns A json object with the status of the task
+	 */
+	// TODO replace any with correct type
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static async getTaskStatus(taskId: string): Promise<any> {
 		// NILS MACH MA TEST

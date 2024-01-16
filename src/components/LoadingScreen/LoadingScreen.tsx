@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import './LoadingScreen.scss';
 
 interface Props {
@@ -11,9 +12,27 @@ interface Props {
  * @param info The info to display (optional)
  */
 function LoadingScreen({ heading, info = '' }: Props) {
+	const [isFullscreen, setIsFullscreen] = useState<boolean>(true);
+
+	const toggleFullscreen = () => {
+		console.log('toggleFullscreen');
+		setIsFullscreen(!isFullscreen);
+	};
+
 	return (
-		<div className="LoadingScreen">
+		<div
+			className={
+				isFullscreen ? 'LoadingScreenFull' : 'LoadingScreenSmall'
+			}
+		>
 			<div className="background"></div>
+			<i
+				className={
+					'bi icon screenBtn ' +
+					(isFullscreen ? 'bi-fullscreen-exit' : 'bi-fullscreen')
+				}
+				onClick={toggleFullscreen}
+			></i>
 			<div className="loadingContent">
 				<h1>{heading}</h1>
 				<p>{info}</p>
