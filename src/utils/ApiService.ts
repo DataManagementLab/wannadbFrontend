@@ -324,7 +324,6 @@ class APIService {
 			for (let i = 0; i < data.length; i++) {
 				body.append('file', data[i]);
 			}
-			console.log(organisationId);
 			body.append('organisationId', organisationId.toString());
 
 			const resp = await axios.post(
@@ -406,6 +405,91 @@ class APIService {
 			return false;
 		} catch (err) {
 			return false;
+		}
+	}
+
+	/**
+	 * Delete a document.
+	 * @param documentId The ID of the document
+	 * @returns If the deletion was successful
+	 */
+	static async deleteDocument(documentId: number): Promise<boolean> {
+		// NILS MACH MA TEST
+		try {
+			const response = await axios.post(
+				`${this.host}/data/file/delete`,
+				{
+					documentId: documentId,
+				},
+				{
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
+			if (response.status === 200) {
+				return response.data.status;
+			}
+			return false;
+		} catch (err) {
+			return false;
+		}
+	}
+
+	/**
+	 * Create a new documentbase.
+	 * @param organizationId The ID of the organization
+	 * @param baseName The name for the docbase
+	 * @param documentIDs An array of the document IDs that should be used for the docbase
+	 * @param attributes An array of the attributes that should be used for the docbase
+	 * @returns The ID of the created task or undefined if the creation failed
+	 */
+	static async documentBase(
+		organizationId: number,
+		baseName: string,
+		documentIDs: number[],
+		attributes: string[]
+	): Promise<string | undefined> {
+		// NILS MACH MA TEST
+
+		try {
+			const url = `${this.host}/core/document_base`;
+			const resp = await axios.post(
+				url,
+				{
+					organisationId: organizationId,
+					baseName: baseName,
+					document_ids: documentIDs,
+					attributes: attributes,
+				},
+				{
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
+			return resp.data.task_id;
+		} catch (err) {
+			return undefined;
+		}
+	}
+
+	/**
+	 * Get the status of a task.
+	 * @param taskId The ID for the task
+	 * @returns A json object with the status of the task
+	 */
+	// TODO replace any with correct type
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	static async getTaskStatus(taskId: string): Promise<any> {
+		// NILS MACH MA TEST
+
+		try {
+			const url = `${this.host}/core/status/${taskId}`;
+			const resp = await axios.get(url);
+			return resp.data;
+		} catch (error) {
+			return undefined;
 		}
 	}
 

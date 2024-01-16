@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useLoggedIn, useGetUsername } from '../../providers/UserProvider';
 import './OrgPage.scss';
 import { useUpdateOrganizations } from '../../providers/OrganizationProvider';
@@ -141,6 +141,22 @@ function OrgPage() {
 						});
 					}}
 				></FileUpload>
+				{documents.length > 0 && (
+					<div className="ver">
+						<h2>Docbase</h2>
+						<Link
+							className="lnk"
+							to={
+								'/organization/' +
+								organization.id +
+								'/docbase/new'
+							}
+							style={{ width: '100px' }}
+						>
+							<i className="bi bi-plus-square icon mr"></i>New
+						</Link>
+					</div>
+				)}
 				<button
 					className="btn"
 					style={{ marginBottom: '100px', marginTop: '50px' }}

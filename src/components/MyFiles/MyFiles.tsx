@@ -2,7 +2,11 @@ import { useState } from 'react';
 import './MyFiles.scss';
 import MyDocument from '../../types/MyDocument';
 import DocumentViewer from '../DocumentViewer/DocumentViewer';
-import { useShowChoiceNotification } from '../../providers/NotificationProvider';
+import {
+	useShowChoiceNotification,
+	useShowNotification,
+} from '../../providers/NotificationProvider';
+import APIService from '../../utils/ApiService';
 
 interface Props {
 	documents: MyDocument[];
@@ -14,6 +18,7 @@ interface Props {
  */
 function MyFiles({ documents }: Props) {
 	const showChoiceNotification = useShowChoiceNotification();
+	const showNotification = useShowNotification();
 
 	const [viewDocument, setViewDocument] = useState<MyDocument | undefined>(
 		undefined
@@ -32,8 +37,14 @@ function MyFiles({ documents }: Props) {
 			'Delete document',
 			`Are you sure you want to delete ${document.name}?`,
 			() => {
-				// TODO: delete document
-				alert('Not implemented yet!');
+				APIService.deleteDocument(document.id).then((res) => {
+					if (!res) {
+						showNotification('Error', 'Failed to delete document');
+						return;
+					}
+
+					window.location.reload();
+				});
 			},
 			() => {}
 		);
