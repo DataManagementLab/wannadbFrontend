@@ -9,6 +9,7 @@ import APIService from '../../utils/ApiService';
 
 interface Props {
 	onClose: () => void;
+	editable?: boolean;
 	document: MyDocument;
 }
 
@@ -17,7 +18,7 @@ interface Props {
  * @param document The name of the file to view
  * @param onClose A function to close the file viewer
  */
-function DocumentViewer({ onClose, document }: Props) {
+function DocumentViewer({ onClose, document, editable }: Props) {
 	const [text, setText] = useState(document.content);
 	const [unsaved, setUnsaved] = useState(false);
 
@@ -33,13 +34,13 @@ function DocumentViewer({ onClose, document }: Props) {
 	}, [document.content, text]);
 
 	const close = () => {
-		if (!unsaved) {
+		if (!unsaved || !editable) {
 			onClose();
 			return;
 		}
 		showChoiceNotification(
 			'Unsaved changes',
-			'You have unsaved changes. Are you sure you want to close the document?',
+			'You have unsaved changes. Are you sure you want to close the document (changes will be lost) ?',
 			() => {
 				onClose();
 			},
@@ -84,14 +85,17 @@ function DocumentViewer({ onClose, document }: Props) {
 					value={text}
 					onChange={(e) => setText(e.target.value)}
 					spellCheck={false}
+					readOnly={!editable}
 				></textarea>
 				<div className="hor">
 					<button className="btn" onClick={close}>
 						Close
 					</button>
-					<button className="btn" onClick={onUpdate}>
-						Save{unsaved ? '*' : ''}
-					</button>
+					{editable && (
+						<button className="btn" onClick={onUpdate}>
+							Save{unsaved ? '*' : ''}
+						</button>
+					)}
 				</div>
 			</div>
 		</div>

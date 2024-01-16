@@ -58,6 +58,7 @@ function MyFiles({ documents }: Props) {
 					onClose={() => {
 						setViewDocument(undefined);
 					}}
+					editable={true}
 				/>
 			)}
 			<div className="MyFiles">
