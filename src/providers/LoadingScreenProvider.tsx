@@ -6,7 +6,8 @@ const LoadingScreenContext = React.createContext({
 	setLoadingScreen: (
 		_loading: boolean,
 		_heading = 'Loading...',
-		_info = 'Please wait'
+		_info = 'Please wait',
+		_id = ''
 	) => {},
 });
 
@@ -32,15 +33,18 @@ export function LoadingScreenProvider({ children }: Props) {
 	const [loading, setLoading] = React.useState(false);
 	const [heading, setHeading] = React.useState('');
 	const [info, setInfo] = React.useState('');
+	const [id, setId] = React.useState('');
 
 	const setLoadingScreen = (
 		loading: boolean,
 		heading = 'Loading...',
-		info = 'Please wait'
+		info = 'Please wait',
+		id = ''
 	) => {
 		setLoading(loading);
 		setHeading(heading);
 		setInfo(info);
+		setId(id);
 	};
 
 	return (
@@ -49,7 +53,7 @@ export function LoadingScreenProvider({ children }: Props) {
 				setLoadingScreen: setLoadingScreen,
 			}}
 		>
-			{loading && <LoadingScreen heading={heading} info={info} />}
+			{loading && <LoadingScreen heading={heading} info={info} id={id} />}
 			{children}
 		</LoadingScreenContext.Provider>
 	);

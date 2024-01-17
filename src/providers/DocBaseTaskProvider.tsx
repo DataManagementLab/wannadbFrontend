@@ -65,12 +65,14 @@ export function DocBaseTaskProvider({ children }: Props) {
 		setLoadingScreen(
 			true,
 			'Creating Docbase ' + basename + '...',
-			'Please wait...'
+			'Please wait...',
+			taskId
 		);
 		setIsRunning(true);
 
 		const updateInterval = setInterval(() => {
-			APIService.getTaskStatus(taskId).then((res) => {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			APIService.getTaskStatus(taskId).then((res): any => {
 				if (res == undefined) {
 					setLoadingScreen(false);
 					showNotification(
@@ -122,7 +124,8 @@ export function DocBaseTaskProvider({ children }: Props) {
 				setLoadingScreen(
 					true,
 					'Creating Docbase ' + basename + '...',
-					info
+					info,
+					taskId
 				);
 			});
 		}, 1000);

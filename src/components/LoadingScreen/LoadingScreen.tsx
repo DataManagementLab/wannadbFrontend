@@ -4,6 +4,7 @@ import './LoadingScreen.scss';
 interface Props {
 	heading: string;
 	info: string;
+	id: string;
 }
 
 /**
@@ -11,11 +12,10 @@ interface Props {
  * @param heading The heading to display
  * @param info The info to display (optional)
  */
-function LoadingScreen({ heading, info = '' }: Props) {
+function LoadingScreen({ heading, info = '', id }: Props) {
 	const [isFullscreen, setIsFullscreen] = useState<boolean>(true);
 
 	const toggleFullscreen = () => {
-		console.log('toggleFullscreen');
 		setIsFullscreen(!isFullscreen);
 	};
 
@@ -35,6 +35,9 @@ function LoadingScreen({ heading, info = '' }: Props) {
 			></i>
 			<div className="loadingContent">
 				<h1>{heading}</h1>
+				<p className="idBox">
+					<i>{id}</i>
+				</p>
 				<p>{info}</p>
 				<div className="loadingAnimation">
 					<div className="lds-default">
