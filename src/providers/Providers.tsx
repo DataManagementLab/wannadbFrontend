@@ -5,6 +5,7 @@ import { StorageProvider } from './StorageProvider';
 import { ThemeProvider } from './ThemeProvider';
 import { UserProvider } from './UserProvider';
 import { LoadingScreenProvider } from './LoadingScreenProvider';
+import { DocBaseTaskProvider } from './DocBaseTaskProvider';
 
 interface Props {
 	children: ReactNode;
@@ -21,7 +22,9 @@ export function Providers({ children }: Props) {
 				<StorageProvider>
 					<ThemeProvider>
 						<OrganizationProvider>
-							<UserProvider>{children}</UserProvider>
+							<DocBaseTaskProvider>
+								<UserProvider>{children}</UserProvider>
+							</DocBaseTaskProvider>
 						</OrganizationProvider>
 					</ThemeProvider>
 				</StorageProvider>

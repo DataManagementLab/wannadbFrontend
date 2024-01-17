@@ -1,0 +1,29 @@
+.DocbaseViewer {
+	width: 90%;
+	height: 80%;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: var(--bg-color);
+	overflow-y: scroll;
+	border-radius: 15px;
+	border: 2px solid var(--text-color);
+	z-index: 999;
+	padding: 40px;
+}
+
+.closeBtn {
+	position: fixed;
+	top: 9%;
+	right: 5%;
+	cursor: pointer;
+	z-index: 1000;
+	font-size: 30px;
+	cursor: pointer;
+	color: var(--text-color);
+	font-weight: bold;
+	&:hover {
+		scale: 1.15;
+	}
+}
