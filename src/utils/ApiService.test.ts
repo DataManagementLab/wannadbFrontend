@@ -43,11 +43,7 @@ describe('APIService', () => {
 			await APIService.deleteUser(salt, salt);
 			await APIService.deleteUser(alternative, alternative);
 		} catch (err) {
-			/*throw new Error(
-				`sessionSchema not generated because of error ${err as string}`
-				
-			);
-			*/
+			console.log(err);
 		}
 	});
 
@@ -187,7 +183,6 @@ describe('APIService', () => {
 		const orgaID = await APIService.createOrganization('testOrga2');
 		const oldOrgaList = await APIService.getOrganizationNames();
 		assert(oldOrgaList);
-		oldOrgaList.forEach((orga) => console.log(orga));
 		await APIService.leaveOrganization(orgaID as number);
 		const newOrgaList = await APIService.getOrganizationNames();
 		assert(newOrgaList);
@@ -212,7 +207,6 @@ describe('APIService', () => {
 			false
 		);
 		expect(await APIService.getOrganizationNames()).toBe(undefined);
-		await APIService.login(salt, salt);
 	});
 
 	test('should add member to orga successsfully', async () => {
@@ -229,7 +223,7 @@ describe('APIService', () => {
 		expectTypeOf(memberList).toBeArray;
 		let b = false;
 		assert(memberList);
-		memberList.forEach((member) => {
+		memberList!.forEach((member) => {
 			if (member === 'testuser') {
 				b = true;
 			}
