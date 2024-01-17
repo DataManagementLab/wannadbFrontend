@@ -14,6 +14,12 @@ import {
 	useShowNotification,
 } from '../../providers/NotificationProvider';
 import DocumentViewer from '../../components/DocumentViewer/DocumentViewer';
+import DocbaseViewer from '../../components/DocbaseViewer/DocbaseViewer';
+import DocBase from '../../types/DocBase';
+import {
+	useIsDocbaseTaskRunning,
+	useStartDocbaseTask,
+} from '../../providers/DocBaseTaskProvider';
 
 /**
  * A page for creating a new Docbase
@@ -21,6 +27,9 @@ import DocumentViewer from '../../components/DocumentViewer/DocumentViewer';
 function NewDocBase() {
 	const [organization, setOrganization] = useState<Organization>(
 		new Organization('Error', -1)
+	);
+	const [newDocBase, setNewDocBase] = useState<DocBase | undefined>(
+		undefined
 	);
 	const [documents, setDocuments] = useState<MyDocument[]>([]);
 	const [selectedDocuments, setSelectedDocuments] = useState<number[]>([]);
@@ -33,6 +42,8 @@ function NewDocBase() {
 	const showChoice = useShowChoiceNotification();
 	const showNotification = useShowNotification();
 	const setLoadingScreen = useSetLoadingScreen();
+	const isDocbaseTaskRunning = useIsDocbaseTaskRunning();
+	const startDocbaseTask = useStartDocbaseTask();
 
 	const [name, setName] = useState<string>('');
 	const [errorMsg, setErrorMsg] = useState<string>('');
@@ -62,55 +73,7 @@ function NewDocBase() {
 				showNotification('Error', 'Failed to create Docbase ' + name);
 				return;
 			}
-			sessionStorage.setItem('docbaseId', res);
-			console.log('Created Docbase with id ' + res);
-			setLoadingScreen(
-				true,
-				'Creating Docbase ' + name + '...',
-				'Please wait'
-			);
-
-			const updateInterval = setInterval(() => {
-				APIService.getTaskStatus(
-					sessionStorage.getItem('docbaseId')!
-				).then((res) => {
-					if (res == undefined) {
-						setLoadingScreen(false);
-						showNotification(
-							'Error',
-							'Failed to create Docbase ' + name
-						);
-						clearInterval(updateInterval);
-						return;
-					}
-					// when task was successful
-					if (res.state === 'SUCCESS') {
-						setLoadingScreen(false);
-						showNotification(
-							'Success',
-							'Successfully created Docbase ' + name
-						);
-						console.log(res);
-
-						clearInterval(updateInterval);
-						navigate('/organization/' + organization.id);
-						return;
-					}
-
-					// set info msg
-					let info = res.msg + ' (' + res.state + ')...';
-					if (res.msg === '') {
-						info = res.state + '...';
-					}
-
-					// update loading screen
-					setLoadingScreen(
-						true,
-						'Creating Docbase ' + name + '...',
-						info
-					);
-				});
-			}, 1000);
+			startDocbaseTask(res, name, attList);
 		});
 	};
 
@@ -182,6 +145,15 @@ function NewDocBase() {
 						setViewDocument(undefined);
 					}}
 					editable={false}
+				/>
+			)}
+			{newDocBase && (
+				<DocbaseViewer
+					docBase={newDocBase}
+					onClose={() => {
+						+setNewDocBase(undefined);
+						navigate('/organization/' + organization.id);
+					}}
 				/>
 			)}
 			<div className="NewDocBase">
@@ -257,9 +229,11 @@ function NewDocBase() {
 						{errorMsg}
 					</p>
 					<div>
-						<button className="btn" onClick={onRun}>
-							<i className="bi bi-play-fill icon mr"></i>Run
-						</button>
+						{!isDocbaseTaskRunning() && (
+							<button className="btn" onClick={onRun}>
+								<i className="bi bi-play-fill icon mr"></i>Run
+							</button>
+						)}
 					</div>
 					<button
 						className="btn"
