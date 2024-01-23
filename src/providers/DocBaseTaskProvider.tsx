@@ -61,7 +61,6 @@ export function DocBaseTaskProvider({ children }: Props) {
 		attList: string[]
 	) => {
 		sessionStorage.setItem('docbaseId', taskId);
-		console.log('Created Docbase with ID ' + taskId);
 		setLoadingScreen(
 			true,
 			'Creating Docbase ' + basename + '...',
@@ -73,6 +72,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 		const updateInterval = setInterval(() => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			APIService.getTaskStatus(taskId).then((res): any => {
+				console.log(res);
 				if (res == undefined) {
 					setLoadingScreen(false);
 					showNotification(
@@ -100,7 +100,6 @@ export function DocBaseTaskProvider({ children }: Props) {
 								nugget.end_char
 							);
 						} catch (error) {
-							console.log(error);
 							showNotification(
 								'Error',
 								'Something went wrong translating the nuggets.'
@@ -115,8 +114,8 @@ export function DocBaseTaskProvider({ children }: Props) {
 				}
 
 				// set info msg
-				let info = res.msg + ' (' + res.state + ')...';
-				if (res.msg === '' || res.msg === 1) {
+				let info = res.meta.message + ' (' + res.state + ')...';
+				if (res.meta.message === '' || res.meta.message === 1) {
 					info = res.state + '...';
 				}
 

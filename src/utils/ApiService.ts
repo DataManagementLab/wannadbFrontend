@@ -448,26 +448,21 @@ class APIService {
 		organizationId: number,
 		baseName: string,
 		documentIDs: number[],
-		attributes: string[],
-		asForm = false
+		attributes: string[]
 	): Promise<string | undefined> {
 		// NILS MACH MA TEST
 
 		try {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			let resp: any;
 			const url = `${this.host}/core/document_base`;
 
-			if (asForm) {
-				const body = new FormData();
-				body.append('organisationId', organizationId.toString());
-				body.append('baseName', baseName);
-				body.append('document_ids', JSON.stringify(documentIDs));
-				body.append('attributes', JSON.stringify(attributes));
-				body.append('authorization', this.getUserToken());
-				resp = await axios.post(url, body);
-			} else {
-				resp = await axios.post(
+			const body = new FormData();
+			body.append('organisationId', organizationId.toString());
+			body.append('baseName', baseName);
+			body.append('document_ids', JSON.stringify(documentIDs));
+			body.append('attributes', JSON.stringify(attributes));
+			body.append('authorization', this.getUserToken());
+			const resp = await axios.post(url, body);
+			/* resp = await axios.post(
 					url,
 					{
 						organisationId: organizationId,
@@ -480,8 +475,7 @@ class APIService {
 							Authorization: this.getUserToken(),
 						},
 					}
-				);
-			}
+				); */
 			return resp.data.task_id;
 		} catch (err) {
 			return undefined;
