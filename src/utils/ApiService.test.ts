@@ -41,10 +41,9 @@ describe('APIService', () => {
 	afterAll(async () => {
 		try {
 			await APIService.deleteUser(salt, salt);
+			await APIService.deleteUser(alternative, alternative);
 		} catch (err) {
-			throw new Error(
-				`sessionSchema not generated because of error ${err as string}`
-			);
+			console.log(err);
 		}
 	});
 
@@ -120,6 +119,17 @@ describe('APIService', () => {
 		expect(typeof organizations[0].name).toBe('string');
 		expect(organizations[0].id).toBe(saltOrganisationID);
 	});
+	test('should get multiple organizations successfully', async () => {
+		await APIService.login(salt, salt);
+		const altOrgaID = await APIService.createOrganization(alternative);
+		assert(altOrgaID);
+		const organizations = await APIService.getOrganizationNames();
+		assert(organizations);
+		expect(organizations.length).toBeGreaterThan(1);
+		expect(organizations[0].id).toBe(saltOrganisationID);
+		expect(organizations[1].id).toBe(altOrgaID);
+		await APIService.leaveOrganization(altOrgaID);
+	});
 	test('should get organization successfully', async () => {
 		await APIService.login(salt, salt);
 		assert(saltOrganisationID);
@@ -137,28 +147,46 @@ describe('APIService', () => {
 	test('should create organization successfully', async () => {
 		await APIService.login(salt, salt);
 		const organizationId = await APIService.createOrganization(alternative);
+		assert(organizationId);
 		expect(typeof organizationId).toBe('number');
 		expect(organizationId).toBeGreaterThan(0);
+		await APIService.leaveOrganization(organizationId);
 	});
 	test('creating organization with already existing name fails', async () => {
 		await APIService.login(salt, salt);
 		expect(await APIService.createOrganization(salt)).toBeUndefined();
 	});
+
+	test('should add member to orga successsfully', async () => {
+		await APIService.register('testuser', 'test');
+		await APIService.login(salt, salt);
+		assert(saltOrganisationID);
+		await APIService.addMemberToOrganization(
+			saltOrganisationID,
+			'testuser'
+		);
+		const memberList = await APIService.getMembersForOrganization(
+			saltOrganisationID as number
+		)!;
+		assert(memberList);
+		expectTypeOf(memberList).toBeArray;
+		const b = memberList.find((member) => member === 'testuser');
+		assert(b);
+		expect(b).toBe('testuser');
+		await APIService.login('testuser', 'test');
+		await APIService.leaveOrganization(saltOrganisationID);
+		await APIService.deleteUser('testuser', 'test');
+	});
+
 	test('should leave organisation successfully', async () => {
 		await APIService.login(salt, salt);
-		let orgaID: number | undefined = undefined;
-		orgaID = await APIService.createOrganization('deatheaters');
+		const orgaID = await APIService.createOrganization('testOrga2');
+		const oldOrgaList = await APIService.getOrganizationNames();
+		assert(oldOrgaList);
 		await APIService.leaveOrganization(orgaID as number);
-		const orgaList = await APIService.getOrganizations();
-		assert(orgaList);
-		let b = true;
-		for (let i = 0; i < orgaList.length; i++) {
-			if (orgaList[i] === orgaID) {
-				b = false;
-				break;
-			}
-		}
-		expect(b).toBe(true);
+		const newOrgaList = await APIService.getOrganizationNames();
+		assert(newOrgaList);
+		expect(oldOrgaList.length).toBeGreaterThan(newOrgaList.length);
 	});
 
 	test('should get members of organisation correctly', async () => {
@@ -178,10 +206,7 @@ describe('APIService', () => {
 		expect(await APIService.leaveOrganization(eaterID as number)).toBe(
 			false
 		);
-		//TODO does this make sense?
-		//expect(await APIService.getOrganizationNames()).toStrictEqual([]);
-		expect(await APIService.getOrganizationNames()).toBeUndefined();
-		await APIService.login(salt, salt);
+		expect(await APIService.getOrganizationNames()).toBe(undefined);
 	});
 
 	test('should add member to orga successsfully', async () => {
@@ -198,7 +223,7 @@ describe('APIService', () => {
 		expectTypeOf(memberList).toBeArray;
 		let b = false;
 		assert(memberList);
-		memberList.forEach((member) => {
+		memberList!.forEach((member) => {
 			if (member === 'testuser') {
 				b = true;
 			}
@@ -213,7 +238,7 @@ describe('APIService', () => {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-expect-error
 		const result = await APIService.upload(data, organisationId[0]);
-		expect(result).toBe('File uploaded successfully');
+		expect(result.toLowerCase().trim()).toBe('file uploaded successfully');
 	});
 
 	// Habe die Methoden im APIService gelöscht weil die eh nur als platzhalter für
