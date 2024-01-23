@@ -32,15 +32,47 @@ describe('APIService', () => {
 	const salt = generateRandomString(10);
 	const alternative = generateRandomString(10);
 	let saltOrganisationID: number | undefined = undefined;
+	const blobs: Blob[] = [];
+	const users = [
+		'123test',
+		'12test',
+		'1test',
+		'123test2',
+		'asada',
+		'12test2',
+	];
 
 	beforeAll(async () => {
 		await APIService.register(salt, salt, false);
 		saltOrganisationID = await APIService.createOrganization(salt);
+		for (let i = 0; i < 10; i++) {
+			blobs.push(
+				new Blob([generateRandomString(10)], { type: 'text/plain' })
+			);
+		}
+		users.forEach(async (user) => {
+			await APIService.register(user, user, false);
+		});
 	});
 
 	afterAll(async () => {
 		try {
+			users.forEach(async (user) => {
+				await APIService.deleteUser(user, user);
+			});
+
+			// remove test date from salt organisation
+			const delDocs = await APIService.getDocumentForOrganization(
+				saltOrganisationID as number
+			);
+			for (let i = 0; i < delDocs.length; i++) {
+				await APIService.deleteDocument(delDocs[i].id);
+			}
 			await APIService.deleteUser(salt, salt);
+			/*for(let i = 0; i < blobs.length; i++) {
+				await APIService.deleteDocument(blobs[i]);
+			}
+			*/
 		} catch (err) {
 			throw new Error(
 				`sessionSchema not generated because of error ${err as string}`
@@ -204,16 +236,99 @@ describe('APIService', () => {
 			}
 		});
 		expect(b).toBe(true);
+		await APIService.deleteUser('testuser', 'test');
 	});
 
 	test('should upload files successfully', async () => {
 		const data = [new Blob(['file content'], { type: 'text/plain' })];
 		await APIService.login(salt, salt);
-		const organisationId = await APIService.getOrganizations();
+
+		///
+		const result = await APIService.upload(
+			data,
+			saltOrganisationID as number
+		);
+		expect(result).toBe('File uploaded successfully');
+
+		//// delete newly uploaded file
+		/*
+		// old Test used organisationId[0] as organisationId which may not be correct
+		const organisationId = await APIService.getOrganizations(); 
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-expect-error
 		const result = await APIService.upload(data, organisationId[0]);
+		
+
 		expect(result).toBe('File uploaded successfully');
+	*/
+	});
+	test('should delete file successfully', async () => {
+		await APIService.login(salt, salt);
+
+		/*
+		const upRes = await APIService.upload([new Blob(['Testfile content haha'], { type: 'text/plain' })], saltOrganisationID as number);
+		expect(upRes).toBe('File uploaded successfully');
+		*/
+
+		// use file that got uploaded in the 'should upload file successfully' test for now
+		const documents = await APIService.getDocumentForOrganization(
+			saltOrganisationID as number
+		);
+		expect(documents!.length).toBeGreaterThan(0);
+		const delRes = await APIService.deleteDocument(documents[0].id);
+		expect(delRes).toBe(true);
+		expect(documents.length).toBeGreaterThan(
+			(
+				await APIService.getDocumentForOrganization(
+					saltOrganisationID as number
+				)
+			).length
+		);
+	});
+
+	// test dokumentBase
+
+	// test getTaskStatus
+
+	// test getUserNameSugesstion
+	test('should get user name suggestions successfully', async () => {
+		await APIService.login(salt, salt);
+		expect(
+			(await APIService.getUserNameSuggestion('123')).length
+		).toBeGreaterThanOrEqual(2);
+		expect(
+			(await APIService.getUserNameSuggestion('12')).length
+		).toBeGreaterThanOrEqual(4);
+		expect(
+			(await APIService.getUserNameSuggestion('1')).length
+		).toBeGreaterThanOrEqual(5);
+		expect(
+			(await APIService.getUserNameSuggestion('001122233')).length
+		).toBe(0);
+	});
+
+	test('should get documents for organisation successfully', async () => {
+		await APIService.login(salt, salt);
+		// cleanse salt organisation documents
+		const delDocs = await APIService.getDocumentForOrganization(
+			saltOrganisationID as number
+		);
+		for (let i = 0; i < delDocs.length; i++) {
+			await APIService.deleteDocument(delDocs[i].id);
+		}
+		const resp = await APIService.upload(
+			blobs,
+			saltOrganisationID as number
+		);
+		expect(resp).toBe('File uploaded successfully');
+		const documents = await APIService.getDocumentForOrganization(
+			saltOrganisationID as number
+		);
+		expect(documents).toBeDefined();
+		for (let i = 0; i < documents.length; i++) {
+			const buffer = Buffer.from(await blobs[i].arrayBuffer());
+			expect(documents[i].content).toBe(buffer.toString());
+		}
 	});
 
 	// Habe die Methoden im APIService gelöscht weil die eh nur als platzhalter für

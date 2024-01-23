@@ -344,6 +344,7 @@ class APIService {
 			}
 			return 'Error uploading file';
 		} catch (err) {
+			console.log('catching error' + err);
 			return 'Error uploading file';
 		}
 	}
