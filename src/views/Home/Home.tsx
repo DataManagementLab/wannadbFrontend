@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.scss';
 import { useState } from 'react';
-import { useGetUsername, useLogOut } from '../../providers/UserProvider';
+import { useGetUsername } from '../../providers/UserProvider';
 import Navbar from '../../components/Navbar/Navbar';
 import FileUpload from '../../components/FileUpload/FileUpload';
 
@@ -11,7 +11,7 @@ import FileUpload from '../../components/FileUpload/FileUpload';
 function Home() {
 	const getUserName = useGetUsername();
 	const navigate = useNavigate();
-	const logOut = useLogOut();
+	//const logOut = useLogOut();
 
 	const [username] = useState(getUserName());
 
@@ -31,13 +31,14 @@ function Home() {
 						<span className="db">{username.slice(-2)}</span> 👋
 					</h1>
 					<h2>
-						File <span className="db">Up</span>load
+						Document <span className="db">Up</span>load
 					</h2>
-					<FileUpload></FileUpload>
+					<FileUpload organizationProp={undefined}></FileUpload>
+					{/* <AttributeAdder></AttributeAdder> */}
 					{
-						// TODO: Only for development
+						// TODO: Only for development (remove later)
 					}
-					<button
+					{/* <button
 						className="btn"
 						style={{
 							marginTop: '100px',
@@ -47,8 +48,8 @@ function Home() {
 							window.location.reload();
 						}}
 					>
-						Logout
-					</button>
+						<i className="bi bi-box-arrow-left mr"></i>Logout
+					</button> */}
 				</div>
 			</div>
 		);
@@ -69,6 +70,7 @@ function Home() {
 						className="btn"
 						style={{ width: '100px' }}
 					>
+						<i className="bi bi-box-arrow-in-right mr icon"></i>
 						Login
 					</Link>
 				</div>

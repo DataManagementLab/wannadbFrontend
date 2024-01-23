@@ -8,7 +8,7 @@ interface Props {
 
 /**
  * A component to view a file
- * @param filename The name of the file to view
+ * @param file The name of the file to view
  * @param onClose A function to close the file viewer
  */
 function FileViewer({ onClose, file }: Props) {

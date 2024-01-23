@@ -4,6 +4,8 @@ import { OrganizationProvider } from './OrganizationProvider';
 import { StorageProvider } from './StorageProvider';
 import { ThemeProvider } from './ThemeProvider';
 import { UserProvider } from './UserProvider';
+import { LoadingScreenProvider } from './LoadingScreenProvider';
+import { DocBaseTaskProvider } from './DocBaseTaskProvider';
 
 interface Props {
 	children: ReactNode;
@@ -16,13 +18,17 @@ interface Props {
 export function Providers({ children }: Props) {
 	return (
 		<NotificationProvider>
-			<StorageProvider>
-				<ThemeProvider>
-					<OrganizationProvider>
-						<UserProvider>{children}</UserProvider>
-					</OrganizationProvider>
-				</ThemeProvider>
-			</StorageProvider>
+			<LoadingScreenProvider>
+				<StorageProvider>
+					<ThemeProvider>
+						<OrganizationProvider>
+							<DocBaseTaskProvider>
+								<UserProvider>{children}</UserProvider>
+							</DocBaseTaskProvider>
+						</OrganizationProvider>
+					</ThemeProvider>
+				</StorageProvider>
+			</LoadingScreenProvider>
 		</NotificationProvider>
 	);
 }

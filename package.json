@@ -24,7 +24,8 @@
 		"backend:create": "npm run backend:create:tables",
 		"backend:create:tables": "python scripts/create_table.py",
 		"txt:create": "python scripts/create_txt.py",
-		"server:update": "git pull && ./scripts/create_table.sh && npm run build && cp dist/* /var/www/html -r"
+		"server:update": "git pull && ./scripts/create_table.sh && npm run build",
+		"postgres:open": "docker exec -it $(docker ps -aqf \"name=postgres\") psql -d userManagement -U postgres"
 	},
 	"dependencies": {
 		"axios": "^1.6.2",

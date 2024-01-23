@@ -8,6 +8,7 @@ import Profile from './views/Profile/Profile';
 import OrgPage from './views/OrgPage/OrgPage';
 import Settings from './views/Settings/Settings';
 import About from './views/About/About';
+import NewDocBase from './views/NewDocBase/NewDocBase';
 
 /**
  * All of our routes are defined here.
@@ -21,6 +22,10 @@ function Routes() {
 				<Route path="/register" Component={Register} />
 				<Route path="/organization/create" Component={CreateOrg} />
 				<Route path="/organization/add/:id" Component={AddToOrg} />
+				<Route
+					path="/organization/:id/docbase/new"
+					Component={NewDocBase}
+				/>
 				<Route path="/organization/:id" Component={OrgPage} />
 				<Route path="/settings" Component={Settings} />
 				<Route path="/about" Component={About} />

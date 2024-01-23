@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Organization from '../types/Organization';
+import MyDocument from '../types/MyDocument';
 
 /**
  * This class is used to make requests to the backend API.
@@ -138,6 +139,29 @@ class APIService {
 			if (resp.status == 404) return undefined;
 		} catch (err) {
 			return undefined;
+		}
+	}
+
+	/**
+	 * Search for usernames that start with the given prefix.
+	 * @param prefix The prefix of the username to search for
+	 * @returns A list of usernames that start with the given prefix
+	 */
+	static async getUserNameSuggestion(prefix: string): Promise<string[]> {
+		// NILS MACH MA TEST
+		try {
+			const url = `${this.host}/get/user/suggestion/${prefix}`;
+			const resp = await axios.get(url, {
+				headers: {
+					Authorization: this.getUserToken(),
+				},
+			});
+			if (resp.status == 200) {
+				return resp.data.usernames as string[];
+			}
+			return [];
+		} catch (err) {
+			return [];
 		}
 	}
 
@@ -300,15 +324,18 @@ class APIService {
 			for (let i = 0; i < data.length; i++) {
 				body.append('file', data[i]);
 			}
-
 			body.append('organisationId', organisationId.toString());
 
-			const resp = await axios.post(`${this.host}/data/upload`, body, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-					Authorization: this.getUserToken(),
-				},
-			});
+			const resp = await axios.post(
+				`${this.host}/data/upload/file`,
+				body,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
 			if (resp.status === 201) {
 				return 'File uploaded successfully';
 			}
@@ -321,28 +348,163 @@ class APIService {
 		}
 	}
 
-	// TODO
-	static getFileNames(username: string): Promise<string[]> {
-		return axios
-			.get(`${this.host}/get/file/names/${username}`)
-			.then((resp) => {
-				return resp.data;
-			})
-			.catch(() => {
-				return [];
-			});
+	/**
+	 * Get all documents that are uploaded for the corresponding organization.
+	 * @param organizationID The ID of the organization
+	 * @returns A promise that resolves to all documents of the organization
+	 */
+	static async getDocumentForOrganization(
+		organizationID: number
+	): Promise<MyDocument[]> {
+		// NILS MACH MA TEST
+		try {
+			const response = await axios.get(
+				`${this.host}/data/organization/get/files/${organizationID}`,
+				{
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
+			if (response.status === 200) {
+				return response.data as MyDocument[];
+			}
+			return [];
+		} catch (err) {
+			return [];
+		}
 	}
 
-	// TODO
-	static getFileContent(username: string, filename: string): Promise<string> {
-		return axios
-			.get(`${this.host}/get/file/content/${username}/${filename}`)
-			.then((resp) => {
-				return resp.data;
-			})
-			.catch(() => {
-				return 'Error getting file content!';
-			});
+	/**
+	 * Update the content of a document.
+	 * @param documentId The ID of the document
+	 * @param newContent The new content of the document
+	 * @returns If the update was successful
+	 */
+	static async updateDocumentContent(
+		documentId: number,
+		newContent: string
+	): Promise<boolean> {
+		// NILS MACH MA TEST
+		try {
+			const response = await axios.post(
+				`${this.host}/data/update/file/content`,
+				{
+					documentId: documentId,
+					newContent: newContent,
+				},
+				{
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
+			if (response.status === 200) {
+				return response.data.status;
+			}
+			return false;
+		} catch (err) {
+			return false;
+		}
+	}
+
+	/**
+	 * Delete a document.
+	 * @param documentId The ID of the document
+	 * @returns If the deletion was successful
+	 */
+	static async deleteDocument(documentId: number): Promise<boolean> {
+		// NILS MACH MA TEST
+		try {
+			const response = await axios.post(
+				`${this.host}/data/file/delete`,
+				{
+					documentId: documentId,
+				},
+				{
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
+			if (response.status === 200) {
+				return response.data.status;
+			}
+			return false;
+		} catch (err) {
+			return false;
+		}
+	}
+
+	/**
+	 * Create a new documentbase.
+	 * @param organizationId The ID of the organization
+	 * @param baseName The name for the docbase
+	 * @param documentIDs An array of the document IDs that should be used for the docbase
+	 * @param attributes An array of the attributes that should be used for the docbase
+	 * @returns The ID of the created task or undefined if the creation failed
+	 */
+	static async documentBase(
+		organizationId: number,
+		baseName: string,
+		documentIDs: number[],
+		attributes: string[],
+		asForm = false
+	): Promise<string | undefined> {
+		// NILS MACH MA TEST
+
+		try {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			let resp: any;
+			const url = `${this.host}/core/document_base`;
+
+			if (asForm) {
+				const body = new FormData();
+				body.append('organisationId', organizationId.toString());
+				body.append('baseName', baseName);
+				body.append('document_ids', JSON.stringify(documentIDs));
+				body.append('attributes', JSON.stringify(attributes));
+				body.append('authorization', this.getUserToken());
+				resp = await axios.post(url, body);
+			} else {
+				resp = await axios.post(
+					url,
+					{
+						organisationId: organizationId,
+						baseName: baseName,
+						document_ids: documentIDs,
+						attributes: attributes,
+					},
+					{
+						headers: {
+							Authorization: this.getUserToken(),
+						},
+					}
+				);
+			}
+			return resp.data.task_id;
+		} catch (err) {
+			return undefined;
+		}
+	}
+
+	/**
+	 * Get the status of a task.
+	 * @param taskId The ID for the task
+	 * @returns A json object with the status of the task
+	 */
+	// TODO replace any with correct type
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	static async getTaskStatus(taskId: string): Promise<any> {
+		// NILS MACH MA TEST
+
+		try {
+			const url = `${this.host}/core/status/${taskId}`;
+			const resp = await axios.get(url);
+			return resp.data;
+		} catch (error) {
+			return undefined;
+		}
 	}
 
 	/**

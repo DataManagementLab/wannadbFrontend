@@ -42,6 +42,11 @@ function Settings() {
 						earance
 					</h2>
 					<button className="btn" onClick={toggleTheme}>
+						{isDarkMode ? (
+							<i className="bi bi-brightness-high-fill mr icon"></i>
+						) : (
+							<i className="bi bi-moon-fill mr icon"></i>
+						)}
 						{isDarkMode ? 'Light Mode' : 'Dark Mode'}
 					</button>
 					<h2>

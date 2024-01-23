@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.scss';
 import { useState } from 'react';
 import { useGetUsername } from '../../providers/UserProvider';
+import { useIsDarkTheme, useToggleTheme } from '../../providers/ThemeProvider';
 
 /**
  * The navbar component
@@ -14,6 +15,9 @@ function Navbar() {
 	const [username] = useState(getUserName());
 
 	const [testStyle, setTestStyle] = useState({});
+
+	const isDarkMode = useIsDarkTheme();
+	const toggleTheme = useToggleTheme();
 
 	return (
 		<div className="Navbar">
@@ -37,6 +41,23 @@ function Navbar() {
 						setTestStyle({});
 					}}
 				></div>
+				{isDarkMode ? (
+					<i
+						className="bi bi-brightness-high-fill mr icon-no-hover"
+						style={{
+							fontSize: '1.2rem',
+						}}
+						onClick={toggleTheme}
+					></i>
+				) : (
+					<i
+						className="bi bi-moon-fill mr icon-no-hover"
+						style={{
+							fontSize: '1.2rem',
+						}}
+						onClick={toggleTheme}
+					></i>
+				)}
 				<Link to="/">Home</Link>
 				<Link to="/about">About</Link>
 				{/* 				<a

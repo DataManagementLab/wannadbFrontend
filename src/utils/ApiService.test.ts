@@ -241,7 +241,11 @@ describe('APIService', () => {
 		expect(result.toLowerCase().trim()).toBe('file uploaded successfully');
 	});
 
-	test('should not get file names if there is no file', async () => {
+	// Habe die Methoden im APIService gelöscht weil die eh nur als platzhalter für
+	// spätere features gedient haben, die jetzt aber durch andere endpunkte ersetzt wurden und so
+	// nicht mehr gebraucht werden.
+
+	/* test('should not get file names if there is no file', async () => {
 		const fileNames = await APIService.getFileNames(salt);
 		expect(fileNames).toStrictEqual([]);
 	});
@@ -259,5 +263,5 @@ describe('APIService', () => {
 			);
 			expect(fileContent).not.toBe('Error getting file content!');
 		}
-	});
+	}); */
 });

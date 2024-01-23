@@ -9,7 +9,9 @@ body {
 a {
 	color: var(--text-color);
 }
-
+input {
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
 .content {
 	margin-top: 150px;
 	margin-left: 50px;
@@ -21,7 +23,6 @@ a {
 
 .btn {
 	max-width: 400px;
-	height: 35px;
 	border-radius: 5px;
 	border: none;
 	background-color: var(--btn-color);
@@ -39,6 +40,44 @@ a {
 		color: #ffffff;
 		scale: 1.05;
 		border: 2px solid #083d60;
+	}
+}
+
+.lnk {
+	max-width: 400px;
+	border-radius: 5px;
+	border: none;
+	background-color: var(--btn-color);
+	color: var(--text-color);
+	font-size: 20px;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	padding: 0px 20px;
+	line-height: 35px;
+	font-weight: bold;
+	border: 2px solid var(--text-color);
+	&:hover {
+		background-color: #083d60;
+		color: #ffffff;
+		scale: 1.05;
+		border: 2px solid #083d60;
+	}
+}
+
+.ipt {
+	margin: 0;
+	height: 40px;
+	background-color: var(--btn-color);
+	border: 2px solid var(--text-color);
+	border-radius: 5px;
+	color: var(--text-color);
+	padding: 0 10px;
+	font-size: 1.2rem;
+	margin-right: 10px;
+	width: 300px;
+	&:focus {
+		outline: none;
 	}
 }
 
@@ -67,6 +106,11 @@ a {
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
+	backdrop-filter: blur(5px);
+}
+
+.cPointer {
+	cursor: pointer;
 }
 
 .mb {
@@ -93,6 +137,12 @@ a {
 	&:hover {
 		scale: 1.15;
 	}
+}
+.icon-no-hover {
+	cursor: pointer;
+	color: var(--text-color);
+	font-size: 1.5rem;
+	font-weight: bold;
 }
 
 [data-theme='dark'] {

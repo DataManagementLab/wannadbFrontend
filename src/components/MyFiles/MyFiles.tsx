@@ -1,21 +1,30 @@
 import { useState } from 'react';
-import FileViewer from '../FileViewer/FileViewer';
 import './MyFiles.scss';
+import MyDocument from '../../types/MyDocument';
+import DocumentViewer from '../DocumentViewer/DocumentViewer';
+import {
+	useShowChoiceNotification,
+	useShowNotification,
+} from '../../providers/NotificationProvider';
+import APIService from '../../utils/ApiService';
 
 interface Props {
-	fileNames: string[];
+	documents: MyDocument[];
 }
-
-// TODO component is unused
 
 /**
  * A component to list all the files of the user and view, delete them
- * @param filenames A list of the filenames of the user
+ * @param documents A list of documents to display
  */
-function MyFiles({ fileNames }: Props) {
-	const [viewFileName, setViewFileName] = useState('');
+function MyFiles({ documents }: Props) {
+	const showChoiceNotification = useShowChoiceNotification();
+	const showNotification = useShowNotification();
 
-	if (fileNames.length == 0) {
+	const [viewDocument, setViewDocument] = useState<MyDocument | undefined>(
+		undefined
+	);
+
+	if (documents.length == 0) {
 		return (
 			<div className="MyFiles">
 				<i>No files uploaded</i>
@@ -23,36 +32,62 @@ function MyFiles({ fileNames }: Props) {
 		);
 	}
 
+	const removeDocument = (document: MyDocument) => {
+		showChoiceNotification(
+			'Delete document',
+			`Are you sure you want to delete ${document.name}?`,
+			() => {
+				APIService.deleteDocument(document.id).then((res) => {
+					if (!res) {
+						showNotification('Error', 'Failed to delete document');
+						return;
+					}
+
+					window.location.reload();
+				});
+			},
+			() => {}
+		);
+	};
+
 	return (
 		<>
-			{viewFileName != '' && (
-				<FileViewer
-					file={new File([], viewFileName)}
+			{viewDocument && (
+				<DocumentViewer
+					document={viewDocument}
 					onClose={() => {
-						setViewFileName('');
+						setViewDocument(undefined);
 					}}
+					editable={true}
 				/>
 			)}
 			<div className="MyFiles">
-				{fileNames.map((fileName) => (
-					<div className="file hor" key={fileName}>
+				{documents.map((document) => (
+					<div className="file hor" key={document.id}>
 						<p className="name">
-							{fileName.split('.')[0]}
+							{document.name.split('.')[0]}
 							<span className="db">
-								{fileName.split('.')[1] != undefined
-									? '.' + fileName.split('.')[1]
+								{document.name.split('.')[1] != undefined
+									? '.' + document.name.split('.')[1]
 									: ''}
 							</span>
 						</p>
-						<button
-							className="view btn"
+						<i
+							className="bi bi-pencil icon"
 							onClick={() => {
-								setViewFileName(fileName);
+								setViewDocument(document);
 							}}
 						>
-							View
-						</button>
-						<button className="delete btn">Delete</button>
+							{/* View */}
+						</i>
+						<i
+							className="bi bi-x-circle icon"
+							onClick={() => {
+								removeDocument(document);
+							}}
+						>
+							{/* REMOVE */}
+						</i>
 					</div>
 				))}
 			</div>

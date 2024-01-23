@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useLoggedIn, useGetUsername } from '../../providers/UserProvider';
 import './OrgPage.scss';
 import { useUpdateOrganizations } from '../../providers/OrganizationProvider';
@@ -7,6 +7,10 @@ import Organization from '../../types/Organization';
 import { useShowChoiceNotification } from '../../providers/NotificationProvider';
 import APIService from '../../utils/ApiService';
 import Navbar from '../../components/Navbar/Navbar';
+import MyDocument from '../../types/MyDocument';
+import MyFiles from '../../components/MyFiles/MyFiles';
+import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
+import FileUpload from '../../components/FileUpload/FileUpload';
 
 /**
  * A page that displays information about an organization.
@@ -16,6 +20,7 @@ function OrgPage() {
 		new Organization('Error', -1)
 	);
 	const [members, setMembers] = useState<string[]>([]);
+	const [documents, setDocuments] = useState<MyDocument[]>([]);
 
 	const navigate = useNavigate();
 	const isLoggedIn = useLoggedIn();
@@ -23,6 +28,7 @@ function OrgPage() {
 	const updateOrganizations = useUpdateOrganizations();
 	const getUsername = useGetUsername();
 	const showChoice = useShowChoiceNotification();
+	const setLoadingScreen = useSetLoadingScreen();
 
 	const { id } = useParams();
 
@@ -30,6 +36,7 @@ function OrgPage() {
 		if (!isLoggedIn || !id) {
 			navigate('/');
 		}
+		setLoadingScreen(true, 'Loading organization...');
 		updateOrganizations().then((orgs) => {
 			const org = id
 				? orgs.find((org) => org.id === parseInt(id))
@@ -47,6 +54,10 @@ function OrgPage() {
 					return;
 				}
 				setMembers(members);
+			});
+			APIService.getDocumentForOrganization(org.id).then((docs) => {
+				setDocuments(docs);
+				setLoadingScreen(false);
 			});
 		});
 
@@ -116,8 +127,39 @@ function OrgPage() {
 						</li>
 					))}
 				</ul>
+				<h2>Document{documents.length > 1 ? 's' : ''}</h2>
+				<MyFiles documents={documents} />
+				<h2>Upload</h2>
+				<FileUpload
+					organizationProp={organization}
+					afterUpload={() => {
+						// refresh documents
+						APIService.getDocumentForOrganization(
+							organization.id
+						).then((docs) => {
+							setDocuments(docs);
+						});
+					}}
+				></FileUpload>
+				{documents.length > 0 && (
+					<div className="ver">
+						<h2>Docbase</h2>
+						<Link
+							className="lnk"
+							to={
+								'/organization/' +
+								organization.id +
+								'/docbase/new'
+							}
+							style={{ width: '100px' }}
+						>
+							<i className="bi bi-plus-square icon mr"></i>New
+						</Link>
+					</div>
+				)}
 				<button
-					className="btn mt"
+					className="btn"
+					style={{ marginBottom: '100px', marginTop: '50px' }}
 					onClick={() => {
 						window.history.back();
 					}}

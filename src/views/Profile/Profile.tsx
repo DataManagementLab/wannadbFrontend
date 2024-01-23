@@ -14,7 +14,6 @@ import {
 } from '../../providers/OrganizationProvider';
 import APIService from '../../utils/ApiService';
 import Navbar from '../../components/Navbar/Navbar';
-import MyFiles from '../../components/MyFiles/MyFiles';
 
 /**
  * The profile page component
@@ -28,8 +27,6 @@ function Profile() {
 	const logOut = useLogOut();
 
 	const [username] = useState(getUserName());
-
-	const [fileNames] = useState<string[]>([]);
 
 	const getOrganizations = useGetOrganizations();
 	const updateOrganizations = useUpdateOrganizations();
@@ -103,7 +100,7 @@ function Profile() {
 											{/*ADD MEMBER*/}
 										</i>
 										<i
-											className="bi bi-box-arrow-left icon"
+											className="bi bi-door-closed icon"
 											onClick={() => {
 												showChoice(
 													'Leave Organization',
@@ -134,13 +131,9 @@ function Profile() {
 						to="/organization/create"
 						style={{ marginTop: '25px' }}
 					>
-						Create New
+						<i className="bi bi-plus-square icon mr"></i>New
 					</Link>
 				</div>
-				<h2>
-					<span className="db">My</span>Files
-				</h2>
-				<MyFiles fileNames={fileNames} />
 				<div
 					className="ver"
 					style={{ width: '200px', marginTop: '25px' }}
@@ -152,7 +145,7 @@ function Profile() {
 							navigate('/');
 						}}
 					>
-						Logout
+						<i className="bi bi-box-arrow-left mr"></i>Logout
 					</button>
 				</div>
 			</div>

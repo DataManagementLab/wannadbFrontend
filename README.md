@@ -1,6 +1,8 @@
-# wannadbFrontend
-
-The wannadb as a web app.
+<div align="center">
+<img src="src/assets/logo150x150.png" />
+    <h1>wannadbFrontend</h1>
+    <p>The wannadb as a web app.</p>
+</div>
 
 ---
 
@@ -49,7 +51,7 @@ npm run prepare
 
 ## Start
 
-Tp start the frontend development server run:
+To start the frontend development server run:
 
 ```bash
 npm run start
