@@ -41,6 +41,21 @@ describe('APIService', () => {
 		'asada',
 		'12test2',
 	];
+	/**
+	 * Deletes all documents that are currently associated with the salt organisation
+	 * only used for Test purposes
+	 */
+	async function cleanseSaltDocs() {
+		const delDocs = await APIService.getDocumentForOrganization(
+			saltOrganisationID as number
+		);
+		//const before = delDocs.length;
+		for (let i = 0; i < delDocs.length; i++) {
+			await APIService.deleteDocument(delDocs[i].id);
+		}
+		//const after = await APIService.getDocumentForOrganization(saltOrganisationID as number);
+		//console.log(`deleted ${before - after.length} documents`);
+	}
 
 	beforeAll(async () => {
 		await APIService.register(salt, salt, false);
@@ -62,12 +77,7 @@ describe('APIService', () => {
 			});
 
 			// remove test date from salt organisation
-			const delDocs = await APIService.getDocumentForOrganization(
-				saltOrganisationID as number
-			);
-			for (let i = 0; i < delDocs.length; i++) {
-				await APIService.deleteDocument(delDocs[i].id);
-			}
+			cleanseSaltDocs();
 			await APIService.deleteUser(salt, salt);
 			/*for(let i = 0; i < blobs.length; i++) {
 				await APIService.deleteDocument(blobs[i]);
@@ -250,7 +260,8 @@ describe('APIService', () => {
 		);
 		expect(result).toBe('File uploaded successfully');
 
-		//// delete newly uploaded file
+		// maybe delete newly uploaded file
+
 		/*
 		// old Test used organisationId[0] as organisationId which may not be correct
 		const organisationId = await APIService.getOrganizations(); 
@@ -258,7 +269,6 @@ describe('APIService', () => {
 		// @ts-expect-error
 		const result = await APIService.upload(data, organisationId[0]);
 		
-
 		expect(result).toBe('File uploaded successfully');
 	*/
 	});
@@ -266,7 +276,7 @@ describe('APIService', () => {
 		await APIService.login(salt, salt);
 
 		/*
-		const upRes = await APIService.upload([new Blob(['Testfile content haha'], { type: 'text/plain' })], saltOrganisationID as number);
+		const upRes = await APIService.upload([new Blob(['Testfile content'], { type: 'text/plain' })], saltOrganisationID as number);
 		expect(upRes).toBe('File uploaded successfully');
 		*/
 
@@ -285,23 +295,27 @@ describe('APIService', () => {
 			).length
 		);
 	});
-
 	// test dokumentBase
 
 	// test getTaskStatus
 
-	// test getUserNameSugesstion
 	test('should get user name suggestions successfully', async () => {
 		await APIService.login(salt, salt);
-		expect(
-			(await APIService.getUserNameSuggestion('123')).length
-		).toBeGreaterThanOrEqual(2);
-		expect(
-			(await APIService.getUserNameSuggestion('12')).length
-		).toBeGreaterThanOrEqual(4);
-		expect(
-			(await APIService.getUserNameSuggestion('1')).length
-		).toBeGreaterThanOrEqual(5);
+		const sug123 = await APIService.getUserNameSuggestion('123');
+		expect(sug123.length).toBe(2);
+		expect(sug123.sort()).toEqual(['123test', '123test2'].sort());
+
+		const sug12 = await APIService.getUserNameSuggestion('12');
+		expect(sug12.length).toBe(4);
+		expect(sug12.sort()).toEqual(
+			['12test', '12test2', '123test', '123test2'].sort()
+		);
+
+		const sug1 = await APIService.getUserNameSuggestion('1');
+		expect(sug1.length).toBe(5);
+		expect(sug1.sort()).toEqual(
+			['1test', '12test', '12test2', '123test', '123test2'].sort()
+		);
 		expect(
 			(await APIService.getUserNameSuggestion('001122233')).length
 		).toBe(0);
@@ -310,12 +324,7 @@ describe('APIService', () => {
 	test('should get documents for organisation successfully', async () => {
 		await APIService.login(salt, salt);
 		// cleanse salt organisation documents
-		const delDocs = await APIService.getDocumentForOrganization(
-			saltOrganisationID as number
-		);
-		for (let i = 0; i < delDocs.length; i++) {
-			await APIService.deleteDocument(delDocs[i].id);
-		}
+		await cleanseSaltDocs();
 		const resp = await APIService.upload(
 			blobs,
 			saltOrganisationID as number
@@ -330,7 +339,51 @@ describe('APIService', () => {
 			expect(documents[i].content).toBe(buffer.toString());
 		}
 	});
-
+	test('should update file successfully', async () => {
+		await APIService.login(salt, salt);
+		// org with only one file
+		await cleanseSaltDocs();
+		const res = await APIService.upload(
+			[new Blob(['test file content'], { type: 'text/plain' })],
+			saltOrganisationID as number
+		);
+		expect(res).toBe('File uploaded successfully');
+		const documents = await APIService.getDocumentForOrganization(
+			saltOrganisationID as number
+		);
+		expect(documents.length).toBe(1);
+		await APIService.updateDocumentContent(
+			documents[0].id,
+			'updated test file'
+		);
+		const oneFile = await APIService.getDocumentForOrganization(
+			saltOrganisationID as number
+		);
+		expect(oneFile.length).toBe(1);
+		expect(oneFile[0].content).toBe('updated test file');
+		// org with multiple files
+		await APIService.deleteDocument(documents[0].id);
+		await APIService.upload(blobs, saltOrganisationID as number);
+		const mulDoc1 = await APIService.getDocumentForOrganization(
+			saltOrganisationID as number
+		);
+		const changedID = mulDoc1[4].id;
+		await APIService.updateDocumentContent(changedID, 'updated test file');
+		const mulDoc2 = await APIService.getDocumentForOrganization(
+			saltOrganisationID as number
+		);
+		// test changed filed
+		expect(mulDoc2.filter((doc) => doc.id === changedID)![0].content).toBe(
+			'updated test file'
+		);
+		// test unchanged files
+		const unchanged = mulDoc2.filter((doc) => doc.id !== changedID);
+		unchanged.forEach((doc) => {
+			expect(
+				mulDoc2.filter((doc2) => doc2.id === doc.id)[0].content
+			).toBe(doc.content);
+		});
+	});
 	// Habe die Methoden im APIService gelöscht weil die eh nur als platzhalter für
 	// spätere features gedient haben, die jetzt aber durch andere endpunkte ersetzt wurden und so
 	// nicht mehr gebraucht werden.
