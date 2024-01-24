@@ -145,6 +145,23 @@ input {
 	font-weight: bold;
 }
 
+.my-list-item {
+	font-size: 1.2rem;
+	font-weight: bold;
+	list-style-type: none;
+	margin-left: -20px;
+	margin-bottom: 15px;
+	// make a circle in front of the list item in blue
+	&::before {
+		content: '•';
+		color: #083d60;
+		display: inline-block;
+		width: 1em;
+		margin-left: -1em;
+		font-size: 1.5rem;
+	}
+}
+
 [data-theme='dark'] {
 	--bg-color: #020c13;
 	--btn-color: #010407;

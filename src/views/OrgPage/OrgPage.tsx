@@ -122,13 +122,9 @@ function OrgPage() {
 					</>
 				)}
 				<h2>Member{members.length > 1 ? 's' : ''}</h2>
-				<ul
-					style={{
-						fontSize: '1.2rem',
-					}}
-				>
+				<ul>
 					{members.map((member) => (
-						<li className="mb" key={member}>
+						<li className="my-list-item" key={member}>
 							{member}
 						</li>
 					))}
@@ -152,7 +148,9 @@ function OrgPage() {
 					{documentBases.length > 0 && (
 						<ul>
 							{documentBases.map((docbase) => (
-								<li key={docbase.id}>{docbase.name}</li>
+								<li key={docbase.id} className="my-list-item">
+									{docbase.name}
+								</li>
 							))}
 						</ul>
 					)}
