@@ -72,7 +72,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 		const updateInterval = setInterval(() => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			APIService.getTaskStatus(taskId).then((res): any => {
-				//console.log(res);
+				console.log(res);
 				if (res == undefined || res.state === 'FAILURE') {
 					setLoadingScreen(false);
 					showNotification(
@@ -91,6 +91,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 					const docBase = new DocBase(basename, attList);
 					for (const nugget of res.meta.document_base_to_ui.msg
 						.nuggets) {
+						console.log(nugget);
 						try {
 							docBase.addNugget(
 								nugget.document.name,
@@ -118,8 +119,13 @@ export function DocBaseTaskProvider({ children }: Props) {
 					info = res.state + '...';
 				} */
 
-				const info =
-					res.state + (res.state.endsWith('...') ? '' : '...');
+				let info = res.state;
+
+				if (res.meta.status !== undefined) {
+					info = res.meta.status;
+				}
+
+				info += info.endsWith('...') ? '' : '...';
 
 				// update loading screen
 				setLoadingScreen(
