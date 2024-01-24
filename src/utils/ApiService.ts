@@ -376,6 +376,33 @@ class APIService {
 	}
 
 	/**
+	 * Get all document base that are created for the corresponding organization.
+	 * @param organizationID The ID of the organization
+	 * @returns A promise that resolves to all document bases of the organization
+	 */
+	static async getDocumentBaseForOrganization(
+		organizationID: number
+	): Promise<MyDocument[]> {
+		// NILS MACH MA TEST
+		try {
+			const response = await axios.get(
+				`${this.host}/data/organization/get/documentbase/${organizationID}`,
+				{
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				}
+			);
+			if (response.status === 200) {
+				return response.data as MyDocument[];
+			}
+			return [];
+		} catch (err) {
+			return [];
+		}
+	}
+
+	/**
 	 * Update the content of a document.
 	 * @param documentId The ID of the document
 	 * @param newContent The new content of the document
@@ -458,8 +485,8 @@ class APIService {
 			const body = new FormData();
 			body.append('organisationId', organizationId.toString());
 			body.append('baseName', baseName);
-			body.append('document_ids', JSON.stringify(documentIDs));
-			body.append('attributes', JSON.stringify(attributes));
+			body.append('document_ids', documentIDs.join(','));
+			body.append('attributes', attributes.join(','));
 			body.append('authorization', this.getUserToken());
 			const resp = await axios.post(url, body);
 			/* resp = await axios.post(
@@ -493,7 +520,9 @@ class APIService {
 		// NILS MACH MA TEST
 
 		try {
-			const url = `${this.host}/core/status/${taskId}`;
+			const url = `${
+				this.host
+			}/core/status/${this.getUserToken()}/${taskId}`;
 			const resp = await axios.get(url);
 			return resp.data;
 		} catch (error) {

@@ -72,8 +72,8 @@ export function DocBaseTaskProvider({ children }: Props) {
 		const updateInterval = setInterval(() => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			APIService.getTaskStatus(taskId).then((res): any => {
-				console.log(res);
-				if (res == undefined) {
+				//console.log(res);
+				if (res == undefined || res.state === 'FAILURE') {
 					setLoadingScreen(false);
 					showNotification(
 						'Error',
@@ -86,8 +86,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 					return;
 				}
 
-				// when task was successful
-				if (res.state === 'SUCCESS' || res.msg === 1) {
+				if (res.state === 'SUCCESS') {
 					setLoadingScreen(false);
 					const docBase = new DocBase(basename, attList);
 					for (const nugget of res.meta.document_base_to_ui.msg
@@ -114,10 +113,13 @@ export function DocBaseTaskProvider({ children }: Props) {
 				}
 
 				// set info msg
-				let info = res.meta.message + ' (' + res.state + ')...';
+				/* let info = res.meta.message + ' (' + res.state + ')...';
 				if (res.meta.message === '' || res.meta.message === 1) {
 					info = res.state + '...';
-				}
+				} */
+
+				const info =
+					res.state + (res.state.endsWith('...') ? '' : '...');
 
 				// update loading screen
 				setLoadingScreen(

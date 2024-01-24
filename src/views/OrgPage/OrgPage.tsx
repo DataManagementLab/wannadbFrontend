@@ -21,6 +21,7 @@ function OrgPage() {
 	);
 	const [members, setMembers] = useState<string[]>([]);
 	const [documents, setDocuments] = useState<MyDocument[]>([]);
+	const [documentBases, setDocumentBases] = useState<MyDocument[]>([]);
 
 	const navigate = useNavigate();
 	const isLoggedIn = useLoggedIn();
@@ -57,7 +58,12 @@ function OrgPage() {
 			});
 			APIService.getDocumentForOrganization(org.id).then((docs) => {
 				setDocuments(docs);
-				setLoadingScreen(false);
+				APIService.getDocumentBaseForOrganization(org.id).then(
+					(docs) => {
+						setDocumentBases(docs);
+						setLoadingScreen(false);
+					}
+				);
 			});
 		});
 
@@ -141,9 +147,17 @@ function OrgPage() {
 						});
 					}}
 				></FileUpload>
-				{documents.length > 0 && (
-					<div className="ver">
-						<h2>Docbase</h2>
+				<div className="ver">
+					<h2>Docbase</h2>
+					{documentBases.length > 0 && (
+						<ul>
+							{documentBases.map((docbase) => (
+								<li key={docbase.id}>{docbase.name}</li>
+							))}
+						</ul>
+					)}
+					{documentBases.length === 0 && <i>No Document Base</i>}
+					{documents.length > 0 && (
 						<Link
 							className="lnk"
 							to={
@@ -155,8 +169,13 @@ function OrgPage() {
 						>
 							<i className="bi bi-plus-square icon mr"></i>New
 						</Link>
-					</div>
-				)}
+					)}
+					{documents.length == 0 && (
+						<i>
+							Please upload a document to create a document base.
+						</i>
+					)}
+				</div>
 				<button
 					className="btn"
 					style={{ marginBottom: '100px', marginTop: '50px' }}
