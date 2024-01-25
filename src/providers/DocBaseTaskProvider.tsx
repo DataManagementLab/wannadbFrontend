@@ -2,9 +2,14 @@
 import React, { ReactNode } from 'react';
 import DocbaseViewer from '../components/DocbaseViewer/DocbaseViewer';
 import DocBase from '../types/DocBase';
-import { useSetLoadingScreen } from './LoadingScreenProvider';
+import {
+	useSetLoadingScreen,
+	useSetLoadingScreenLock,
+} from './LoadingScreenProvider';
 import APIService from '../utils/ApiService';
 import { useShowNotification } from './NotificationProvider';
+import Logger from '../utils/Logger';
+import { MyAudio, usePlayAudio } from './AudioProvider';
 
 const DocBaseTaskContext = React.createContext({
 	isDocbaseTaskRunning: (): boolean => {
@@ -48,7 +53,9 @@ interface Props {
  */
 export function DocBaseTaskProvider({ children }: Props) {
 	const setLoadingScreen = useSetLoadingScreen();
+	const setLoadingScreenLock = useSetLoadingScreenLock();
 	const showNotification = useShowNotification();
+	const playAudio = usePlayAudio();
 
 	const [isRunning, setIsRunning] = React.useState(false);
 	const [docBase, setDocBase] = React.useState<DocBase | undefined>(
@@ -67,13 +74,15 @@ export function DocBaseTaskProvider({ children }: Props) {
 			'Please wait...',
 			taskId
 		);
+		setLoadingScreenLock(true);
 		setIsRunning(true);
 
 		const updateInterval = setInterval(() => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			APIService.getTaskStatus(taskId).then((res): any => {
-				console.log(res);
+				Logger.log(res);
 				if (res == undefined || res.state === 'FAILURE') {
+					setLoadingScreenLock(false);
 					setLoadingScreen(false);
 					showNotification(
 						'Error',
@@ -87,11 +96,14 @@ export function DocBaseTaskProvider({ children }: Props) {
 				}
 
 				if (res.state === 'SUCCESS') {
+					setLoadingScreenLock(false);
 					setLoadingScreen(false);
+					// play sound
+					playAudio(MyAudio.BING);
+
 					const docBase = new DocBase(basename, attList);
 					for (const nugget of res.meta.document_base_to_ui.msg
 						.nuggets) {
-						console.log(nugget);
 						try {
 							docBase.addNugget(
 								nugget.document.name,
@@ -132,7 +144,8 @@ export function DocBaseTaskProvider({ children }: Props) {
 					true,
 					'Creating Docbase ' + basename + '...',
 					info,
-					taskId
+					taskId,
+					true
 				);
 			});
 		}, 1000);

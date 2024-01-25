@@ -34,7 +34,6 @@ function DocBaseOverview({ organizationProp }: Props) {
 	}, []);
 
 	const loadDocBases = (orgID: number) => {
-		console.log('loadDocBases: ' + orgID);
 		if (orgID === -1) {
 			setDocBases([]);
 			return;

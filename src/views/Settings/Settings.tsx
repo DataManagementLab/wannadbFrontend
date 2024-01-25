@@ -1,5 +1,9 @@
 import Navbar from '../../components/Navbar/Navbar';
 import {
+	useIsAudioEnabled,
+	useToggleAudio,
+} from '../../providers/AudioProvider';
+import {
 	useAcceptCookie,
 	useCookieAllowed,
 	useRejectCookies,
@@ -17,6 +21,9 @@ function Settings() {
 
 	const isDarkMode = useIsDarkTheme();
 	const toggleTheme = useToggleTheme();
+
+	const isSoundEnabled = useIsAudioEnabled();
+	const toggleSound = useToggleAudio();
 
 	return (
 		<div className="Settings">
@@ -41,6 +48,11 @@ function Settings() {
 						</span>
 						earance
 					</h2>
+					<i>
+						{isDarkMode
+							? 'Dark Mode is enabled'
+							: 'Light Mode is enabled'}
+					</i>
 					<button className="btn" onClick={toggleTheme}>
 						{isDarkMode ? (
 							<i className="bi bi-brightness-high-fill mr icon"></i>
@@ -48,6 +60,18 @@ function Settings() {
 							<i className="bi bi-moon-fill mr icon"></i>
 						)}
 						{isDarkMode ? 'Light Mode' : 'Dark Mode'}
+					</button>
+					<h2>
+						S<span className="db">ou</span>nd
+					</h2>
+					<i>{isSoundEnabled() ? 'Sound is On' : 'Sound is Off'}</i>
+					<button className="btn" onClick={toggleSound}>
+						{!isSoundEnabled() ? (
+							<i className="bi bi-volume-up-fill mr icon"></i>
+						) : (
+							<i className="bi bi-volume-mute-fill mr icon"></i>
+						)}
+						{!isSoundEnabled() ? 'Sound On' : 'Sound Off'}
 					</button>
 					<h2>
 						Stora<span className="db">ge</span>
