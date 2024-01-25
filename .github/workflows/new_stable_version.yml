@@ -15,7 +15,7 @@ jobs:
               uses: peter-evans/create-pull-request@v3
               with:
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  branch: main
-                  base: stable
+                  branch: stable
+                  base: main
                   title: Automated New Stable Version
                   body: This pull request was automatically created by the workflow and contains the latest stable version of the repository.
