@@ -10,6 +10,7 @@ import {
 	useShowChoiceNotification,
 	useShowNotification,
 } from '../../providers/NotificationProvider';
+import Icon from '../Icon/Icon';
 
 interface Props {
 	organizationProp: Organization | undefined;
@@ -159,22 +160,22 @@ function DocBaseOverview({ organizationProp }: Props) {
 							>
 								{docBase.name}
 							</li>
-							<i
-								className="bi bi-list-task icon"
-								onClick={() => {
+							<Icon
+								cls="bi bi-eye icon"
+								onClicked={() => {
 									loadDocBase(docBase);
 								}}
 							>
-								{/* View */}
-							</i>
-							<i
-								className="bi bi-x-circle icon"
-								onClick={() => {
+								View DocBase
+							</Icon>
+							<Icon
+								cls="bi bi-x-circle"
+								onClicked={() => {
 									removeDocument(docBase);
 								}}
 							>
-								{/* REMOVE */}
-							</i>
+								Delete DocBase
+							</Icon>
 						</div>
 					))}
 				</ul>

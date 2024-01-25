@@ -9,6 +9,7 @@ import { useGetOrganizations } from '../../providers/OrganizationProvider';
 import FileViewer from '../FileViewer/FileViewer';
 import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
 import Organization from '../../types/Organization';
+import Icon from '../Icon/Icon';
 
 interface Props {
 	organizationProp: Organization | undefined;
@@ -177,14 +178,18 @@ function FileUpload({ organizationProp, afterUpload }: Props) {
 				<li className="file" key={index}>
 					<div className="dot"></div>
 					<p>{file.name}</p>
-					<i
-						className="bi bi-eye icon"
-						onClick={() => setViewFile(file)}
-					></i>
-					<i
-						className="bi bi-x-circle icon"
-						onClick={() => removeFile(index)}
-					></i>
+					<Icon
+						cls="bi bi-eye icon"
+						onClicked={() => setViewFile(file)}
+					>
+						View Document
+					</Icon>
+					<Icon
+						cls="bi bi-x-circle icon"
+						onClicked={() => removeFile(index)}
+					>
+						Remove Document
+					</Icon>
 				</li>
 			))}
 			<div className="ver">

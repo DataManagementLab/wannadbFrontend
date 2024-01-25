@@ -21,7 +21,13 @@ function UserNotification({
 }: Props) {
 	return (
 		<div>
-			<div className="background" onClick={onClose}></div>
+			<div
+				className="background"
+				style={{
+					zIndex: 99999999,
+				}}
+				onClick={onClose}
+			></div>
 			<div className="UserNotification">
 				<h1>{heading}</h1>
 				<p>{info}</p>

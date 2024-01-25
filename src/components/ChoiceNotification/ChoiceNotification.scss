@@ -12,8 +12,9 @@
 	border: 2px solid var(--text-color);
 	color: var(--text-color);
 	box-shadow: 0 0 10px var(--text-color);
+	z-index: 100000000;
+
 	p {
-		margin-left: 20px;
 		text-align: center;
 		padding: 10px;
 	}

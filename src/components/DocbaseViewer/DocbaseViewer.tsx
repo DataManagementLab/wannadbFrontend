@@ -1,4 +1,5 @@
 import DocBase from '../../types/DocBase';
+import AttributeAdder from '../AttributeAdder/AttributeAdder';
 import NuggetDocumentViewer from '../NuggetViewer/NuggetDocumentViewer';
 import './DocbaseViewer.scss';
 
@@ -26,7 +27,14 @@ function DocbaseViewer({ docBase, onClose }: Props) {
 			<div className="DocbaseViewer">
 				<h1>{docBase.name}</h1>
 				<h2>Attributes</h2>
-				<ul className="ver">
+				<AttributeAdder
+					populateAble={false}
+					onListChange={(list: string[]) => {
+						docBase.attributes = list;
+					}}
+					initialList={docBase.attributes}
+				></AttributeAdder>
+				{/* <ul className="ver">
 					{docBase.attributes.map((attribute, index) => {
 						return (
 							<li key={index}>
@@ -34,7 +42,7 @@ function DocbaseViewer({ docBase, onClose }: Props) {
 							</li>
 						);
 					})}
-				</ul>
+				</ul> */}
 				<h2>Documents</h2>
 				{docBase.docs.map((doc, index) => {
 					return <NuggetDocumentViewer key={index} doc={doc} />;

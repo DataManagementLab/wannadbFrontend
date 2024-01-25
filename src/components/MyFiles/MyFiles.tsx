@@ -7,6 +7,7 @@ import {
 	useShowNotification,
 } from '../../providers/NotificationProvider';
 import APIService from '../../utils/ApiService';
+import Icon from '../Icon/Icon';
 
 interface Props {
 	documents: MyDocument[];
@@ -72,22 +73,22 @@ function MyFiles({ documents }: Props) {
 									: ''}
 							</span>
 						</p>
-						<i
-							className="bi bi-pencil icon"
-							onClick={() => {
+						<Icon
+							cls="bi bi-pencil icon"
+							onClicked={() => {
 								setViewDocument(document);
 							}}
 						>
-							{/* View */}
-						</i>
-						<i
-							className="bi bi-x-circle icon"
-							onClick={() => {
+							Edit Document
+						</Icon>
+						<Icon
+							cls="bi bi-x-circle icon"
+							onClicked={() => {
 								removeDocument(document);
 							}}
 						>
-							{/* REMOVE */}
-						</i>
+							Delete Document
+						</Icon>
 					</div>
 				))}
 			</div>

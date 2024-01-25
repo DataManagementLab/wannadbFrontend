@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './AttributeAdder.scss';
+import Icon from '../Icon/Icon';
 
 interface Props {
 	populateAble: boolean;
@@ -58,33 +59,41 @@ function AttributeAdder({
 
 	return (
 		<div className="AttributeAdder">
-			<p>Enter the attribute names.</p>
+			{attList.length === 0 && (
+				<p>
+					<i>Enter a attribute...</i>
+				</p>
+			)}
 			{attList.map((att, i) => {
 				return (
 					<div className="attribute" key={i}>
 						<p className="name">{att}</p>
 						{populateAble && (
-							<i
-								className="bi bi-play icon"
+							<Icon
+								cls="bi bi-play"
 								style={{
 									marginRight: '10px',
 									fontSize: '1.9rem',
 								}}
-							></i>
+							>
+								Populate
+							</Icon>
 						)}
 						{populateAble && (
-							<i
-								className="bi bi-arrow-clockwise icon"
+							<Icon
+								cls="bi bi-arrow-clockwise icon"
 								style={{
 									marginRight: '10px',
 									fontSize: '1.7rem',
 								}}
-							></i>
+							></Icon>
 						)}
-						<i
-							className="bi bi-trash icon"
-							onClick={() => deleteAttribute(att)}
-						></i>
+						<Icon
+							cls="bi bi-trash icon"
+							onClicked={() => deleteAttribute(att)}
+						>
+							Remove Attribute
+						</Icon>
 					</div>
 				);
 			})}
@@ -96,13 +105,15 @@ function AttributeAdder({
 					onKeyDown={handlekeyPress}
 					value={inputvalue}
 				/>
-				<i
-					className="bi bi-plus-square icon addBtn"
-					onClick={() => {
+				<Icon
+					cls="bi bi-plus-square icon addBtn"
+					onClicked={() => {
 						addAttribute(inputvalue);
 						setInputValue('');
 					}}
-				></i>
+				>
+					Add Attribute
+				</Icon>
 			</div>
 			{populateAble && (
 				<button className="btn populateBtn">

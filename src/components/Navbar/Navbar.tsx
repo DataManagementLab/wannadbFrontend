@@ -3,6 +3,7 @@ import './Navbar.scss';
 import { useState } from 'react';
 import { useGetUsername } from '../../providers/UserProvider';
 import { useIsDarkTheme, useToggleTheme } from '../../providers/ThemeProvider';
+import Icon from '../Icon/Icon';
 
 /**
  * The navbar component
@@ -42,31 +43,28 @@ function Navbar() {
 					}}
 				></div>
 				{isDarkMode ? (
-					<i
-						className="bi bi-brightness-high-fill mr icon-no-hover"
+					<Icon
+						cls="bi bi-brightness-high-fill mr icon-no-hover"
 						style={{
 							fontSize: '1.2rem',
 						}}
-						onClick={toggleTheme}
-					></i>
+						onClicked={toggleTheme}
+					>
+						Turn on the lights
+					</Icon>
 				) : (
-					<i
-						className="bi bi-moon-fill mr icon-no-hover"
+					<Icon
+						cls="bi bi-moon-fill mr icon-no-hover"
 						style={{
 							fontSize: '1.2rem',
 						}}
-						onClick={toggleTheme}
-					></i>
+						onClicked={toggleTheme}
+					>
+						Turn off the lights
+					</Icon>
 				)}
 				<Link to="/">Home</Link>
 				<Link to="/about">About</Link>
-				{/* 				<a
-					href="https://www.youtube.com/watch?v=A7AjtPGt2rM"
-					target="_blank"
-				>
-					About
-				</a>
- */}{' '}
 				<Link to="/settings">Settings</Link>
 				<Link to="/help">
 					{/* <i className="bi bi-question-circle icon"></i> */}

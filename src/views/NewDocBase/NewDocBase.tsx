@@ -18,6 +18,7 @@ import {
 	useIsDocbaseTaskRunning,
 } from '../../providers/DocBaseTaskProvider';
 import getRandomBaseName from '../../data/getRandomBaseName';
+import Icon from '../../components/Icon/Icon';
 
 /**
  * A page for creating a new Docbase
@@ -194,17 +195,21 @@ function NewDocBase() {
 					{documents.map((doc) => {
 						return (
 							<div key={doc.id} className="docRow hor cPointer">
-								<i
-									className={
+								<Icon
+									cls={
 										'bi icon ' +
 										(selectedDocuments.includes(doc.id)
 											? 'bi-check-circle'
 											: 'bi-circle')
 									}
-									onClick={() => {
+									onClicked={() => {
 										onDocumentClick(doc.id);
 									}}
-								></i>
+								>
+									{selectedDocuments.includes(doc.id)
+										? 'Unselect Document'
+										: 'Select Document'}
+								</Icon>
 								<p
 									style={{
 										minWidth: '300px',
@@ -215,12 +220,14 @@ function NewDocBase() {
 								>
 									<b>{doc.name}</b>
 								</p>
-								<i
-									className="bi bi-eye icon"
-									onClick={() => {
+								<Icon
+									cls="bi bi-eye icon"
+									onClicked={() => {
 										setViewDocument(doc);
 									}}
-								></i>
+								>
+									View Document
+								</Icon>
 							</div>
 						);
 					})}

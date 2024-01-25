@@ -1,0 +1,14 @@
+.iconInfo {
+	position: fixed;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: var(--btn-color);
+	border-radius: 15px;
+	z-index: 1000000;
+	padding: 15px;
+	color: var(--text-color);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.137);
+	font-weight: bold;
+	transition: all 0.2s ease-in-out;
+}

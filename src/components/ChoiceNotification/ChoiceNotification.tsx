@@ -25,7 +25,13 @@ function ChoiceNotification({
 }: Props) {
 	return (
 		<div>
-			<div className="background" onClick={onReject}></div>
+			<div
+				className="background"
+				onClick={onReject}
+				style={{
+					zIndex: 99999999,
+				}}
+			></div>
 			<div className="ChoiceNotification">
 				<h1>{heading}</h1>
 				<p>{info}</p>
