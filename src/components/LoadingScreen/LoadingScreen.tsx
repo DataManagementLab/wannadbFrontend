@@ -38,7 +38,13 @@ function LoadingScreen({ heading, info = '', id }: Props) {
 				<p className="idBox">
 					<i>{id}</i>
 				</p>
-				<p>{info}</p>
+				<p
+					style={{
+						height: '50px',
+					}}
+				>
+					{info}
+				</p>
 				<div className="loadingAnimation">
 					<div className="lds-default">
 						<div></div>

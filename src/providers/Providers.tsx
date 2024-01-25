@@ -6,6 +6,7 @@ import { ThemeProvider } from './ThemeProvider';
 import { UserProvider } from './UserProvider';
 import { LoadingScreenProvider } from './LoadingScreenProvider';
 import { DocBaseTaskProvider } from './DocBaseTaskProvider';
+import { AudioProvider } from './AudioProvider';
 
 interface Props {
 	children: ReactNode;
@@ -20,13 +21,15 @@ export function Providers({ children }: Props) {
 		<NotificationProvider>
 			<LoadingScreenProvider>
 				<StorageProvider>
-					<ThemeProvider>
-						<OrganizationProvider>
-							<DocBaseTaskProvider>
-								<UserProvider>{children}</UserProvider>
-							</DocBaseTaskProvider>
-						</OrganizationProvider>
-					</ThemeProvider>
+					<AudioProvider>
+						<ThemeProvider>
+							<OrganizationProvider>
+								<DocBaseTaskProvider>
+									<UserProvider>{children}</UserProvider>
+								</DocBaseTaskProvider>
+							</OrganizationProvider>
+						</ThemeProvider>
+					</AudioProvider>
 				</StorageProvider>
 			</LoadingScreenProvider>
 		</NotificationProvider>

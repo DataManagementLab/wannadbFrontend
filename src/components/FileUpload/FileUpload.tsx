@@ -117,15 +117,17 @@ function FileUpload({ organizationProp, afterUpload }: Props) {
 					}}
 				/>
 			)}
-			{getOrganizations().length === 1 && (
+			{(organizationProp === undefined && getOrganizations().length) ===
+				1 && (
 				<p>
-					<b>Organization:</b> {getOrganizations()[0].name}
+					Organization:{' '}
+					<b className="ml">{getOrganizations()[0].name}</b>
 				</p>
 			)}
 			{organizationProp == undefined && getOrganizations().length > 1 && (
 				<div className="hor mb">
 					<p>
-						<b>Select a Organization:</b>
+						<b>Select an Organization:</b>
 					</p>
 					<select
 						className="btn"

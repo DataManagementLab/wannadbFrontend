@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useLoggedIn, useGetUsername } from '../../providers/UserProvider';
 import './OrgPage.scss';
 import { useUpdateOrganizations } from '../../providers/OrganizationProvider';
@@ -11,6 +11,7 @@ import MyDocument from '../../types/MyDocument';
 import MyFiles from '../../components/MyFiles/MyFiles';
 import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
 import FileUpload from '../../components/FileUpload/FileUpload';
+import DocBaseOverview from '../../components/DocBaseOverview/DocBaseOverview';
 
 /**
  * A page that displays information about an organization.
@@ -21,7 +22,7 @@ function OrgPage() {
 	);
 	const [members, setMembers] = useState<string[]>([]);
 	const [documents, setDocuments] = useState<MyDocument[]>([]);
-	const [documentBases, setDocumentBases] = useState<MyDocument[]>([]);
+	const [render, setRender] = useState<boolean>(false);
 
 	const navigate = useNavigate();
 	const isLoggedIn = useLoggedIn();
@@ -58,12 +59,8 @@ function OrgPage() {
 			});
 			APIService.getDocumentForOrganization(org.id).then((docs) => {
 				setDocuments(docs);
-				APIService.getDocumentBaseForOrganization(org.id).then(
-					(docs) => {
-						setDocumentBases(docs);
-						setLoadingScreen(false);
-					}
-				);
+				setLoadingScreen(false);
+				setRender(true);
 			});
 		});
 
@@ -143,37 +140,8 @@ function OrgPage() {
 						});
 					}}
 				></FileUpload>
-				<div className="ver">
-					<h2>Docbase</h2>
-					{documentBases.length > 0 && (
-						<ul>
-							{documentBases.map((docbase) => (
-								<li key={docbase.id} className="my-list-item">
-									{docbase.name}
-								</li>
-							))}
-						</ul>
-					)}
-					{documentBases.length === 0 && <i>No Document Base</i>}
-					{documents.length > 0 && (
-						<Link
-							className="lnk"
-							to={
-								'/organization/' +
-								organization.id +
-								'/docbase/new'
-							}
-							style={{ width: '100px' }}
-						>
-							<i className="bi bi-plus-square icon mr"></i>New
-						</Link>
-					)}
-					{documents.length == 0 && (
-						<i>
-							Please upload a document to create a document base.
-						</i>
-					)}
-				</div>
+				<h2>Docbase</h2>
+				{render && <DocBaseOverview organizationProp={organization} />}
 				<button
 					className="btn"
 					style={{ marginBottom: '100px', marginTop: '50px' }}
