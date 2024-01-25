@@ -151,7 +151,6 @@ input {
 	list-style-type: none;
 	margin-left: -20px;
 	margin-bottom: 15px;
-	// make a circle in front of the list item in blue
 	&::before {
 		content: '•';
 		color: #083d60;

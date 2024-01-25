@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.scss';
 import { useState } from 'react';
-import { useGetUsername } from '../../providers/UserProvider';
+import { useGetUsername, useLogOut } from '../../providers/UserProvider';
 import Navbar from '../../components/Navbar/Navbar';
 import FileUpload from '../../components/FileUpload/FileUpload';
+import DocBaseOverview from '../../components/DocBaseOverview/DocBaseOverview';
 
 /**
  * The home page component
@@ -11,7 +12,7 @@ import FileUpload from '../../components/FileUpload/FileUpload';
 function Home() {
 	const getUserName = useGetUsername();
 	const navigate = useNavigate();
-	//const logOut = useLogOut();
+	const logOut = useLogOut();
 
 	const [username] = useState(getUserName());
 
@@ -34,11 +35,13 @@ function Home() {
 						Document <span className="db">Up</span>load
 					</h2>
 					<FileUpload organizationProp={undefined}></FileUpload>
-					{/* <AttributeAdder></AttributeAdder> */}
-					{
-						// TODO: Only for development (remove later)
-					}
-					{/* <button
+					<h2>
+						Doc<span className="db">Ba</span>se
+					</h2>
+					<DocBaseOverview
+						organizationProp={undefined}
+					></DocBaseOverview>
+					<button
 						className="btn"
 						style={{
 							marginTop: '100px',
@@ -49,7 +52,7 @@ function Home() {
 						}}
 					>
 						<i className="bi bi-box-arrow-left mr"></i>Logout
-					</button> */}
+					</button>
 				</div>
 			</div>
 		);
