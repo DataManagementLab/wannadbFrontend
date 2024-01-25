@@ -1,16 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './AttributeAdder.scss';
+import Icon from '../Icon/Icon';
 
 interface Props {
 	populateAble: boolean;
 	onListChange: (list: string[]) => void;
+	initialList?: string[];
 }
 
 /**
  * A component that allows the user to add attributes to there document base
  */
-function AttributeAdder({ populateAble = true, onListChange }: Props) {
+function AttributeAdder({
+	populateAble = true,
+	onListChange,
+	initialList = [],
+}: Props) {
 	const [attList, setAttList] = useState<string[]>([]);
+
+	useEffect(
+		() => {
+			if (
+				import.meta.env.VITE_APP_LOG === 'true' &&
+				initialList.length == 0
+			) {
+				initialList.push('Country', 'Animal');
+			}
+			setAttributeList(initialList);
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[]
+	);
+
 	const [inputvalue, setInputValue] = useState<string>('');
 
 	const addAttribute = (att: string) => {
@@ -38,33 +59,41 @@ function AttributeAdder({ populateAble = true, onListChange }: Props) {
 
 	return (
 		<div className="AttributeAdder">
-			<p>Enter the attribute names.</p>
+			{attList.length === 0 && (
+				<p>
+					<i>Enter a attribute...</i>
+				</p>
+			)}
 			{attList.map((att, i) => {
 				return (
 					<div className="attribute" key={i}>
 						<p className="name">{att}</p>
 						{populateAble && (
-							<i
-								className="bi bi-play icon"
+							<Icon
+								cls="bi bi-play"
 								style={{
 									marginRight: '10px',
 									fontSize: '1.9rem',
 								}}
-							></i>
+							>
+								Populate
+							</Icon>
 						)}
 						{populateAble && (
-							<i
-								className="bi bi-arrow-clockwise icon"
+							<Icon
+								cls="bi bi-arrow-clockwise icon"
 								style={{
 									marginRight: '10px',
 									fontSize: '1.7rem',
 								}}
-							></i>
+							></Icon>
 						)}
-						<i
-							className="bi bi-trash icon"
-							onClick={() => deleteAttribute(att)}
-						></i>
+						<Icon
+							cls="bi bi-trash icon"
+							onClicked={() => deleteAttribute(att)}
+						>
+							Remove Attribute
+						</Icon>
 					</div>
 				);
 			})}
@@ -76,13 +105,15 @@ function AttributeAdder({ populateAble = true, onListChange }: Props) {
 					onKeyDown={handlekeyPress}
 					value={inputvalue}
 				/>
-				<i
-					className="bi bi-plus-square icon addBtn"
-					onClick={() => {
+				<Icon
+					cls="bi bi-plus-square icon addBtn"
+					onClicked={() => {
 						addAttribute(inputvalue);
 						setInputValue('');
 					}}
-				></i>
+				>
+					Add Attribute
+				</Icon>
 			</div>
 			{populateAble && (
 				<button className="btn populateBtn">

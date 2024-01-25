@@ -18,20 +18,20 @@ interface Props {
  */
 export function Providers({ children }: Props) {
 	return (
-		<NotificationProvider>
-			<LoadingScreenProvider>
-				<StorageProvider>
-					<AudioProvider>
-						<ThemeProvider>
+		<StorageProvider>
+			<AudioProvider>
+				<ThemeProvider>
+					<NotificationProvider>
+						<LoadingScreenProvider>
 							<OrganizationProvider>
 								<DocBaseTaskProvider>
 									<UserProvider>{children}</UserProvider>
 								</DocBaseTaskProvider>
 							</OrganizationProvider>
-						</ThemeProvider>
-					</AudioProvider>
-				</StorageProvider>
-			</LoadingScreenProvider>
-		</NotificationProvider>
+						</LoadingScreenProvider>
+					</NotificationProvider>
+				</ThemeProvider>
+			</AudioProvider>
+		</StorageProvider>
 	);
 }

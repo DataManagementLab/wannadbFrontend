@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Organization from '../types/Organization';
 import MyDocument from '../types/MyDocument';
+import Logger from './Logger';
 
 /**
  * This class is used to make requests to the backend API.
@@ -28,6 +29,8 @@ class APIService {
 			this.clearUserToken();
 			return false;
 		} catch (e) {
+			Logger.error(e);
+
 			this.clearUserToken();
 			return false;
 		}
@@ -60,6 +63,7 @@ class APIService {
 			}
 			return false;
 		} catch (err) {
+			Logger.error(err);
 			return undefined;
 		}
 	}
@@ -94,6 +98,7 @@ class APIService {
 			}
 			return false;
 		} catch (err) {
+			Logger.error(err);
 			return false;
 		}
 	}
@@ -115,6 +120,7 @@ class APIService {
 			}
 			if (resp.status == 204) return undefined;
 		} catch (err) {
+			Logger.error(err);
 			return undefined;
 		}
 	}
@@ -138,6 +144,7 @@ class APIService {
 			}
 			if (resp.status == 404) return undefined;
 		} catch (err) {
+			Logger.error(err);
 			return undefined;
 		}
 	}
@@ -161,6 +168,7 @@ class APIService {
 			}
 			return [];
 		} catch (err) {
+			Logger.error(err);
 			return [];
 		}
 	}
@@ -185,6 +193,7 @@ class APIService {
 			}
 			if (resp.status == 404) return undefined;
 		} catch (err) {
+			Logger.error(err);
 			return undefined;
 		}
 	}
@@ -221,6 +230,7 @@ class APIService {
 				return resp.data.organisation_id as number;
 			}
 		} catch (err) {
+			Logger.error(err);
 			return undefined;
 		}
 	}
@@ -249,6 +259,7 @@ class APIService {
 			}
 			return false;
 		} catch (err) {
+			Logger.error(err);
 			return false;
 		}
 	}
@@ -274,6 +285,7 @@ class APIService {
 			}
 			return undefined;
 		} catch (err) {
+			Logger.error(err);
 			return undefined;
 		}
 	}
@@ -303,6 +315,8 @@ class APIService {
 				}
 			)
 			.catch((err) => {
+				Logger.error(err);
+
 				return err.response;
 			});
 		if (resp.status === 200) {
@@ -344,6 +358,7 @@ class APIService {
 			}
 			return 'Error uploading file';
 		} catch (err) {
+			Logger.error(err);
 			return 'Error uploading file';
 		}
 	}
@@ -371,6 +386,7 @@ class APIService {
 			}
 			return [];
 		} catch (err) {
+			Logger.error(err);
 			return [];
 		}
 	}
@@ -398,6 +414,7 @@ class APIService {
 			}
 			return [];
 		} catch (err) {
+			Logger.error(err);
 			return [];
 		}
 	}
@@ -431,6 +448,7 @@ class APIService {
 			}
 			return false;
 		} catch (err) {
+			Logger.error(err);
 			return false;
 		}
 	}
@@ -459,6 +477,7 @@ class APIService {
 			}
 			return false;
 		} catch (err) {
+			Logger.error(err);
 			return false;
 		}
 	}
@@ -471,12 +490,13 @@ class APIService {
 	 * @param attributes An array of the attributes that should be used for the docbase
 	 * @returns The ID of the created task or undefined if the creation failed
 	 */
-	static async documentBase(
+	static async createDocumentBase(
 		organizationId: number,
 		baseName: string,
 		documentIDs: number[],
 		attributes: string[]
 	): Promise<string | undefined> {
+		// kannste erstmal ignorieren
 		// NILS MACH MA TEST
 
 		try {
@@ -505,6 +525,37 @@ class APIService {
 				); */
 			return resp.data.task_id;
 		} catch (err) {
+			Logger.error(err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Create a new documentbase.
+	 * @param organizationId The ID of the organization
+	 * @param baseName The name for the docbase
+	 * @param documentIDs An array of the document IDs that should be used for the docbase
+	 * @param attributes An array of the attributes that should be used for the docbase
+	 * @returns The ID of the created task or undefined if the creation failed
+	 */
+	static async loadDocumentBase(
+		organizationId: number,
+		baseName: string
+	): Promise<string | undefined> {
+		// kannste erstmal ignorieren
+		// NILS MACH MA TEST
+
+		try {
+			const url = `${this.host}/core/document_base/load`;
+
+			const body = new FormData();
+			body.append('organisationId', organizationId.toString());
+			body.append('baseName', baseName);
+			body.append('authorization', this.getUserToken());
+			const resp = await axios.post(url, body);
+			return resp.data.task_id;
+		} catch (err) {
+			Logger.error(err);
 			return undefined;
 		}
 	}
@@ -517,6 +568,7 @@ class APIService {
 	// TODO replace any with correct type
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static async getTaskStatus(taskId: string): Promise<any> {
+		// kannste erstmal ignorieren
 		// NILS MACH MA TEST
 
 		try {
@@ -526,6 +578,8 @@ class APIService {
 			const resp = await axios.get(url);
 			return resp.data;
 		} catch (error) {
+			Logger.error(error);
+
 			return undefined;
 		}
 	}
@@ -538,6 +592,7 @@ class APIService {
 	static getUserToken(): string {
 		const token = sessionStorage.getItem('user-token');
 		if (token == null) {
+			Logger.error('User not logged in');
 			throw new Error('User not logged in');
 		}
 		return token;
@@ -549,6 +604,7 @@ class APIService {
 	 */
 	static setUserToken(token: string) {
 		if (token === '') {
+			Logger.error('not a valid token');
 			throw new Error('not a valid token');
 		}
 		sessionStorage.setItem('user-token', token);

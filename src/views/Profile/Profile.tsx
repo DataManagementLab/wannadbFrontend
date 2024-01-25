@@ -14,6 +14,7 @@ import {
 } from '../../providers/OrganizationProvider';
 import APIService from '../../utils/ApiService';
 import Navbar from '../../components/Navbar/Navbar';
+import Icon from '../../components/Icon/Icon';
 
 /**
  * The profile page component
@@ -78,30 +79,30 @@ function Profile() {
 										{'#' + org.id}
 									</span>
 								</p>
-								<i
-									className="bi bi-eye icon"
-									onClick={() => {
+								<Icon
+									cls="bi bi-eye icon"
+									onClicked={() => {
 										navigate('/organization/' + org.id);
 									}}
 								>
-									{/*VIEW*/}
-								</i>
+									View Organization
+								</Icon>
 								{getUserName() + 'Org' !== org.name && (
 									<>
-										<i
-											className="bi bi-plus-lg icon"
-											onClick={() => {
+										<Icon
+											cls="bi bi-plus-lg icon"
+											onClicked={() => {
 												navigate(
 													'/organization/add/' +
 														org.id
 												);
 											}}
 										>
-											{/*ADD MEMBER*/}
-										</i>
-										<i
-											className="bi bi-door-closed icon"
-											onClick={() => {
+											Add Member
+										</Icon>
+										<Icon
+											cls="bi bi-door-closed icon"
+											onClicked={() => {
 												showChoice(
 													'Leave Organization',
 													'Are you sure you want to leave ' +
@@ -120,8 +121,8 @@ function Profile() {
 												);
 											}}
 										>
-											{/* Leave */}
-										</i>
+											Leave Organization
+										</Icon>
 									</>
 								)}
 							</li>

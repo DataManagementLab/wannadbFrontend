@@ -3,6 +3,7 @@ import React, { ReactNode, useState } from 'react';
 import '../index.scss';
 import UserNotification from '../components/UserNotification/UserNotification';
 import ChoiceNotification from '../components/ChoiceNotification/ChoiceNotification';
+import { MyAudio, usePlayAudio } from './AudioProvider';
 
 const NotificationContext = React.createContext({
 	showNotification: (
@@ -69,6 +70,7 @@ export function NotificationProvider({ children }: Props) {
 	const [element, setElement] = useState<JSX.Element>();
 
 	const [visible, setVisible] = useState(false);
+	const playSound = usePlayAudio();
 
 	// Display the notification
 	const showNotification = (
@@ -85,6 +87,7 @@ export function NotificationProvider({ children }: Props) {
 			></UserNotification>
 		);
 		setVisible(true);
+		playSound(MyAudio.POP);
 	};
 
 	// Display a choice dialog
@@ -113,6 +116,7 @@ export function NotificationProvider({ children }: Props) {
 			></ChoiceNotification>
 		);
 		setVisible(true);
+		playSound(MyAudio.POP);
 	};
 
 	// Close the notification

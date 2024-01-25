@@ -12,6 +12,7 @@ import MyFiles from '../../components/MyFiles/MyFiles';
 import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
 import FileUpload from '../../components/FileUpload/FileUpload';
 import DocBaseOverview from '../../components/DocBaseOverview/DocBaseOverview';
+import Icon from '../../components/Icon/Icon';
 
 /**
  * A page that displays information about an organization.
@@ -82,19 +83,19 @@ function OrgPage() {
 				</p>
 				{getUsername() + 'Org' !== organization.name && (
 					<>
-						<i
-							className="bi bi-plus-lg icon"
-							onClick={() => {
+						<Icon
+							cls="bi bi-plus-lg icon"
+							onClicked={() => {
 								navigate(
 									'/organization/add/' + organization.id
 								);
 							}}
 						>
-							{/*ADD MEMBER*/}
-						</i>
-						<i
-							className="bi bi-box-arrow-left icon ml"
-							onClick={() => {
+							Add Member
+						</Icon>
+						<Icon
+							cls="bi bi-door-closed icon ml"
+							onClicked={() => {
 								showChoice(
 									'Leave Organization',
 									'Are you sure you want to leave ' +
@@ -114,8 +115,8 @@ function OrgPage() {
 								);
 							}}
 						>
-							{/* Leave */}
-						</i>
+							Leave Organization
+						</Icon>
 					</>
 				)}
 				<h2>Member{members.length > 1 ? 's' : ''}</h2>

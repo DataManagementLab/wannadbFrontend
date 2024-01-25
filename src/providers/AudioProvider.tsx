@@ -4,6 +4,9 @@ import { useStoreInLS } from './StorageProvider';
 // eslint-disable-next-line react-refresh/only-export-components
 export enum MyAudio {
 	BING = '/src/audio/bing.mp3',
+	SUCCESS = '/src/audio/success.mp3',
+	POP = '/src/audio/pop.mp3',
+	ERROR = '/src/audio/error.mp3',
 }
 
 const AudioContext = React.createContext({
