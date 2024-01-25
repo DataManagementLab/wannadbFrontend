@@ -68,6 +68,10 @@ function Navbar() {
 				</a>
  */}{' '}
 				<Link to="/settings">Settings</Link>
+				<Link to="/help">
+					{/* <i className="bi bi-question-circle icon"></i> */}
+					Help
+				</Link>
 				{username !== '' ? (
 					<Link to={'/profile'}>
 						<div className="profilePicture">

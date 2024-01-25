@@ -5,6 +5,11 @@ import './DocBaseOverview.scss';
 import APIService from '../../utils/ApiService';
 import MyDocument from '../../types/MyDocument';
 import { Link } from 'react-router-dom';
+import { useLoadDocbaseTask } from '../../providers/DocBaseTaskProvider';
+import {
+	useShowChoiceNotification,
+	useShowNotification,
+} from '../../providers/NotificationProvider';
 
 interface Props {
 	organizationProp: Organization | undefined;
@@ -17,8 +22,12 @@ function DocBaseOverview({ organizationProp }: Props) {
 	const [docBases, setDocBases] = useState<MyDocument[]>([]);
 	const [fileCount, setFileCount] = useState<number>(0);
 	const [selectedOrgID, setSelectedOrgID] = useState<number>(-1);
+	const [loading, setLoading] = useState<boolean>(true);
 
+	const showChoiceNotification = useShowChoiceNotification();
+	const showNotification = useShowNotification();
 	const getOrganizations = useGetOrganizations();
+	const loadDocbaseTask = useLoadDocbaseTask();
 
 	useEffect(() => {
 		APIService.getOrganizationNames().then((orgs) => {
@@ -41,6 +50,7 @@ function DocBaseOverview({ organizationProp }: Props) {
 		APIService.getDocumentBaseForOrganization(orgID).then(
 			(response: MyDocument[]) => {
 				setDocBases(response);
+				setLoading(false);
 			}
 		);
 		APIService.getDocumentForOrganization(orgID).then(
@@ -50,6 +60,35 @@ function DocBaseOverview({ organizationProp }: Props) {
 		);
 		setSelectedOrgID(orgID);
 	};
+
+	const loadDocBase = (document: MyDocument) => {
+		loadDocbaseTask(selectedOrgID, document.name);
+	};
+
+	const removeDocument = (document: MyDocument) => {
+		showChoiceNotification(
+			'Delete DocBase',
+			`Are you sure you want to delete ${document.name}?`,
+			() => {
+				APIService.deleteDocument(document.id).then((res) => {
+					if (!res) {
+						showNotification('Error', 'Failed to delete Docbase');
+						return;
+					}
+					loadDocBases(selectedOrgID);
+				});
+			},
+			() => {}
+		);
+	};
+
+	if (loading) {
+		return (
+			<p>
+				<i>Loading...</i>
+			</p>
+		);
+	}
 
 	if (getOrganizations().length === 0) {
 		return (
@@ -110,7 +149,7 @@ function DocBaseOverview({ organizationProp }: Props) {
 				</p>
 			) : (
 				<ul>
-					{docBases.map((docBase) => (
+					{docBases.map((docBase: MyDocument) => (
 						<div className="hor" key={docBase.id}>
 							<li
 								className="my-list-item"
@@ -120,7 +159,22 @@ function DocBaseOverview({ organizationProp }: Props) {
 							>
 								{docBase.name}
 							</li>
-							<i className="bi bi-list-task icon"></i>
+							<i
+								className="bi bi-list-task icon"
+								onClick={() => {
+									loadDocBase(docBase);
+								}}
+							>
+								{/* View */}
+							</i>
+							<i
+								className="bi bi-x-circle icon"
+								onClick={() => {
+									removeDocument(docBase);
+								}}
+							>
+								{/* REMOVE */}
+							</i>
 						</div>
 					))}
 				</ul>

@@ -9,6 +9,7 @@ import OrgPage from './views/OrgPage/OrgPage';
 import Settings from './views/Settings/Settings';
 import About from './views/About/About';
 import NewDocBase from './views/NewDocBase/NewDocBase';
+import Help from './views/Help/Help';
 
 /**
  * All of our routes are defined here.
@@ -30,6 +31,7 @@ function Routes() {
 				<Route path="/settings" Component={Settings} />
 				<Route path="/about" Component={About} />
 				<Route path="/profile" Component={Profile} />
+				<Route path="/help" Component={Help} />
 				<Route path="*" Component={Home} />
 			</ReactRoutes>
 		</BrowserRouter>

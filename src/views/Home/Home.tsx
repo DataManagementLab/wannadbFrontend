@@ -41,18 +41,20 @@ function Home() {
 					<DocBaseOverview
 						organizationProp={undefined}
 					></DocBaseOverview>
-					<button
-						className="btn"
-						style={{
-							marginTop: '100px',
-						}}
-						onClick={() => {
-							logOut();
-							window.location.reload();
-						}}
-					>
-						<i className="bi bi-box-arrow-left mr"></i>Logout
-					</button>
+					{import.meta.env.VITE_APP_LOG === 'true' && (
+						<button
+							className="btn"
+							style={{
+								marginTop: '100px',
+							}}
+							onClick={() => {
+								logOut();
+								window.location.reload();
+							}}
+						>
+							<i className="bi bi-box-arrow-left mr"></i>Logout
+						</button>
+					)}
 				</div>
 			</div>
 		);

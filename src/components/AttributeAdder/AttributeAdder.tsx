@@ -1,16 +1,36 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './AttributeAdder.scss';
 
 interface Props {
 	populateAble: boolean;
 	onListChange: (list: string[]) => void;
+	initialList?: string[];
 }
 
 /**
  * A component that allows the user to add attributes to there document base
  */
-function AttributeAdder({ populateAble = true, onListChange }: Props) {
+function AttributeAdder({
+	populateAble = true,
+	onListChange,
+	initialList = [],
+}: Props) {
 	const [attList, setAttList] = useState<string[]>([]);
+
+	useEffect(
+		() => {
+			if (
+				import.meta.env.VITE_APP_LOG === 'true' &&
+				initialList.length == 0
+			) {
+				initialList.push('Country', 'Animal');
+			}
+			setAttributeList(initialList);
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[]
+	);
+
 	const [inputvalue, setInputValue] = useState<string>('');
 
 	const addAttribute = (att: string) => {

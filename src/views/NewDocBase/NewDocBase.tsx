@@ -9,17 +9,15 @@ import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
 import Organization from '../../types/Organization';
 import MyDocument from '../../types/MyDocument';
 import APIService from '../../utils/ApiService';
-import {
-	useShowChoiceNotification,
-	useShowNotification,
-} from '../../providers/NotificationProvider';
+import { useShowChoiceNotification } from '../../providers/NotificationProvider';
 import DocumentViewer from '../../components/DocumentViewer/DocumentViewer';
 import DocbaseViewer from '../../components/DocbaseViewer/DocbaseViewer';
 import DocBase from '../../types/DocBase';
 import {
+	useCreateDocbaseTask,
 	useIsDocbaseTaskRunning,
-	useStartDocbaseTask,
 } from '../../providers/DocBaseTaskProvider';
+import getRandomBaseName from '../../data/getRandomBaseName';
 
 /**
  * A page for creating a new Docbase
@@ -40,18 +38,24 @@ function NewDocBase() {
 	const isLoggedIn = useLoggedIn();
 	const updateOrganizations = useUpdateOrganizations();
 	const showChoice = useShowChoiceNotification();
-	const showNotification = useShowNotification();
 	const setLoadingScreen = useSetLoadingScreen();
 	const isDocbaseTaskRunning = useIsDocbaseTaskRunning();
-	const startDocbaseTask = useStartDocbaseTask();
+	const createDocBase = useCreateDocbaseTask();
 
 	const [name, setName] = useState<string>('');
 	const [errorMsg, setErrorMsg] = useState<string>('');
 	const [attList, setAttList] = useState<string[]>([]);
+	const [randomBaseName] = useState(getRandomBaseName());
+
+	const [docBaseNames, setDocBaseNames] = useState<string[]>([]);
 
 	const onRun = () => {
 		if (name.trim() === '') {
 			setErrorMsg('Please enter a name');
+			return;
+		}
+		if (docBaseNames.includes(name)) {
+			setErrorMsg('A Docbase with this name already exists');
 			return;
 		}
 		if (selectedDocuments.length === 0) {
@@ -63,18 +67,7 @@ function NewDocBase() {
 			return;
 		}
 		setErrorMsg('');
-		APIService.documentBase(
-			organization.id,
-			name,
-			selectedDocuments,
-			attList
-		).then((res) => {
-			if (res == undefined) {
-				showNotification('Error', 'Failed to create Docbase ' + name);
-				return;
-			}
-			startDocbaseTask(res, name, attList);
-		});
+		createDocBase(organization.id, name, selectedDocuments, attList);
 	};
 
 	const onDocumentClick = (id: number) => {
@@ -132,6 +125,11 @@ function NewDocBase() {
 				setDocuments(docs);
 				setLoadingScreen(false);
 			});
+			APIService.getDocumentBaseForOrganization(org.id).then(
+				(docBases) => {
+					setDocBaseNames(docBases.map((docBase) => docBase.name));
+				}
+			);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -164,10 +162,32 @@ function NewDocBase() {
 						<i>{organization.name}</i>
 					</h1>
 					<h2>Name</h2>
+					<p
+						style={{
+							fontSize: '14px',
+							marginTop: '0',
+						}}
+					>
+						<i>
+							No idea?
+							<br />
+							Why not try
+							<span
+								style={{
+									cursor: 'pointer',
+									fontWeight: 'bold',
+								}}
+								onClick={() => setName(randomBaseName)}
+							>
+								{' ' + randomBaseName}
+							</span>
+						</i>
+					</p>
 					<input
 						type="text"
 						className="ipt"
 						placeholder="Enter a name for the Docbase"
+						value={name}
 						onChange={(e) => setName(e.target.value)}
 					/>
 					<h2>Documents</h2>
