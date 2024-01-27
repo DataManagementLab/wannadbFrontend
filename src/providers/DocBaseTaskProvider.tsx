@@ -21,6 +21,11 @@ const DocBaseTaskContext = React.createContext({
 		_documentIDs: number[],
 		_attributes: string[]
 	) => {},
+	updateDocbaseAttributesTask: (
+		_organizationId: number,
+		_baseName: string,
+		_attributes: string[]
+	) => {},
 	loadDocbaseTask: (_organizationId: number, _baseName: string) => {},
 });
 
@@ -44,6 +49,17 @@ export function useCreateDocbaseTask() {
 		);
 	}
 	return context.createDocbaseTask;
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export function useUpdateDocbaseAttributesTask() {
+	const context = React.useContext(DocBaseTaskContext);
+	if (!context) {
+		throw new Error(
+			'useUpdateDocbaseAttributesTask must be used within a DocBaseTaskProvider'
+		);
+	}
+	return context.updateDocbaseAttributesTask;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -146,7 +162,11 @@ export function DocBaseTaskProvider({ children }: Props) {
 					setLoadingScreen(false);
 					playAudio(MyAudio.SUCCESS);
 
-					const docBase = new DocBase(baseName, attributes);
+					const docBase = new DocBase(
+						baseName,
+						organizationId,
+						attributes
+					);
 					for (const nugget of res.meta.document_base_to_ui.msg
 						.nuggets) {
 						try {
@@ -182,6 +202,121 @@ export function DocBaseTaskProvider({ children }: Props) {
 				setLoadingScreen(
 					true,
 					'Creating Docbase ' + baseName + '...',
+					info,
+					taskId,
+					true
+				);
+			});
+		}, intervalTime);
+	};
+
+	const updateDocbaseAttributesTask = async (
+		organizationId: number,
+		baseName: string,
+		attributes: string[]
+	) => {
+		if (isRunning) {
+			Logger.warn(
+				'Docbase task is already running, cannot start another'
+			);
+			return;
+		}
+
+		// start the task
+		const taskId = await APIService.updateDocumentBaseAttributes(
+			organizationId,
+			baseName,
+			attributes
+		);
+
+		if (taskId == undefined) {
+			showNotification('Error', 'Failed to update Docbase ' + baseName);
+			return;
+		}
+
+		Logger.log('Task: Update Attributes Docbase ' + baseName);
+		Logger.log('Task ID: ' + taskId);
+
+		sessionStorage.setItem('docbaseId', taskId);
+		setLoadingScreen(
+			true,
+			'Updating Docbase ' + baseName + '...',
+			'Please wait...',
+			taskId
+		);
+
+		setLoadingScreenLock(true);
+		setIsRunning(true);
+
+		const updateInterval = setInterval(() => {
+			// TODO use type
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			APIService.getTaskStatus(taskId).then((res): any => {
+				Logger.log(res);
+				if (
+					res == undefined ||
+					res.state.toUpperCase().trim() === 'FAILURE'
+				) {
+					setLoadingScreenLock(false);
+					setLoadingScreen(false);
+					playAudio(MyAudio.ERROR);
+
+					showNotification(
+						'Error',
+						'Failed to update Docbase ' + baseName
+					);
+					sessionStorage.removeItem('docbaseId');
+					setDocBase(undefined);
+					setIsRunning(false);
+					clearInterval(updateInterval);
+					return;
+				}
+
+				if (res.state === 'SUCCESS') {
+					setLoadingScreenLock(false);
+					setLoadingScreen(false);
+					playAudio(MyAudio.SUCCESS);
+
+					const docBase = new DocBase(
+						baseName,
+						organizationId,
+						attributes
+					);
+					for (const nugget of res.meta.document_base_to_ui.msg
+						.nuggets) {
+						try {
+							docBase.addNugget(
+								nugget.document.name,
+								nugget.document.text,
+								nugget.start_char,
+								nugget.end_char
+							);
+						} catch (error) {
+							showNotification(
+								'Error',
+								'Something went wrong translating the nuggets.'
+							);
+						}
+					}
+					sessionStorage.removeItem('docbaseId');
+					setDocBase(docBase);
+					setIsRunning(false);
+					clearInterval(updateInterval);
+					return;
+				}
+
+				let info = res.state;
+
+				if (res.meta.status !== undefined) {
+					info = res.meta.status;
+				}
+
+				info += info.endsWith('...') ? '' : '...';
+
+				// update loading screen
+				setLoadingScreen(
+					true,
+					'Updating Docbase ' + baseName + '...',
 					info,
 					taskId,
 					true
@@ -255,6 +390,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 
 					const docBase = new DocBase(
 						baseName,
+						organizationId,
 						res.meta.document_base_to_ui.msg.attributes ?? []
 					);
 					for (const nugget of res.meta.document_base_to_ui.msg
@@ -316,6 +452,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 				isDocbaseTaskRunning: isDocbaseTaskRunning,
 				createDocbaseTask: createDocbaseTask,
 				loadDocbaseTask: loadDocbaseTask,
+				updateDocbaseAttributesTask: updateDocbaseAttributesTask,
 			}}
 		>
 			{docBase && <DocbaseViewer docBase={docBase} onClose={onClose} />}

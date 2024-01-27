@@ -17,10 +17,12 @@ class APIService {
 	static async login(username: string, password: string): Promise<boolean> {
 		try {
 			const url = `${this.host}/login`;
-			const resp = await axios.post(url, {
-				username: username,
-				password: password,
-			});
+			const resp = await axios
+				.post(url, {
+					username: username,
+					password: password,
+				})
+				.catch(this.handleCatch);
 			if (resp.status === 200) {
 				sessionStorage.setItem('user-token', resp.data.token);
 				return true;
@@ -80,25 +82,30 @@ class APIService {
 	): Promise<boolean> {
 		try {
 			const url = `${this.host}/deleteUser`;
-			const resp = await axios.post(
-				url,
-				{
-					username: username,
-					password: password,
-				},
-				{
-					headers: {
-						Authorization: this.getUserToken(),
+			const resp = await axios
+				.post(
+					url,
+					{
+						username: username,
+						password: password,
 					},
-				}
-			);
+					{
+						headers: {
+							Authorization: this.getUserToken(),
+						},
+					}
+				)
+				.catch(this.handleCatch);
+
 			if (resp.status === 204) {
 				this.clearUserToken();
 				return true;
 			}
 			return false;
 		} catch (err) {
-			Logger.error(err);
+			//Logger.error(err);
+			console.log('hallo000');
+
 			return false;
 		}
 	}
@@ -110,11 +117,16 @@ class APIService {
 	static async getOrganizations(): Promise<number[] | undefined> {
 		try {
 			const url = `${this.host}/getOrganisations`;
-			const resp = await axios.get(url, {
-				headers: {
-					Authorization: this.getUserToken(),
-				},
-			});
+			const resp = await axios
+				.get(url, {
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				})
+				.catch(this.handleCatch);
+			if (resp.status == 401) {
+				Logger.error('Unauthorized');
+			}
 			if (resp.status == 200) {
 				return resp.data.organisation_ids as number[];
 			}
@@ -132,13 +144,16 @@ class APIService {
 	static async getOrganizationNames(): Promise<Organization[] | undefined> {
 		try {
 			const url = `${this.host}/getOrganisationNames`;
-			const resp = await axios.get<{
-				organisations: Organization[];
-			}>(url, {
-				headers: {
-					Authorization: this.getUserToken(),
-				},
-			});
+			const resp = await axios
+				.get<{
+					organisations: Organization[];
+				}>(url, {
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				})
+				.catch(this.handleCatch);
+
 			if (resp.status == 200) {
 				return resp.data.organisations;
 			}
@@ -158,11 +173,13 @@ class APIService {
 		// NILS MACH MA TEST
 		try {
 			const url = `${this.host}/get/user/suggestion/${prefix}`;
-			const resp = await axios.get(url, {
-				headers: {
-					Authorization: this.getUserToken(),
-				},
-			});
+			const resp = await axios
+				.get(url, {
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				})
+				.catch(this.handleCatch);
 			if (resp.status == 200) {
 				return resp.data.usernames as string[];
 			}
@@ -183,11 +200,13 @@ class APIService {
 	): Promise<string | undefined> {
 		try {
 			const url = `${this.host}/getOrganisationName/${id}`;
-			const resp = await axios.get(url, {
-				headers: {
-					Authorization: this.getUserToken(),
-				},
-			});
+			const resp = await axios
+				.get(url, {
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				})
+				.catch(this.handleCatch);
 			if (resp.status == 200) {
 				return resp.data.organisation_name as string;
 			}
@@ -208,17 +227,19 @@ class APIService {
 	): Promise<number | undefined> {
 		try {
 			const url = `${this.host}/createOrganisation`;
-			const resp = await axios.post(
-				url,
-				{
-					organisationName: orgName,
-				},
-				{
-					headers: {
-						Authorization: this.getUserToken(),
+			const resp = await axios
+				.post(
+					url,
+					{
+						organisationName: orgName,
 					},
-				}
-			);
+					{
+						headers: {
+							Authorization: this.getUserToken(),
+						},
+					}
+				)
+				.catch(this.handleCatch);
 			if (resp.status === 200) {
 				sessionStorage.setItem(
 					'organisation',
@@ -243,17 +264,19 @@ class APIService {
 	static async leaveOrganization(orgId: number): Promise<boolean> {
 		try {
 			const url = `${this.host}/leaveOrganisation`;
-			const resp = await axios.post(
-				url,
-				{
-					organisationId: orgId,
-				},
-				{
-					headers: {
-						Authorization: this.getUserToken(),
+			const resp = await axios
+				.post(
+					url,
+					{
+						organisationId: orgId,
 					},
-				}
-			);
+					{
+						headers: {
+							Authorization: this.getUserToken(),
+						},
+					}
+				)
+				.catch(this.handleCatch);
 			if (resp.status === 200) {
 				return resp.data.status;
 			}
@@ -275,11 +298,13 @@ class APIService {
 	): Promise<string[] | undefined> {
 		try {
 			const url = `${this.host}/getOrganisationMembers/${orgId}`;
-			const resp = await axios.get(url, {
-				headers: {
-					Authorization: this.getUserToken(),
-				},
-			});
+			const resp = await axios
+				.get(url, {
+					headers: {
+						Authorization: this.getUserToken(),
+					},
+				})
+				.catch(this.handleCatch);
 			if (resp.status === 200) {
 				return resp.data.members as string[];
 			}
@@ -314,11 +339,7 @@ class APIService {
 					},
 				}
 			)
-			.catch((err) => {
-				Logger.error(err);
-
-				return err.response;
-			});
+			.catch(this.handleCatch);
 		if (resp.status === 200) {
 			return '';
 		}
@@ -340,16 +361,14 @@ class APIService {
 			}
 			body.append('organisationId', organisationId.toString());
 
-			const resp = await axios.post(
-				`${this.host}/data/upload/file`,
-				body,
-				{
+			const resp = await axios
+				.post(`${this.host}/data/upload/file`, body, {
 					headers: {
 						'Content-Type': 'multipart/form-data',
 						Authorization: this.getUserToken(),
 					},
-				}
-			);
+				})
+				.catch(this.handleCatch);
 			if (resp.status === 201) {
 				return 'File uploaded successfully';
 			}
@@ -373,14 +392,16 @@ class APIService {
 	): Promise<MyDocument[]> {
 		// NILS MACH MA TEST
 		try {
-			const response = await axios.get(
-				`${this.host}/data/organization/get/files/${organizationID}`,
-				{
-					headers: {
-						Authorization: this.getUserToken(),
-					},
-				}
-			);
+			const response = await axios
+				.get(
+					`${this.host}/data/organization/get/files/${organizationID}`,
+					{
+						headers: {
+							Authorization: this.getUserToken(),
+						},
+					}
+				)
+				.catch(this.handleCatch);
 			if (response.status === 200) {
 				return response.data as MyDocument[];
 			}
@@ -401,14 +422,16 @@ class APIService {
 	): Promise<MyDocument[]> {
 		// NILS MACH MA TEST
 		try {
-			const response = await axios.get(
-				`${this.host}/data/organization/get/documentbase/${organizationID}`,
-				{
-					headers: {
-						Authorization: this.getUserToken(),
-					},
-				}
-			);
+			const response = await axios
+				.get(
+					`${this.host}/data/organization/get/documentbase/${organizationID}`,
+					{
+						headers: {
+							Authorization: this.getUserToken(),
+						},
+					}
+				)
+				.catch(this.handleCatch);
 			if (response.status === 200) {
 				return response.data as MyDocument[];
 			}
@@ -431,18 +454,20 @@ class APIService {
 	): Promise<boolean> {
 		// NILS MACH MA TEST
 		try {
-			const response = await axios.post(
-				`${this.host}/data/update/file/content`,
-				{
-					documentId: documentId,
-					newContent: newContent,
-				},
-				{
-					headers: {
-						Authorization: this.getUserToken(),
+			const response = await axios
+				.post(
+					`${this.host}/data/update/file/content`,
+					{
+						documentId: documentId,
+						newContent: newContent,
 					},
-				}
-			);
+					{
+						headers: {
+							Authorization: this.getUserToken(),
+						},
+					}
+				)
+				.catch(this.handleCatch);
 			if (response.status === 200) {
 				return response.data.status;
 			}
@@ -461,17 +486,19 @@ class APIService {
 	static async deleteDocument(documentId: number): Promise<boolean> {
 		// NILS MACH MA TEST
 		try {
-			const response = await axios.post(
-				`${this.host}/data/file/delete`,
-				{
-					documentId: documentId,
-				},
-				{
-					headers: {
-						Authorization: this.getUserToken(),
+			const response = await axios
+				.post(
+					`${this.host}/data/file/delete`,
+					{
+						documentId: documentId,
 					},
-				}
-			);
+					{
+						headers: {
+							Authorization: this.getUserToken(),
+						},
+					}
+				)
+				.catch(this.handleCatch);
 			if (response.status === 200) {
 				return response.data.status;
 			}
@@ -508,21 +535,38 @@ class APIService {
 			body.append('document_ids', documentIDs.join(','));
 			body.append('attributes', attributes.join(','));
 			body.append('authorization', this.getUserToken());
-			const resp = await axios.post(url, body);
-			/* resp = await axios.post(
-					url,
-					{
-						organisationId: organizationId,
-						baseName: baseName,
-						document_ids: documentIDs,
-						attributes: attributes,
-					},
-					{
-						headers: {
-							Authorization: this.getUserToken(),
-						},
-					}
-				); */
+			const resp = await axios.post(url, body).catch(this.handleCatch);
+			return resp.data.task_id;
+		} catch (err) {
+			Logger.error(err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Update the attributes of a documentbase.
+	 * @param organizationId The ID of the organization
+	 * @param baseName The name for the docbase
+	 * @param attributes An array of the new attributes that should be used for the docbase
+	 * @returns The ID of the created task or undefined if the creation failed
+	 */
+	static async updateDocumentBaseAttributes(
+		organizationId: number,
+		baseName: string,
+		newAttributes: string[]
+	): Promise<string | undefined> {
+		// kannste erstmal ignorieren
+		// NILS MACH MA TEST
+
+		try {
+			const url = `${this.host}/core/document_base/attributes/update`;
+
+			const body = new FormData();
+			body.append('authorization', this.getUserToken());
+			body.append('organisationId', organizationId.toString());
+			body.append('baseName', baseName);
+			body.append('attributes', newAttributes.join(','));
+			const resp = await axios.post(url, body).catch(this.handleCatch);
 			return resp.data.task_id;
 		} catch (err) {
 			Logger.error(err);
@@ -552,7 +596,7 @@ class APIService {
 			body.append('organisationId', organizationId.toString());
 			body.append('baseName', baseName);
 			body.append('authorization', this.getUserToken());
-			const resp = await axios.post(url, body);
+			const resp = await axios.post(url, body).catch(this.handleCatch);
 			return resp.data.task_id;
 		} catch (err) {
 			Logger.error(err);
@@ -575,7 +619,7 @@ class APIService {
 			const url = `${
 				this.host
 			}/core/status/${this.getUserToken()}/${taskId}`;
-			const resp = await axios.get(url);
+			const resp = await axios.get(url).catch(this.handleCatch);
 			return resp.data;
 		} catch (error) {
 			Logger.error(error);
@@ -615,6 +659,21 @@ class APIService {
 	 */
 	static clearUserToken() {
 		sessionStorage.removeItem('user-token');
+		sessionStorage.removeItem('wannadbuser');
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	static handleCatch(err: any) {
+		Logger.error(err);
+
+		if (err.response.status === 401) {
+			Logger.error('Unauthorized!!!');
+			// navigate to home page
+			APIService.clearUserToken();
+			window.location.href = window.location.origin;
+		}
+
+		return err.response;
 	}
 }
 

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Navbar.scss';
 import { useState } from 'react';
-import { useGetUsername } from '../../providers/UserProvider';
+import { useGetUsername, useLoggedIn } from '../../providers/UserProvider';
 import { useIsDarkTheme, useToggleTheme } from '../../providers/ThemeProvider';
 import Icon from '../Icon/Icon';
 
@@ -12,6 +12,7 @@ function Navbar() {
 	const navigate = useNavigate();
 
 	const getUserName = useGetUsername();
+	const isLoggedIn = useLoggedIn();
 
 	const [username] = useState(getUserName());
 
@@ -70,7 +71,7 @@ function Navbar() {
 					{/* <i className="bi bi-question-circle icon"></i> */}
 					Help
 				</Link>
-				{username !== '' ? (
+				{isLoggedIn() ? (
 					<Link to={'/profile'}>
 						<div className="profilePicture">
 							{username.slice(0, 1).toUpperCase()}

@@ -5,11 +5,13 @@ import NuggetDocument from './NuggetDocument';
  */
 class DocBase {
 	readonly name: string;
+	readonly organizationId: number;
 	attributes: string[];
 	docs: NuggetDocument[];
 
-	constructor(name: string, attributes: string[]) {
+	constructor(name: string, organizationId: number, attributes: string[]) {
 		this.name = name;
+		this.organizationId = organizationId;
 		this.attributes = attributes;
 		this.docs = [];
 	}

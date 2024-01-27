@@ -1,3 +1,4 @@
+import { useUpdateDocbaseAttributesTask } from '../../providers/DocBaseTaskProvider';
 import DocBase from '../../types/DocBase';
 import AttributeAdder from '../AttributeAdder/AttributeAdder';
 import NuggetDocumentViewer from '../NuggetViewer/NuggetDocumentViewer';
@@ -13,6 +14,8 @@ interface Props {
  * @param docBase The docbase to view
  */
 function DocbaseViewer({ docBase, onClose }: Props) {
+	const updateDocbaseAttributesTask = useUpdateDocbaseAttributesTask();
+
 	return (
 		<>
 			<div
@@ -25,14 +28,24 @@ function DocbaseViewer({ docBase, onClose }: Props) {
 				<i className="bi bi-x-lg"></i>
 			</div>
 			<div className="DocbaseViewer">
-				<h1>{docBase.name}</h1>
+				<h1>
+					DocBase: <i>{docBase.name}</i>
+				</h1>
 				<h2>Attributes</h2>
 				<AttributeAdder
-					populateAble={false}
+					rerunAble={true}
 					onListChange={(list: string[]) => {
 						docBase.attributes = list;
 					}}
 					initialList={docBase.attributes}
+					onRerun={(list: string[]) => {
+						updateDocbaseAttributesTask(
+							docBase.organizationId,
+							docBase.name,
+							list
+						);
+						onClose();
+					}}
 				></AttributeAdder>
 				{/* <ul className="ver">
 					{docBase.attributes.map((attribute, index) => {
@@ -47,7 +60,7 @@ function DocbaseViewer({ docBase, onClose }: Props) {
 				{docBase.docs.map((doc, index) => {
 					return <NuggetDocumentViewer key={index} doc={doc} />;
 				})}
-				<button className="btn mb" onClick={onClose}>
+				<button className="btn mb ml mt" onClick={onClose}>
 					Close
 				</button>
 			</div>

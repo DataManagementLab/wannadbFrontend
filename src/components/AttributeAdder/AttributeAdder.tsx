@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import './AttributeAdder.scss';
 import Icon from '../Icon/Icon';
+import { useIsDocbaseTaskRunning } from '../../providers/DocBaseTaskProvider';
 
 interface Props {
-	populateAble: boolean;
 	onListChange: (list: string[]) => void;
+	populateAble?: boolean;
+	rerunAble?: boolean;
+	onRerun?: (list: string[]) => void;
 	initialList?: string[];
 }
 
@@ -12,11 +15,16 @@ interface Props {
  * A component that allows the user to add attributes to there document base
  */
 function AttributeAdder({
-	populateAble = true,
 	onListChange,
+	populateAble = false,
+	rerunAble = false,
 	initialList = [],
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	onRerun = (_list: string[]) => {},
 }: Props) {
 	const [attList, setAttList] = useState<string[]>([]);
+
+	const isDocBaseTaskRunning = useIsDocbaseTaskRunning();
 
 	useEffect(
 		() => {
@@ -57,11 +65,28 @@ function AttributeAdder({
 		}
 	};
 
+	const isListEqualToInitialList = () => {
+		if (attList.length !== initialList.length) {
+			return false;
+		}
+		attList.forEach((att) => {
+			if (!initialList.includes(att)) {
+				return false;
+			}
+		});
+		return true;
+	};
+
 	return (
 		<div className="AttributeAdder">
+			{rerunAble && (
+				<p>
+					<i>Modify the attributes to rerun the document base.</i>
+				</p>
+			)}
 			{attList.length === 0 && (
 				<p>
-					<i>Enter a attribute...</i>
+					<i>Enter an attribute...</i>
 				</p>
 			)}
 			{attList.map((att, i) => {
@@ -121,6 +146,17 @@ function AttributeAdder({
 					Attributes
 				</button>
 			)}
+			{rerunAble &&
+				attList.length > 0 &&
+				!isListEqualToInitialList() &&
+				!isDocBaseTaskRunning() && (
+					<button
+						className="btn populateBtn"
+						onClick={() => onRerun(attList)}
+					>
+						<i className="bi bi-play icon"></i>Rerun
+					</button>
+				)}
 		</div>
 	);
 }

@@ -1,7 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import './Home.scss';
 import { useState } from 'react';
-import { useGetUsername, useLogOut } from '../../providers/UserProvider';
+import {
+	useGetUsername,
+	useLogOut,
+	useLoggedIn,
+} from '../../providers/UserProvider';
 import Navbar from '../../components/Navbar/Navbar';
 import FileUpload from '../../components/FileUpload/FileUpload';
 import DocBaseOverview from '../../components/DocBaseOverview/DocBaseOverview';
@@ -15,8 +19,15 @@ function Home() {
 	const logOut = useLogOut();
 
 	const [username] = useState(getUserName());
+	const isLoggedIn = useLoggedIn();
 
-	if (username !== '') {
+	/* 	useEffect(() => {
+		if (!isLoggedIn) {
+			navigate('/login');
+		}
+	}, []); */
+
+	if (isLoggedIn()) {
 		return (
 			<div className="Home">
 				<Navbar />
