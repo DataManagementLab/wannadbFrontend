@@ -13,6 +13,7 @@ import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
 import FileUpload from '../../components/FileUpload/FileUpload';
 import DocBaseOverview from '../../components/DocBaseOverview/DocBaseOverview';
 import Icon from '../../components/Icon/Icon';
+import Logger from '../../utils/Logger';
 
 /**
  * A page that displays information about an organization.
@@ -53,7 +54,7 @@ function OrgPage() {
 			// Get members
 			APIService.getMembersForOrganization(org.id).then((members) => {
 				if (!members) {
-					console.error('Failed to get members for org ' + org.id);
+					Logger.error('Failed to get members for org ' + org.id);
 					return;
 				}
 				setMembers(members);

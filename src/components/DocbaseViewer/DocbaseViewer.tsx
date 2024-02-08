@@ -47,18 +47,15 @@ function DocbaseViewer({ docBase, onClose }: Props) {
 						onClose();
 					}}
 				></AttributeAdder>
-				{/* <ul className="ver">
-					{docBase.attributes.map((attribute, index) => {
-						return (
-							<li key={index}>
-								<b>{attribute}</b>
-							</li>
-						);
-					})}
-				</ul> */}
 				<h2>Documents</h2>
 				{docBase.docs.map((doc, index) => {
-					return <NuggetDocumentViewer key={index} doc={doc} />;
+					return (
+						<NuggetDocumentViewer
+							key={index}
+							doc={doc}
+							docBase={docBase}
+						/>
+					);
 				})}
 				<button className="btn mb ml mt" onClick={onClose}>
 					Close

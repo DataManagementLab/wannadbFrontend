@@ -103,9 +103,6 @@ class APIService {
 			}
 			return false;
 		} catch (err) {
-			//Logger.error(err);
-			console.log('hallo000');
-
 			return false;
 		}
 	}
@@ -523,9 +520,6 @@ class APIService {
 		documentIDs: number[],
 		attributes: string[]
 	): Promise<string | undefined> {
-		// kannste erstmal ignorieren
-		// NILS MACH MA TEST
-
 		try {
 			const url = `${this.host}/core/document_base`;
 
@@ -555,9 +549,6 @@ class APIService {
 		baseName: string,
 		newAttributes: string[]
 	): Promise<string | undefined> {
-		// kannste erstmal ignorieren
-		// NILS MACH MA TEST
-
 		try {
 			const url = `${this.host}/core/document_base/attributes/update`;
 
@@ -586,9 +577,6 @@ class APIService {
 		organizationId: number,
 		baseName: string
 	): Promise<string | undefined> {
-		// kannste erstmal ignorieren
-		// NILS MACH MA TEST
-
 		try {
 			const url = `${this.host}/core/document_base/load`;
 
@@ -605,6 +593,62 @@ class APIService {
 	}
 
 	/**
+	 * Start the interactive table population task
+	 * @param organizationId The ID of the organization
+	 * @param baseName The name of the docbase
+	 * @returns The task ID
+	 */
+	static async interactiveTablePopulation(
+		organizationId: number,
+		baseName: string
+	): Promise<string | undefined> {
+		try {
+			const url = `${this.host}/core/document_base/interactive`;
+
+			const body = new FormData();
+			body.append('organisationId', organizationId.toString());
+			body.append('baseName', baseName);
+			body.append('authorization', this.getUserToken());
+			const resp = await axios.post(url, body).catch(this.handleCatch);
+			return resp.data.task_id;
+		} catch (err) {
+			Logger.error(err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Start the task to get order the nuggets
+	 * @param organizationId The ID of the organization
+	 * @param baseName The name of the docbase
+	 * @param documentName The name of the document
+	 * @param documentContent The content of the document
+	 * @returns The task ID
+	 */
+	static async getOrderedNuggets(
+		organizationId: number,
+		baseName: string,
+		documentName: string,
+		documentContent: string
+	): Promise<string | undefined> {
+		try {
+			const url = `${this.host}/core/document_base/order/nugget`;
+
+			const body = new FormData();
+			body.append('authorization', this.getUserToken());
+			body.append('organisationId', organizationId.toString());
+			body.append('baseName', baseName);
+			body.append('documentName', documentName);
+			body.append('documentContent', documentContent);
+			const resp = await axios.post(url, body).catch(this.handleCatch);
+			return resp.data.task_id;
+		} catch (err) {
+			Logger.error(err);
+			return undefined;
+		}
+	}
+
+	/**
 	 * Get the status of a task.
 	 * @param taskId The ID for the task
 	 * @returns A json object with the status of the task
@@ -612,9 +656,6 @@ class APIService {
 	// TODO replace any with correct type
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static async getTaskStatus(taskId: string): Promise<any> {
-		// kannste erstmal ignorieren
-		// NILS MACH MA TEST
-
 		try {
 			const url = `${
 				this.host
