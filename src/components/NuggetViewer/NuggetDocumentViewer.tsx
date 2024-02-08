@@ -44,7 +44,7 @@ function NuggetDocumentViewer({ docBase, doc, interactive = false }: Props) {
 					</Icon>
 				)}
 			</p>
-			<NuggetText doc={doc} interactive={interactive} />
+			<NuggetText doc={doc} interactive={interactive} docBase={docBase} />
 		</div>
 	);
 }

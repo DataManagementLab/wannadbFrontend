@@ -4,8 +4,12 @@ import './NuggetText.scss';
 import Nugget from '../../types/Nugget';
 import Icon from '../Icon/Icon';
 import Logger from '../../utils/Logger';
+import APIService from '../../utils/ApiService';
+import DocBase from '../../types/DocBase';
+import { useShowNotification } from '../../providers/NotificationProvider';
 
 interface Props {
+	docBase: DocBase;
 	doc: NuggetDocument;
 	interactive?: boolean;
 }
@@ -15,10 +19,12 @@ interface Props {
  * @param param0 The nuggget document to display
  * @returns
  */
-function NuggetText({ doc, interactive = false }: Props) {
+function NuggetText({ doc, docBase, interactive = false }: Props) {
 	const [selectedNugget, setSelectedNugget] = React.useState<
 		Nugget | undefined
 	>(undefined);
+
+	const showNotification = useShowNotification();
 
 	const text = doc.content;
 	// Ensure intervals are within the bounds of the text
@@ -38,6 +44,48 @@ function NuggetText({ doc, interactive = false }: Props) {
 		}
 
 		setSelectedNugget(nugget);
+	};
+
+	const confirmNugget = (nugget: Nugget) => {
+		const interactiveTaskId = sessionStorage.getItem('docbaseId');
+		if (interactiveTaskId === null) {
+			Logger.error('No interactive task id found');
+			return;
+		}
+		APIService.confirmNugget(
+			docBase.organizationId,
+			docBase.name,
+			doc.name,
+			doc.content,
+			nugget.text,
+			nugget.startChar,
+			nugget.endChar,
+			interactiveTaskId
+		).then((res) => {
+			if (res === undefined) {
+				showNotification('error', 'Failed to confirm nugget');
+				return;
+			}
+
+			const taskId = res;
+			const interval = setInterval(() => {
+				APIService.getTaskStatus(taskId).then((res) => {
+					Logger.log('Confirm nugget start*****' + interval);
+					Logger.log(res);
+					Logger.log('Confirm nugget end*****');
+					if (
+						res == undefined ||
+						res.state.toUpperCase().trim() === 'FAILURE'
+					) {
+						showNotification('Error', 'Failed to confirm nugget');
+						clearInterval(interval);
+					} else if (res.state.toUpperCase().trim() === 'SUCCESS') {
+						showNotification('Success', 'Nugget confirmed');
+						clearInterval(interval);
+					}
+				});
+			}, 1000);
+		});
 	};
 
 	const finalHighlightedText = normalizedIntervals
@@ -73,7 +121,7 @@ function NuggetText({ doc, interactive = false }: Props) {
 									cls="bi bi-hand-thumbs-up icon ml"
 									onClicked={() => {
 										Logger.log('Confirm Nugget');
-										alert('Not implemented');
+										confirmNugget(doc.nuggets[index]);
 									}}
 								>
 									Confirm Nugget

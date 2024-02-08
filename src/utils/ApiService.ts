@@ -645,6 +645,49 @@ class APIService {
 	}
 
 	/**
+	 * Confirm the nugget
+	 * @param organizationId The ID of the organization
+	 * @param baseName The name of the docbase
+	 * @param documentName The name of the document
+	 * @param documentContent The content of the document
+	 * @param nuggetText The text of the nugget
+	 * @param startIndex The start index of the nugget
+	 * @param endIndex The end index of the nugget
+	 * @param interactiveCallTaskId The task ID of the interactive table population task
+	 * @returns The task ID
+	 */
+	static async confirmNugget(
+		organizationId: number,
+		baseName: string,
+		documentName: string,
+		documentContent: string,
+		nuggetText: string,
+		startIndex: number,
+		endIndex: number,
+		interactiveCallTaskId: string
+	): Promise<string | undefined> {
+		try {
+			const url = `${this.host}/core/document_base/order/nugget`;
+
+			const body = new FormData();
+			body.append('authorization', this.getUserToken());
+			body.append('organisationId', organizationId.toString());
+			body.append('baseName', baseName);
+			body.append('documentName', documentName);
+			body.append('documentContent', documentContent);
+			body.append('nuggetText', nuggetText);
+			body.append('startIndex', startIndex.toString());
+			body.append('endIndex', endIndex.toString());
+			body.append('interactiveCallTaskId', interactiveCallTaskId);
+			const resp = await axios.post(url, body).catch(this.handleCatch);
+			return resp.data.task_id;
+		} catch (err) {
+			Logger.error(err);
+			return undefined;
+		}
+	}
+
+	/**
 	 * Get the status of a task.
 	 * @param taskId The ID for the task
 	 * @returns A json object with the status of the task
