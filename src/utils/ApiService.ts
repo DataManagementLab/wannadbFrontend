@@ -604,6 +604,28 @@ class APIService {
 		}
 	}
 
+	static async interactiveTablePopulation(
+		organizationId: number,
+		baseName: string
+	): Promise<string | undefined> {
+		// kannste erstmal ignorieren
+		// NILS MACH MA TEST
+
+		try {
+			const url = `${this.host}/core/document_base/interactive`;
+
+			const body = new FormData();
+			body.append('organisationId', organizationId.toString());
+			body.append('baseName', baseName);
+			body.append('authorization', this.getUserToken());
+			const resp = await axios.post(url, body).catch(this.handleCatch);
+			return resp.data.task_id;
+		} catch (err) {
+			Logger.error(err);
+			return undefined;
+		}
+	}
+
 	/**
 	 * Get the status of a task.
 	 * @param taskId The ID for the task
@@ -616,6 +638,8 @@ class APIService {
 		// NILS MACH MA TEST
 
 		try {
+			/* 			const url = `${this.host}/core/status/${taskId}`;
+			 */
 			const url = `${
 				this.host
 			}/core/status/${this.getUserToken()}/${taskId}`;

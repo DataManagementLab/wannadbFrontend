@@ -2,9 +2,11 @@ import React from 'react';
 import NuggetDocument from '../../types/NuggetDocument';
 import './NuggetText.scss';
 import Nugget from '../../types/Nugget';
+import Icon from '../Icon/Icon';
 
 interface Props {
 	doc: NuggetDocument;
+	interactive?: boolean;
 }
 
 /**
@@ -12,7 +14,7 @@ interface Props {
  * @param param0 The nuggget document to display
  * @returns
  */
-function NuggetText({ doc }: Props) {
+function NuggetText({ doc, interactive = false }: Props) {
 	const [selectedNugget, setSelectedNugget] = React.useState<
 		Nugget | undefined
 	>(undefined);
@@ -44,17 +46,51 @@ function NuggetText({ doc }: Props) {
 					index > 0 ? normalizedIntervals[index - 1].end : 0,
 					start
 				)}
-				<span
-					className={
-						selectedNugget === undefined
-							? 'highlighted'
-							: selectedNugget.startChar == start &&
-							    selectedNugget.endChar == end
-							  ? 'highlighted'
-							  : 'highlighted-unselected'
-					}
-				>
-					{text.substring(start, end)}
+				<span className="box">
+					{/* 					<span className="attribute-label">att</span>
+					 */}
+					<span
+						className={
+							selectedNugget === undefined
+								? 'ghf highlighted'
+								: selectedNugget.startChar == start &&
+								    selectedNugget.endChar == end
+								  ? 'ghf highlighted'
+								  : 'ghf highlighted-unselected'
+						}
+					>
+						<span>{text.substring(start, end)}</span>
+						{interactive && (
+							<>
+								<Icon
+									style={{
+										color: 'black',
+										fontSize: '1.2rem',
+										marginRight: '5px',
+									}}
+									cls="bi bi-hand-thumbs-up icon ml"
+									onClicked={() => {
+										console.log('Confirm Nugget');
+									}}
+								>
+									Confirm Nugget
+								</Icon>
+								<Icon
+									style={{
+										color: 'black',
+										fontSize: '1.2rem',
+										paddingRight: '10px',
+									}}
+									cls="bi bi-hand-thumbs-down icon"
+									onClicked={() => {
+										console.log('Decline Nugget');
+									}}
+								>
+									Decline Nugget
+								</Icon>
+							</>
+						)}
+					</span>
 				</span>
 			</React.Fragment>
 		))

@@ -5,7 +5,10 @@ import './DocBaseOverview.scss';
 import APIService from '../../utils/ApiService';
 import MyDocument from '../../types/MyDocument';
 import { Link } from 'react-router-dom';
-import { useLoadDocbaseTask } from '../../providers/DocBaseTaskProvider';
+import {
+	useLoadDocbaseTask,
+	useStartInteractiveTablePopulation,
+} from '../../providers/DocBaseTaskProvider';
 import {
 	useShowChoiceNotification,
 	useShowNotification,
@@ -29,6 +32,8 @@ function DocBaseOverview({ organizationProp }: Props) {
 	const showNotification = useShowNotification();
 	const getOrganizations = useGetOrganizations();
 	const loadDocbaseTask = useLoadDocbaseTask();
+	const startDocBaseInteractiveTablePopulation =
+		useStartInteractiveTablePopulation();
 
 	useEffect(() => {
 		APIService.getOrganizationNames().then((orgs) => {
@@ -64,6 +69,10 @@ function DocBaseOverview({ organizationProp }: Props) {
 
 	const loadDocBase = (document: MyDocument) => {
 		loadDocbaseTask(selectedOrgID, document.name);
+	};
+
+	const startInteractiveTablePopulation = (document: MyDocument) => {
+		startDocBaseInteractiveTablePopulation(selectedOrgID, document.name);
 	};
 
 	const removeDocument = (document: MyDocument) => {
@@ -167,6 +176,14 @@ function DocBaseOverview({ organizationProp }: Props) {
 								}}
 							>
 								View DocBase
+							</Icon>
+							<Icon
+								cls="bi bi-check-square icon"
+								onClicked={() => {
+									startInteractiveTablePopulation(docBase);
+								}}
+							>
+								Start interactive table population
 							</Icon>
 							<Icon
 								cls="bi bi-x-circle"

@@ -4,13 +4,14 @@ import './NuggetDocumentViewer.scss';
 
 interface Props {
 	doc: NuggetDocument;
+	interactive?: boolean;
 }
 
 /**
  * This displays a NuggetDocument
  * @param doc The NuggetDocument to display
  */
-function NuggetDocumentViewer({ doc }: Props) {
+function NuggetDocumentViewer({ doc, interactive = false }: Props) {
 	return (
 		<div className="ver">
 			<p>
@@ -18,7 +19,7 @@ function NuggetDocumentViewer({ doc }: Props) {
 					Document: <i>{doc.name}</i>
 				</b>
 			</p>
-			<NuggetText doc={doc} />
+			<NuggetText doc={doc} interactive={interactive} />
 		</div>
 	);
 }
