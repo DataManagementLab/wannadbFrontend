@@ -3,6 +3,7 @@ import NuggetDocument from '../../types/NuggetDocument';
 import './NuggetText.scss';
 import Nugget from '../../types/Nugget';
 import Icon from '../Icon/Icon';
+import Logger from '../../utils/Logger';
 
 interface Props {
 	doc: NuggetDocument;
@@ -67,15 +68,17 @@ function NuggetText({ doc, interactive = false }: Props) {
 										color: 'black',
 										fontSize: '1.2rem',
 										marginRight: '5px',
+										paddingRight: '10px',
 									}}
 									cls="bi bi-hand-thumbs-up icon ml"
 									onClicked={() => {
-										console.log('Confirm Nugget');
+										Logger.log('Confirm Nugget');
+										alert('Not implemented');
 									}}
 								>
 									Confirm Nugget
 								</Icon>
-								<Icon
+								{/* <Icon
 									style={{
 										color: 'black',
 										fontSize: '1.2rem',
@@ -83,11 +86,11 @@ function NuggetText({ doc, interactive = false }: Props) {
 									}}
 									cls="bi bi-hand-thumbs-down icon"
 									onClicked={() => {
-										console.log('Decline Nugget');
+										Logger.log('Decline Nugget');
 									}}
 								>
 									Decline Nugget
-								</Icon>
+								</Icon> */}
 							</>
 						)}
 					</span>

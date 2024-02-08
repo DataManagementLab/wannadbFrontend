@@ -34,6 +34,7 @@ function InteractiveDocBaseViewer({ docBase }: Props) {
 							key={index}
 							doc={doc}
 							interactive={true}
+							docBase={docBase}
 						/>
 					);
 				})}

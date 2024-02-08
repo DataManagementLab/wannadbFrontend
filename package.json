@@ -18,7 +18,6 @@
 		"prepare": "husky install",
 		"generate": "python scripts/generate.py",
 		"g": "python scripts/generate.py",
-		"todo": "python scripts/todo.py",
 		"comment:check": "python scripts/check_comment.py",
 		"backend:check": "python scripts/check_backend.py",
 		"backend:create": "npm run backend:create:tables",

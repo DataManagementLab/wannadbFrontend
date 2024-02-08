@@ -32,6 +32,12 @@ const DocBaseTaskContext = React.createContext({
 		_organizationId: number,
 		_baseName: string
 	) => {},
+	getOrderedNuggets: (
+		_organizationId: number,
+		_baseName: string,
+		_documentName: string,
+		_documentContent: string
+	) => {},
 });
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -77,6 +83,7 @@ export function useLoadDocbaseTask() {
 	}
 	return context.loadDocbaseTask;
 }
+
 // eslint-disable-next-line react-refresh/only-export-components
 export function useStartInteractiveTablePopulation() {
 	const context = React.useContext(DocBaseTaskContext);
@@ -86,6 +93,17 @@ export function useStartInteractiveTablePopulation() {
 		);
 	}
 	return context.startInteractiveTablePopulation;
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export function useGetOrderedNuggets() {
+	const context = React.useContext(DocBaseTaskContext);
+	if (!context) {
+		throw new Error(
+			'useGetOrderedNuggets must be used within a DocBaseTaskProvider'
+		);
+	}
+	return context.getOrderedNuggets;
 }
 
 interface Props {
@@ -111,7 +129,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 	);
 
 	useEffect(() => {
-		console.log('DocBaseTaskProvider mounted');
+		Logger.log('DocBaseTaskProvider mounted');
 		const type = sessionStorage.getItem('docbasetask-type');
 		const taskId = sessionStorage.getItem('docbaseId');
 		if (
@@ -436,7 +454,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 				if (res.state === 'SUCCESS') {
 					setLoadingScreenLock(false);
 					setLoadingScreen(false);
-					console.log(res);
+					Logger.log(res);
 
 					const docBase = new DocBase(
 						baseName,
@@ -444,7 +462,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 						res.meta.document_base_to_ui.msg.attributes ?? []
 					);
 					try {
-						console.log(res.meta.document_base_to_ui.msg.nuggets);
+						Logger.log(res.meta.document_base_to_ui.msg.nuggets);
 						for (const nugget of res.meta.document_base_to_ui.msg
 							.nuggets) {
 							docBase.addNugget(
@@ -520,7 +538,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 			return;
 		}
 
-		Logger.log('Task: Load Docbase ' + baseName);
+		Logger.log('Task: Start interactive table population ' + baseName);
 		Logger.log('Task ID: ' + taskId);
 
 		sessionStorage.setItem(
@@ -572,7 +590,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 				) {
 					setLoadingScreenLock(false);
 					setLoadingScreen(false);
-					console.log(res);
+					Logger.log(res);
 
 					const att = res.meta.feedback_request_to_ui.attribute.name;
 					let attList: string[] = [];
@@ -586,7 +604,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 						attList
 					);
 					try {
-						console.log(res.meta.document_base_to_ui.msg.nuggets);
+						Logger.log(res.meta.document_base_to_ui.msg.nuggets);
 						for (const nugget of res.meta.document_base_to_ui.msg
 							.nuggets) {
 							docBase.addNugget(
@@ -624,11 +642,125 @@ export function DocBaseTaskProvider({ children }: Props) {
 					// update loading screen
 					setLoadingScreen(
 						true,
-						'Loading Docbase ' + baseName + '...',
+						'Start Interactive Table Population...',
 						info,
 						taskId,
 						true
 					);
+				}
+			});
+		};
+		updateBody();
+		const updateInterval = setInterval(updateBody, intervalTime);
+	};
+
+	const getOrderedNuggets = async (
+		organizationId: number,
+		baseName: string,
+		documentName: string,
+		documentContent: string
+	) => {
+		if (isRunning) {
+			Logger.warn(
+				'Docbase task is already running, cannot start another'
+			);
+			return;
+		}
+
+		const taskId = await APIService.getOrderedNuggets(
+			organizationId,
+			baseName,
+			documentName,
+			documentContent
+		);
+
+		if (taskId == undefined) {
+			showNotification(
+				'Error',
+				'Could not get ordered nuggets for ' + documentName
+			);
+			return;
+		}
+
+		Logger.log('Task: Get ordered nuggets ' + baseName);
+		Logger.log('Task ID: ' + taskId);
+
+		sessionStorage.setItem('docbaseId', taskId);
+		/* setLoadingScreen(
+			true,
+			'Loading Docbase ' + baseName + '...',
+			'Please wait...',
+			taskId
+		); */
+
+		//setLoadingScreenLock(true);
+		setIsRunning(true);
+
+		const updateBody = () => {
+			if (taskId == undefined) {
+				return;
+			}
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			APIService.getTaskStatus(taskId).then((res): any => {
+				Logger.log(res);
+
+				if (
+					res == undefined ||
+					res.state.toUpperCase().trim() === 'FAILURE'
+				) {
+					setLoadingScreenLock(false);
+					setLoadingScreen(false);
+					playAudio(MyAudio.ERROR);
+
+					showNotification(
+						'Error',
+						'Something went wrong getting ordered nuggets.'
+					);
+					sessionStorage.removeItem('docbaseId');
+
+					setIsRunning(false);
+					clearInterval(updateInterval);
+					return;
+				} else if (res.state.toUpperCase().trim() === 'SUCCESS') {
+					setLoadingScreenLock(false);
+					setLoadingScreen(false);
+					Logger.log(res);
+					Logger.log(JSON.stringify(res));
+
+					/* const att = res.meta.feedback_request_to_ui.attribute.name;
+					let attList: string[] = [];
+					if (att) {
+						attList = [att];
+					}
+
+					const docBase = new DocBase(
+						baseName,
+						organizationId,
+						attList
+					);
+					try {
+						Logger.log(res.meta.document_base_to_ui.msg.nuggets);
+						for (const nugget of res.meta.document_base_to_ui.msg
+							.nuggets) {
+							docBase.addNugget(
+								nugget.document.name,
+								nugget.document.text,
+								nugget.start_char,
+								nugget.end_char
+							);
+						}
+					} catch (error) {
+						Logger.error(error);
+						showNotification(
+							'Error',
+							'Something went wrong translating the nuggets.'
+						);
+					} */
+					sessionStorage.removeItem('docbaseId');
+					//setDocBase(docBase);
+					setIsRunning(false);
+					clearInterval(updateInterval);
+					return;
 				}
 			});
 		};
@@ -653,6 +785,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 				updateDocbaseAttributesTask: updateDocbaseAttributesTask,
 				startInteractiveTablePopulation:
 					startInteractiveTablePopulation,
+				getOrderedNuggets: getOrderedNuggets,
 			}}
 		>
 			{docBase && !useInteractiveViewer && (
