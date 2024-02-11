@@ -49,12 +49,9 @@ describe('APIService', () => {
 		const delDocs = await APIService.getDocumentForOrganization(
 			saltOrganisationID as number
 		);
-		//const before = delDocs.length;
 		for (let i = 0; i < delDocs.length; i++) {
 			await APIService.deleteDocument(delDocs[i].id);
 		}
-		//const after = await APIService.getDocumentForOrganization(saltOrganisationID as number);
-		//console.log(`deleted ${before - after.length} documents`);
 	}
 
 	beforeAll(async () => {
@@ -75,14 +72,8 @@ describe('APIService', () => {
 			users.forEach(async (user) => {
 				await APIService.deleteUser(user, user);
 			});
-
-			// remove test date from salt organisation
 			cleanseSaltDocs();
 			await APIService.deleteUser(salt, salt);
-			/*for(let i = 0; i < blobs.length; i++) {
-				await APIService.deleteDocument(blobs[i]);
-			}
-			*/
 		} catch (err) {
 			throw new Error(
 				`sessionSchema not generated because of error ${err as string}`
@@ -252,33 +243,15 @@ describe('APIService', () => {
 	test('should upload files successfully', async () => {
 		const data = [new Blob(['file content'], { type: 'text/plain' })];
 		await APIService.login(salt, salt);
-
-		///
 		const result = await APIService.upload(
 			data,
 			saltOrganisationID as number
 		);
 		expect(result).toBe('File uploaded successfully');
-
-		// maybe delete newly uploaded file
-
-		/*
-		// old Test used organisationId[0] as organisationId which may not be correct
-		const organisationId = await APIService.getOrganizations(); 
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-expect-error
-		const result = await APIService.upload(data, organisationId[0]);
-		
-		expect(result).toBe('File uploaded successfully');
-	*/
 	});
+
 	test('should delete file successfully', async () => {
 		await APIService.login(salt, salt);
-
-		/*
-		const upRes = await APIService.upload([new Blob(['Testfile content'], { type: 'text/plain' })], saltOrganisationID as number);
-		expect(upRes).toBe('File uploaded successfully');
-		*/
 
 		// use file that got uploaded in the 'should upload file successfully' test for now
 		const documents = await APIService.getDocumentForOrganization(
@@ -384,27 +357,4 @@ describe('APIService', () => {
 			).toBe(doc.content);
 		});
 	});
-	// Habe die Methoden im APIService gelöscht weil die eh nur als platzhalter für
-	// spätere features gedient haben, die jetzt aber durch andere endpunkte ersetzt wurden und so
-	// nicht mehr gebraucht werden.
-
-	/* test('should not get file names if there is no file', async () => {
-		const fileNames = await APIService.getFileNames(salt);
-		expect(fileNames).toStrictEqual([]);
-	});
-
-	test('should get file names successfully', async () => {
-		const fileNames = await APIService.getFileNames(salt);
-		expect(fileNames).toBeDefined();
-	});
-	test('should get file content successfully', async () => {
-		const fileNames = await APIService.getFileNames(salt);
-		if (fileNames.length > 0) {
-			const fileContent = await APIService.getFileContent(
-				salt,
-				fileNames[0]
-			);
-			expect(fileContent).not.toBe('Error getting file content!');
-		}
-	}); */
 });
