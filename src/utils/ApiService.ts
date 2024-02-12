@@ -667,7 +667,7 @@ class APIService {
 		interactiveCallTaskId: string
 	): Promise<string | undefined> {
 		try {
-			const url = `${this.host}/core/document_base/order/nugget`;
+			const url = `${this.host}/core/document_base/confirm/nugget`;
 
 			const body = new FormData();
 			body.append('authorization', this.getUserToken());
