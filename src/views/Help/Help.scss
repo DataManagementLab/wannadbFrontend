@@ -14,11 +14,14 @@
 		text-decoration: none;
 		color: #ffffff;
 		font-weight: bold;
+		.db {
+			color: #020c13;
+		}
 		&:hover {
 			color: #020c13;
 
-			&.db {
-				color: #020c13;
+			.db {
+				color: #fff;
 			}
 		}
 	}

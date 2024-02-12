@@ -57,7 +57,7 @@ function Help() {
 									</li>
 									<li>
 										<p>
-											After pressing the 'Durchsuchen...'
+											After pressing the 'Browse...'
 											button, a pop-up will appear, where
 											you can browse and select all files
 											you want to upload.
