@@ -167,7 +167,6 @@ class APIService {
 	 * @returns A list of usernames that start with the given prefix
 	 */
 	static async getUserNameSuggestion(prefix: string): Promise<string[]> {
-		// NILS MACH MA TEST
 		try {
 			const url = `${this.host}/get/user/suggestion/${prefix}`;
 			const resp = await axios
@@ -387,7 +386,6 @@ class APIService {
 	static async getDocumentForOrganization(
 		organizationID: number
 	): Promise<MyDocument[]> {
-		// NILS MACH MA TEST
 		try {
 			const response = await axios
 				.get(
@@ -449,7 +447,6 @@ class APIService {
 		documentId: number,
 		newContent: string
 	): Promise<boolean> {
-		// NILS MACH MA TEST
 		try {
 			const response = await axios
 				.post(
@@ -481,7 +478,6 @@ class APIService {
 	 * @returns If the deletion was successful
 	 */
 	static async deleteDocument(documentId: number): Promise<boolean> {
-		// NILS MACH MA TEST
 		try {
 			const response = await axios
 				.post(
