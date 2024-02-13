@@ -71,7 +71,7 @@ function Help() {
 											lost.
 										</p>
 									</li>
-									<li>
+									<li className="liIcon">
 										<p>
 											You can remove documents by pressing
 											'Remove Document' #icon next to the
@@ -80,9 +80,16 @@ function Help() {
 									</li>
 									<li>
 										<p>
-											By pressing 'Upload' you complete
-											the process and can now use the
-											newly uploaded documents.
+											By pressing{' '}
+											<i
+												className="bi bi-cloud-arrow-up-fill icon -mr2"
+												style={{
+													verticalAlign: '-4px',
+												}}
+											></i>{' '}
+											'Upload' you complete the process
+											and can now use the newly uploaded
+											documents.
 										</p>
 									</li>
 								</ol>
@@ -121,7 +128,7 @@ function Help() {
 											on.
 										</p>
 									</li>
-									<li>
+									<li className="liIcon">
 										<p>
 											Add or delete 'Attributes' you want
 											the documents filtered for.
@@ -129,7 +136,14 @@ function Help() {
 									</li>
 									<li>
 										<p>
-											Using 'Run' will finish the
+											Using{' '}
+											<i
+												className="bi bi-play-fill icon mr-2"
+												style={{
+													verticalAlign: '-4px',
+												}}
+											></i>
+											'Run' will finish the
 											creation-process, so you can
 											interact with the newly structured
 											documents.
