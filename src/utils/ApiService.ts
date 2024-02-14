@@ -645,7 +645,7 @@ class APIService {
 	}
 
 	/**
-	 * Confirm the nugget
+	 * Confirm a match nugget
 	 * @param organizationId The ID of the organization
 	 * @param baseName The name of the docbase
 	 * @param documentName The name of the document
@@ -656,7 +656,7 @@ class APIService {
 	 * @param interactiveCallTaskId The task ID of the interactive table population task
 	 * @returns The task ID
 	 */
-	static async confirmNugget(
+	static async confirmMatchNugget(
 		organizationId: number,
 		baseName: string,
 		documentName: string,
@@ -667,7 +667,50 @@ class APIService {
 		interactiveCallTaskId: string
 	): Promise<string | undefined> {
 		try {
-			const url = `${this.host}/core/document_base/confirm/nugget`;
+			const url = `${this.host}/core/document_base/confirm/nugget/match`;
+
+			const body = new FormData();
+			body.append('authorization', this.getUserToken());
+			body.append('organisationId', organizationId.toString());
+			body.append('baseName', baseName);
+			body.append('documentName', documentName);
+			body.append('documentContent', documentContent);
+			body.append('nuggetText', nuggetText);
+			body.append('startIndex', startIndex.toString());
+			body.append('endIndex', endIndex.toString());
+			body.append('interactiveCallTaskId', interactiveCallTaskId);
+			const resp = await axios.post(url, body).catch(this.handleCatch);
+			return resp.data.task_id;
+		} catch (err) {
+			Logger.error(err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Confirm a custom nugget
+	 * @param organizationId The ID of the organization
+	 * @param baseName The name of the docbase
+	 * @param documentName The name of the document
+	 * @param documentContent The content of the document
+	 * @param nuggetText The text of the nugget
+	 * @param startIndex The start index of the nugget
+	 * @param endIndex The end index of the nugget
+	 * @param interactiveCallTaskId The task ID of the interactive table population task
+	 * @returns The task ID
+	 */
+	static async confirmCustomNugget(
+		organizationId: number,
+		baseName: string,
+		documentName: string,
+		documentContent: string,
+		nuggetText: string,
+		startIndex: number,
+		endIndex: number,
+		interactiveCallTaskId: string
+	): Promise<string | undefined> {
+		try {
+			const url = `${this.host}/core/document_base/confirm/nugget/custom`;
 
 			const body = new FormData();
 			body.append('authorization', this.getUserToken());
@@ -692,7 +735,6 @@ class APIService {
 	 * @param taskId The ID for the task
 	 * @returns A json object with the status of the task
 	 */
-	// TODO replace any with correct type
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static async getTaskStatus(taskId: string): Promise<any> {
 		try {

@@ -9,6 +9,7 @@ import {
 import Navbar from '../../components/Navbar/Navbar';
 import FileUpload from '../../components/FileUpload/FileUpload';
 import DocBaseOverview from '../../components/DocBaseOverview/DocBaseOverview';
+import getRandomTip from '../../data/getRandomTip';
 
 /**
  * The home page component
@@ -20,12 +21,6 @@ function Home() {
 
 	const [username] = useState(getUserName());
 	const isLoggedIn = useLoggedIn();
-
-	/* 	useEffect(() => {
-		if (!isLoggedIn) {
-			navigate('/login');
-		}
-	}, []); */
 
 	if (isLoggedIn()) {
 		return (
@@ -42,6 +37,12 @@ function Home() {
 						Hi {username.slice(0, -2)}
 						<span className="db">{username.slice(-2)}</span> 👋
 					</h1>
+					<h2>
+						T<span className="db">ip</span>
+					</h2>
+					<p>
+						<i>{getRandomTip()}</i>
+					</p>
 					<h2>
 						Document <span className="db">Up</span>load
 					</h2>

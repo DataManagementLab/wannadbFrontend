@@ -35,6 +35,14 @@ class DocBase {
 		newDoc.addNugget(startChar, endChar);
 		this.docs.push(newDoc);
 	}
+
+	async fetchOrderedNuggets() {
+		/* 		for (const doc of this.docs) {
+			await doc.fetchOrderNuggets(this.organizationId, this.name);
+		}
+		*/
+		await this.docs[0].fetchOrderNuggets(this.organizationId, this.name);
+	}
 }
 
 export default DocBase;

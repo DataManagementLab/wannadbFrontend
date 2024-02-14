@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import NuggetDocument from '../../types/NuggetDocument';
 import './NuggetText.scss';
 import Nugget from '../../types/Nugget';
@@ -24,6 +24,10 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 		Nugget | undefined
 	>(undefined);
 
+	const [confirmedNuggets, setConfirmedNuggets] = React.useState<number[]>(
+		[]
+	);
+
 	const showNotification = useShowNotification();
 
 	const text = doc.content;
@@ -46,13 +50,22 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 		setSelectedNugget(nugget);
 	};
 
+	useEffect(() => {
+		if (!interactive) return;
+		setTimeout(() => {
+			console.log('fetching ordered nuggets');
+			docBase.fetchOrderedNuggets();
+		}, 1000);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const confirmNugget = (nugget: Nugget) => {
 		const interactiveTaskId = sessionStorage.getItem('docbaseId');
 		if (interactiveTaskId === null) {
 			Logger.error('No interactive task id found');
 			return;
 		}
-		APIService.confirmNugget(
+		APIService.confirmMatchNugget(
 			docBase.organizationId,
 			docBase.name,
 			doc.name,
@@ -63,7 +76,7 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 			interactiveTaskId
 		).then((res) => {
 			if (res === undefined) {
-				showNotification('error', 'Failed to confirm nugget');
+				showNotification('Error', 'Failed to confirm nugget');
 				return;
 			}
 
@@ -79,8 +92,12 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 					) {
 						showNotification('Error', 'Failed to confirm nugget');
 						clearInterval(interval);
+						return;
 					} else if (res.state.toUpperCase().trim() === 'SUCCESS') {
+						// TODO
 						showNotification('Success', 'Nugget confirmed');
+
+						setConfirmedNuggets([...confirmedNuggets, nugget.ID]);
 						clearInterval(interval);
 					}
 				});
@@ -115,12 +132,20 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 									style={{
 										color: 'black',
 										fontSize: '1.2rem',
-										marginRight: '5px',
-										paddingRight: '10px',
+										marginRight: '0px',
+										paddingRight: '5px',
 									}}
-									cls="bi bi-hand-thumbs-up icon ml"
+									cls={
+										'bi icon ml' +
+										(confirmedNuggets.includes(
+											doc.nuggets[index].ID
+										)
+											? ' bi-hand-thumbs-up-fill'
+											: ' bi-hand-thumbs-up')
+									}
 									onClicked={() => {
 										Logger.log('Confirm Nugget');
+										console.log(doc.nuggets[index]);
 										confirmNugget(doc.nuggets[index]);
 									}}
 								>
@@ -158,24 +183,26 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 			<div>
 				<pre>{finalHighlightedText}</pre>
 			</div>
-			<div className="mb nuggetBox hor">
-				{doc.nuggets.map((nugget, index) => {
-					return (
-						<span
-							className={
-								'ml nugget ' +
-								(selectedNugget?.ID === nugget.ID
-									? 'selected'
-									: '')
-							}
-							key={index}
-							onClick={() => onSelectNugget(nugget)}
-						>
-							{nugget.text.replace(/\n/g, ' ')}
-						</span>
-					);
-				})}
-			</div>
+			{!interactive && (
+				<div className="mb nuggetBox hor">
+					{doc.nuggets.map((nugget, index) => {
+						return (
+							<span
+								className={
+									'ml nugget ' +
+									(selectedNugget?.ID === nugget.ID
+										? 'selected'
+										: '')
+								}
+								key={index}
+								onClick={() => onSelectNugget(nugget)}
+							>
+								{nugget.text.replace(/\n/g, ' ')}
+							</span>
+						);
+					})}
+				</div>
+			)}
 		</>
 	);
 }
