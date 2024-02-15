@@ -38,7 +38,9 @@ class NuggetDocument {
 		if (nuggetExists) {
 			return;
 		}
-		this.nuggets.push(new Nugget(startChar, endChar, this.content));
+		this.nuggets.push(
+			new Nugget(startChar, endChar, this.content, this.name)
+		);
 		// order nuggets by startChar
 		this.nuggets.sort((a, b) => a.startChar - b.startChar);
 	}

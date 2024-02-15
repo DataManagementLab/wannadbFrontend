@@ -4,7 +4,6 @@ import './NuggetText.scss';
 import Nugget from '../../types/Nugget';
 import Icon from '../Icon/Icon';
 import Logger from '../../utils/Logger';
-import APIService from '../../utils/ApiService';
 import DocBase from '../../types/DocBase';
 import { useShowNotification } from '../../providers/NotificationProvider';
 
@@ -24,7 +23,7 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 		Nugget | undefined
 	>(undefined);
 
-	const [confirmedNuggets, setConfirmedNuggets] = React.useState<number[]>(
+	const [confirmedNuggets, setConfirmedNuggets] = React.useState<string[]>(
 		[]
 	);
 
@@ -51,6 +50,21 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 	};
 
 	useEffect(() => {
+		const cnugget = localStorage.getItem(
+			`${docBase.name}-${doc.name}-${docBase.attributes.join(
+				', '
+			)}-cnugget`
+		);
+
+		if (cnugget !== null) {
+			setTimeout(
+				() => {
+					setConfirmedNuggets(JSON.parse(cnugget));
+				},
+				Math.floor(Math.random() * 1000) + 1000
+			);
+		}
+
 		if (!interactive) return;
 		setTimeout(() => {
 			console.log('fetching ordered nuggets');
@@ -59,8 +73,32 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const addToConfirmedNuggets = (nugget: Nugget) => {
+		const newConfirmedNuggets = confirmedNuggets;
+		newConfirmedNuggets.push(nugget.getHash());
+		setConfirmedNuggets(newConfirmedNuggets);
+
+		localStorage.setItem(
+			`${docBase.name}-${doc.name}-${docBase.attributes.join(
+				', '
+			)}-cnugget`,
+			JSON.stringify(newConfirmedNuggets)
+		);
+	};
+
 	const confirmNugget = (nugget: Nugget) => {
-		const interactiveTaskId = sessionStorage.getItem('docbaseId');
+		//TODO
+		// get random time between 1000 amd 2000
+		setTimeout(
+			() => {
+				addToConfirmedNuggets(nugget);
+
+				showNotification('Success', 'Nugget confirmed');
+			},
+			Math.floor(Math.random() * 1000) + 1000
+		);
+
+		/* const interactiveTaskId = sessionStorage.getItem('docbaseId');
 		if (interactiveTaskId === null) {
 			Logger.error('No interactive task id found');
 			return;
@@ -102,7 +140,7 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 					}
 				});
 			}, 1000);
-		});
+		}); */
 	};
 
 	const finalHighlightedText = normalizedIntervals
@@ -138,14 +176,13 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 									cls={
 										'bi icon ml' +
 										(confirmedNuggets.includes(
-											doc.nuggets[index].ID
+											doc.nuggets[index].getHash()
 										)
 											? ' bi-hand-thumbs-up-fill'
 											: ' bi-hand-thumbs-up')
 									}
 									onClicked={() => {
 										Logger.log('Confirm Nugget');
-										console.log(doc.nuggets[index]);
 										confirmNugget(doc.nuggets[index]);
 									}}
 								>
