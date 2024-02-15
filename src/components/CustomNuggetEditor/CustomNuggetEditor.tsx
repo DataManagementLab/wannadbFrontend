@@ -32,7 +32,6 @@ function CustomNuggetEditor({ doc, docBase }: Props) {
 			);
 			return;
 		}
-		console.log('Selected Text:', text);
 
 		setSelectionStart(-1);
 		setSelectionEnd(-1);

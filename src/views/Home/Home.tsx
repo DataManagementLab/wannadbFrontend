@@ -38,6 +38,35 @@ function Home() {
 						<span className="db">{username.slice(-2)}</span> 👋
 					</h1>
 					<h2>
+						U<span className="db">se</span>r Study
+					</h2>
+					<p>
+						<b>
+							If you are from the user study, you can download
+							some sample documents{' '}
+							<a
+								href="https://github.com/cophilot/wannadb-sample-txt/archive/refs/heads/main.zip"
+								target="_blank"
+							>
+								here
+							</a>{' '}
+							to use them for the upload.
+						</b>
+					</p>
+					<p>
+						<i>
+							If the link does not download the file, please click{' '}
+							<a
+								href="https://github.com/cophilot/wannadb-sample-txt?tab=readme-ov-file#how-to-download"
+								target="_blank"
+								rel="noreferrer"
+							>
+								here
+							</a>{' '}
+							and download the file manually.
+						</i>
+					</p>
+					<h2>
 						T<span className="db">ip</span>
 					</h2>
 					<p>

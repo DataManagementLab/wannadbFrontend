@@ -6,6 +6,7 @@ import Icon from '../Icon/Icon';
 import Logger from '../../utils/Logger';
 import DocBase from '../../types/DocBase';
 import { useShowNotification } from '../../providers/NotificationProvider';
+import APIService from '../../utils/ApiService';
 
 interface Props {
 	docBase: DocBase;
@@ -67,7 +68,7 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 
 		if (!interactive) return;
 		setTimeout(() => {
-			console.log('fetching ordered nuggets');
+			Logger.log('fetching ordered nuggets');
 			docBase.fetchOrderedNuggets();
 		}, 1000);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -98,7 +99,7 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 			Math.floor(Math.random() * 1000) + 1000
 		);
 
-		/* const interactiveTaskId = sessionStorage.getItem('docbaseId');
+		const interactiveTaskId = sessionStorage.getItem('docbaseId');
 		if (interactiveTaskId === null) {
 			Logger.error('No interactive task id found');
 			return;
@@ -114,11 +115,11 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 			interactiveTaskId
 		).then((res) => {
 			if (res === undefined) {
-				showNotification('Error', 'Failed to confirm nugget');
+				//showNotification('Error', 'Failed to confirm nugget');
 				return;
 			}
 
-			const taskId = res;
+			/* const taskId = res;
 			const interval = setInterval(() => {
 				APIService.getTaskStatus(taskId).then((res) => {
 					Logger.log('Confirm nugget start*****' + interval);
@@ -128,19 +129,18 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 						res == undefined ||
 						res.state.toUpperCase().trim() === 'FAILURE'
 					) {
-						showNotification('Error', 'Failed to confirm nugget');
+						// showNotification('Error', 'Failed to confirm nugget');
 						clearInterval(interval);
 						return;
 					} else if (res.state.toUpperCase().trim() === 'SUCCESS') {
 						// TODO
-						showNotification('Success', 'Nugget confirmed');
+						// showNotification('Success', 'Nugget confirmed');
 
-						setConfirmedNuggets([...confirmedNuggets, nugget.ID]);
 						clearInterval(interval);
 					}
 				});
-			}, 1000);
-		}); */
+			}, 1000); */
+		});
 	};
 
 	const finalHighlightedText = normalizedIntervals
@@ -169,17 +169,18 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 								<Icon
 									style={{
 										color: 'black',
-										fontSize: '1.2rem',
+										fontSize: '1.5rem',
 										marginRight: '0px',
 										paddingRight: '5px',
+										verticalAlign: '-1px',
 									}}
 									cls={
 										'bi icon ml' +
 										(confirmedNuggets.includes(
 											doc.nuggets[index].getHash()
 										)
-											? ' bi-hand-thumbs-up-fill'
-											: ' bi-hand-thumbs-up')
+											? ' bi-check-circle-fill'
+											: ' bi-check-circle')
 									}
 									onClicked={() => {
 										Logger.log('Confirm Nugget');
