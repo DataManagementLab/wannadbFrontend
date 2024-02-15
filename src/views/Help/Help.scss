@@ -1,2 +1,32 @@
 .Help {
+	.container {
+		display: flex;
+	}
+	.navigation {
+		background-color: #083d60;
+		border: 1px solid #020c13;
+		padding: 10px;
+		margin-bottom: 20px;
+	}
+
+	.navigation a {
+		margin-right: 10px;
+		text-decoration: none;
+		color: #ffffff;
+		font-weight: bold;
+		.db {
+			color: #020c13;
+		}
+		&:hover {
+			color: #020c13;
+
+			.db {
+				color: #fff;
+			}
+		}
+	}
+
+	.liIcon {
+		margin-bottom: -5px;
+	}
 }
