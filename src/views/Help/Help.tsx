@@ -81,12 +81,7 @@ function Help() {
 									<li>
 										<p>
 											By pressing{' '}
-											<i
-												className="bi bi-cloud-arrow-up-fill icon -mr2"
-												style={{
-													verticalAlign: '-4px',
-												}}
-											></i>{' '}
+											<i className="bi bi-cloud-arrow-up-fill icon -mr2"></i>{' '}
 											'Upload' you complete the process
 											and can now use the newly uploaded
 											documents.
@@ -137,12 +132,7 @@ function Help() {
 									<li>
 										<p>
 											Using{' '}
-											<i
-												className="bi bi-play-fill icon mr-2"
-												style={{
-													verticalAlign: '-4px',
-												}}
-											></i>
+											<i className="bi bi-play-fill icon mr-2"></i>
 											'Run' will finish the
 											creation-process, so you can
 											interact with the newly structured
