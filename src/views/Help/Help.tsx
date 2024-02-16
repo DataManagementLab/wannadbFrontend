@@ -1,6 +1,7 @@
 import Navbar from '../../components/Navbar/Navbar';
 import './Help.scss';
 
+const downLeft = { marginLeft: '5px', verticalAlign: '-2px' };
 /**
  * The help page
  */
@@ -63,7 +64,7 @@ function Help() {
 											you want to upload.
 										</p>
 									</li>
-									<li>
+									<li className="liIcon">
 										<p>
 											Using the 'Add' button will show all
 											files you've selected. By using
@@ -74,14 +75,22 @@ function Help() {
 									<li className="liIcon">
 										<p>
 											You can remove documents by pressing
-											'Remove Document' #icon next to the
-											file.{' '}
+											<i
+												className="bi bi-x-circle icon icon -mr"
+												style={downLeft}
+											></i>{' '}
+											'Remove Document' next to the file.{' '}
 										</p>
 									</li>
 									<li>
 										<p>
 											By pressing{' '}
-											<i className="bi bi-cloud-arrow-up-fill icon -mr2"></i>{' '}
+											<i
+												className="bi bi-cloud-arrow-up-fill icon -mr2"
+												style={{
+													verticalAlign: '-2px',
+												}}
+											></i>{' '}
 											'Upload' you complete the process
 											and can now use the newly uploaded
 											documents.
