@@ -178,7 +178,7 @@ function DocBaseOverview({ organizationProp }: Props) {
 								View DocBase
 							</Icon>
 							<Icon
-								cls="bi bi-check-square icon"
+								cls="bi bi-table icon"
 								onClicked={() => {
 									startInteractiveTablePopulation(docBase);
 								}}
