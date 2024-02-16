@@ -1,3 +1,5 @@
+import APIService from '../utils/ApiService';
+import Logger from '../utils/Logger';
 import Nugget from './Nugget';
 
 /**
@@ -36,9 +38,37 @@ class NuggetDocument {
 		if (nuggetExists) {
 			return;
 		}
-		this.nuggets.push(new Nugget(startChar, endChar, this.content));
+		this.nuggets.push(
+			new Nugget(startChar, endChar, this.content, this.name)
+		);
 		// order nuggets by startChar
 		this.nuggets.sort((a, b) => a.startChar - b.startChar);
+	}
+
+	async fetchOrderNuggets(orgId: number, baseName: string) {
+		const taskID = await APIService.getOrderedNuggets(
+			orgId,
+			baseName,
+			this.name,
+			this.content
+		);
+
+		if (taskID === undefined) {
+			return;
+		}
+
+		let resp = await APIService.getTaskStatus(taskID);
+		while (resp.state.toUpperCase().trim() !== 'SUCCESS') {
+			await new Promise((resolve) => setTimeout(resolve, 1000));
+			resp = await APIService.getTaskStatus(taskID);
+			Logger.log('Task status getORderNuggets:');
+			Logger.log(resp);
+			if (resp.state.toUpperCase().trim() === 'SUCCESS') {
+				break;
+			}
+		}
+		Logger.log('Task status getORderNuggets:');
+		Logger.log(resp);
 	}
 }
 

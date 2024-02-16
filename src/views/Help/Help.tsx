@@ -141,12 +141,7 @@ function Help() {
 									<li>
 										<p>
 											Using{' '}
-											<i
-												className="bi bi-play-fill icon mr-2"
-												style={{
-													verticalAlign: '-4px',
-												}}
-											></i>
+											<i className="bi bi-play-fill icon mr-2"></i>
 											'Run' will finish the
 											creation-process, so you can
 											interact with the newly structured

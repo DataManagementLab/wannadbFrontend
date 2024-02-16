@@ -161,6 +161,13 @@ input {
 	}
 }
 
+h1 {
+	letter-spacing: -1px;
+}
+h2 {
+	letter-spacing: -0.5px;
+}
+
 [data-theme='dark'] {
 	--bg-color: #020c13;
 	--btn-color: #010407;

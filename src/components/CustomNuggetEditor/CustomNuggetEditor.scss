@@ -42,14 +42,21 @@
 	align-self: baseline; // Add this line
 }
 
-pre {
-	font-size: 1.5rem;
+.nugget-editor-textarea {
+	font-size: 20px;
 	line-height: 2;
 	padding-left: 20px;
 	padding-right: 20px;
-	padding-top: 10px;
-	padding-bottom: 15px;
 	border-radius: 10px;
 	background-color: var(--btn-color);
 	overflow-x: scroll;
+	color: var(--text-color);
+	border: 3px dashed var(--text-color);
+	// make as big as text
+	width: 96%;
+	resize: none;
+	// make as big as text
+	&:focus {
+		outline: none;
+	}
 }

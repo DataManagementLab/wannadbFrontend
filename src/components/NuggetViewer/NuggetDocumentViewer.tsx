@@ -4,6 +4,8 @@ import NuggetText from '../NuggetText/NuggetText';
 import './NuggetDocumentViewer.scss';
 import { useGetOrderedNuggets } from '../../providers/DocBaseTaskProvider';
 import DocBase from '../../types/DocBase';
+import CustomNuggetEditor from '../CustomNuggetEditor/CustomNuggetEditor';
+import { useState } from 'react';
 
 interface Props {
 	docBase: DocBase;
@@ -17,6 +19,7 @@ interface Props {
  */
 function NuggetDocumentViewer({ docBase, doc, interactive = false }: Props) {
 	const getOrderedNuggets = useGetOrderedNuggets();
+	const [customNugget, setCustomNugget] = useState<boolean>(false);
 
 	return (
 		<div className="ver">
@@ -44,7 +47,28 @@ function NuggetDocumentViewer({ docBase, doc, interactive = false }: Props) {
 					</Icon>
 				)}
 			</p>
-			<NuggetText doc={doc} interactive={interactive} />
+			{!customNugget ? (
+				<NuggetText
+					doc={doc}
+					interactive={interactive}
+					docBase={docBase}
+				/>
+			) : (
+				<CustomNuggetEditor doc={doc} docBase={docBase} />
+			)}
+			{interactive && (
+				<button
+					className="btn"
+					onClick={() => setCustomNugget(!customNugget)}
+					style={{
+						width: '300px',
+					}}
+				>
+					{customNugget
+						? 'Select suggested nugget'
+						: 'Select custom nugget'}
+				</button>
+			)}
 		</div>
 	);
 }

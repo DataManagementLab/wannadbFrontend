@@ -223,7 +223,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 					);
 					try {
 						const nuggets =
-							res.meta.document_base_to_ui.msg.nuggets ||
+							res.meta.document_base_to_ui.nuggets ||
 							res.meta.document_base_to_ui.nuggets;
 
 						for (const nugget of nuggets) {
@@ -345,8 +345,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 						organizationId,
 						attributes
 					);
-					for (const nugget of res.meta.document_base_to_ui.msg
-						.nuggets) {
+					for (const nugget of res.meta.document_base_to_ui.nuggets) {
 						try {
 							docBase.addNugget(
 								nugget.document.name,
@@ -459,11 +458,11 @@ export function DocBaseTaskProvider({ children }: Props) {
 					const docBase = new DocBase(
 						baseName,
 						organizationId,
-						res.meta.document_base_to_ui.msg.attributes ?? []
+						res.meta.document_base_to_ui.attributes ?? []
 					);
 					try {
-						Logger.log(res.meta.document_base_to_ui.msg.nuggets);
-						for (const nugget of res.meta.document_base_to_ui.msg
+						Logger.log(res.meta.document_base_to_ui.nuggets);
+						for (const nugget of res.meta.document_base_to_ui
 							.nuggets) {
 							docBase.addNugget(
 								nugget.document.name,
@@ -598,16 +597,15 @@ export function DocBaseTaskProvider({ children }: Props) {
 						attList = [att];
 					}
 
-					const docBase = new DocBase(
+					const newDocBase = new DocBase(
 						baseName,
 						organizationId,
 						attList
 					);
 					try {
-						Logger.log(res.meta.document_base_to_ui.msg.nuggets);
-						for (const nugget of res.meta.document_base_to_ui.msg
+						for (const nugget of res.meta.document_base_to_ui
 							.nuggets) {
-							docBase.addNugget(
+							newDocBase.addNugget(
 								nugget.document.name,
 								nugget.document.text,
 								nugget.start_char,
@@ -621,12 +619,10 @@ export function DocBaseTaskProvider({ children }: Props) {
 							'Something went wrong translating the nuggets.'
 						);
 					}
-					//sessionStorage.removeItem('docbaseId');
-					setDocBase(docBase);
+					if (docBase == undefined) {
+						setDocBase(newDocBase);
+					}
 					setUseInteractiveViewer(true);
-					//setIsRunning(false);
-					//clearInterval(updateInterval);
-					//return;
 				} else {
 					let info = res.state;
 
@@ -651,7 +647,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 			});
 		};
 		updateBody();
-		const updateInterval = setInterval(updateBody, intervalTime);
+		const updateInterval = setInterval(updateBody, intervalTime * 5);
 	};
 
 	const getOrderedNuggets = async (
@@ -739,8 +735,8 @@ export function DocBaseTaskProvider({ children }: Props) {
 						attList
 					);
 					try {
-						Logger.log(res.meta.document_base_to_ui.msg.nuggets);
-						for (const nugget of res.meta.document_base_to_ui.msg
+						Logger.log(res.meta.document_base_to_ui.nuggets);
+						for (const nugget of res.meta.document_base_to_ui
 							.nuggets) {
 							docBase.addNugget(
 								nugget.document.name,
