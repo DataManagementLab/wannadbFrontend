@@ -19,12 +19,17 @@ function Help() {
 					<>
 						<div className="container">
 							<nav className="navigation">
-								<a href="#q1">1. How to upload documents?</a>
+								<a href="#q1">2. How to upload documents?</a>
 								<br />
+
 								<a href="#q2">
 									2. How to use wanna
 									<span className="db">db</span> on my
 									documents?
+								</a>
+								<br />
+								<a href="#q3">
+									3. How can i interact with a DocBase?
 								</a>
 							</nav>
 						</div>
@@ -143,9 +148,48 @@ function Help() {
 											Using{' '}
 											<i className="bi bi-play-fill icon mr-2"></i>
 											'Run' will finish the
-											creation-process, so you can
-											interact with the newly structured
-											documents.
+											creation-process, and you can now
+											see the prefiltered documents.
+										</p>
+									</li>
+								</ol>
+							}
+						</section>
+						<section id="q3">
+							<h3>How can i interact with a DocBase</h3>
+							{
+								<ol>
+									<li className="liIcon">
+										<p>
+											In the DocBase-Segment you can find
+											your created document bases.
+										</p>
+									</li>
+									<li className="liIcon">
+										<p>
+											By pressing{' '}
+											<i className="bi bi-table icon icon"></i>{' '}
+											'Start interactive table population'
+											you can modify the DocBase.
+											<br />
+										</p>
+									</li>
+									<li className="liIcon">
+										<p>
+											This process is timed to terminate
+											after 180 seconds.
+										</p>
+									</li>
+									<li>
+										<p>
+											For each attribute you filtered for,
+											you can now
+											<i
+												className="bi icon ml bi-check-circle icon"
+												style={downLeft}
+											></i>{' '}
+											confirm if the found nuggets are
+											correct.
 										</p>
 									</li>
 								</ol>
