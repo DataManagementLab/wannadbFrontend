@@ -131,7 +131,15 @@ function OrgPage() {
 				</ul>
 				<h2>Document{documents.length > 1 ? 's' : ''}</h2>
 				<MyFiles documents={documents} />
-				<h2>Upload</h2>
+				<h2>
+					Upload
+					<i
+						className="bi bi-question-circle icon helpIcon"
+						onClick={() => {
+							navigate('/help#q1');
+						}}
+					></i>
+				</h2>
 				<FileUpload
 					organizationProp={organization}
 					afterUpload={() => {
@@ -144,7 +152,15 @@ function OrgPage() {
 						});
 					}}
 				></FileUpload>
-				<h2>Docbase</h2>
+				<h2>
+					Docbase
+					<i
+						className="bi bi-question-circle icon helpIcon"
+						onClick={() => {
+							navigate('/help#q2');
+						}}
+					></i>
+				</h2>
 				{render && (
 					<DocBaseOverview
 						organizationProp={organization}

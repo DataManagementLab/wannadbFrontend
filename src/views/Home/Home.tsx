@@ -75,7 +75,13 @@ function Home() {
 						<i>{getRandomTip()}</i>
 					</p>
 					<h2>
-						Document <span className="db">Up</span>load
+						Document <span className="db">Up</span>load{' '}
+						<i
+							className="bi bi-question-circle icon helpIcon"
+							onClick={() => {
+								navigate('/help#q1');
+							}}
+						></i>
 					</h2>
 					<FileUpload
 						organizationProp={undefined}
@@ -86,6 +92,12 @@ function Home() {
 					></FileUpload>
 					<h2>
 						Doc<span className="db">Ba</span>se
+						<i
+							className="bi bi-question-circle icon helpIcon"
+							onClick={() => {
+								navigate('/help#q2');
+							}}
+						></i>
 					</h2>
 					<DocBaseOverview
 						counter={counter}
