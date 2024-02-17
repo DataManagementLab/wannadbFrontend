@@ -21,6 +21,7 @@ function Home() {
 
 	const [username] = useState(getUserName());
 	const isLoggedIn = useLoggedIn();
+	const [counter, setCounter] = useState(0);
 
 	if (isLoggedIn()) {
 		return (
@@ -37,35 +38,36 @@ function Home() {
 						Hi {username.slice(0, -2)}
 						<span className="db">{username.slice(-2)}</span> 👋
 					</h1>
-					<h2>
-						U<span className="db">se</span>r Study
-					</h2>
-					<p>
-						<b>
-							If you are from the user study, you can download
-							some sample documents{' '}
-							<a
-								href="https://github.com/cophilot/wannadb-sample-txt/archive/refs/heads/main.zip"
-								target="_blank"
-							>
-								here
-							</a>{' '}
-							to use them for the upload.
-						</b>
-					</p>
-					<p>
-						<i>
-							If the link does not download the file, please click{' '}
-							<a
-								href="https://github.com/cophilot/wannadb-sample-txt?tab=readme-ov-file#how-to-download"
-								target="_blank"
-								rel="noreferrer"
-							>
-								here
-							</a>{' '}
-							and download the file manually.
-						</i>
-					</p>
+					<div className="userStudy">
+						<h2>User Study</h2>
+						<p>
+							<b>
+								If you are from the user study, you can download
+								some sample documents{' '}
+								<a
+									href="https://github.com/cophilot/wannadb-sample-txt/archive/refs/heads/main.zip"
+									target="_blank"
+								>
+									here
+								</a>{' '}
+								to use them for the upload.
+							</b>
+						</p>
+						<p>
+							<i>
+								If the link does not download the file, please
+								click{' '}
+								<a
+									href="https://github.com/cophilot/wannadb-sample-txt?tab=readme-ov-file#how-to-download"
+									target="_blank"
+									rel="noreferrer"
+								>
+									here
+								</a>{' '}
+								and download the file manually.
+							</i>
+						</p>
+					</div>
 					<h2>
 						T<span className="db">ip</span>
 					</h2>
@@ -75,11 +77,18 @@ function Home() {
 					<h2>
 						Document <span className="db">Up</span>load
 					</h2>
-					<FileUpload organizationProp={undefined}></FileUpload>
+					<FileUpload
+						organizationProp={undefined}
+						afterUpload={() => {
+							//window.location.reload();
+							setCounter(counter + 1);
+						}}
+					></FileUpload>
 					<h2>
 						Doc<span className="db">Ba</span>se
 					</h2>
 					<DocBaseOverview
+						counter={counter}
 						organizationProp={undefined}
 					></DocBaseOverview>
 					{import.meta.env.VITE_APP_LOG === 'true' && (

@@ -25,6 +25,7 @@ function OrgPage() {
 	const [members, setMembers] = useState<string[]>([]);
 	const [documents, setDocuments] = useState<MyDocument[]>([]);
 	const [render, setRender] = useState<boolean>(false);
+	const [counter, setCounter] = useState(0);
 
 	const navigate = useNavigate();
 	const isLoggedIn = useLoggedIn();
@@ -139,11 +140,17 @@ function OrgPage() {
 							organization.id
 						).then((docs) => {
 							setDocuments(docs);
+							setCounter(counter + 1);
 						});
 					}}
 				></FileUpload>
 				<h2>Docbase</h2>
-				{render && <DocBaseOverview organizationProp={organization} />}
+				{render && (
+					<DocBaseOverview
+						organizationProp={organization}
+						counter={counter}
+					/>
+				)}
 				<button
 					className="btn"
 					style={{ marginBottom: '100px', marginTop: '50px' }}

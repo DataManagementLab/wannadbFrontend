@@ -17,12 +17,13 @@ import Icon from '../Icon/Icon';
 
 interface Props {
 	organizationProp: Organization | undefined;
+	counter: number;
 }
 
 /**
  * A list of all DocBases of an organization.
  */
-function DocBaseOverview({ organizationProp }: Props) {
+function DocBaseOverview({ organizationProp, counter }: Props) {
 	const [docBases, setDocBases] = useState<MyDocument[]>([]);
 	const [fileCount, setFileCount] = useState<number>(0);
 	const [selectedOrgID, setSelectedOrgID] = useState<number>(-1);
@@ -38,7 +39,9 @@ function DocBaseOverview({ organizationProp }: Props) {
 	useEffect(() => {
 		APIService.getOrganizationNames().then((orgs) => {
 			let orgID = -1;
-			if (organizationProp !== undefined) {
+			if (selectedOrgID !== -1) {
+				orgID = selectedOrgID;
+			} else if (organizationProp !== undefined) {
 				orgID = organizationProp.id;
 			} else if (orgs !== undefined && orgs.length > 0) {
 				orgID = orgs[0].id;
@@ -46,7 +49,7 @@ function DocBaseOverview({ organizationProp }: Props) {
 			loadDocBases(orgID);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [organizationProp, counter]);
 
 	const loadDocBases = (orgID: number) => {
 		if (orgID === -1) {
