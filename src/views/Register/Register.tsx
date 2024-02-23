@@ -35,6 +35,10 @@ function Register() {
 			setErrorMessage('Username must be at least 3 characters long!');
 			return;
 		}
+		if (name.includes(' ')) {
+			setErrorMessage('Username cannot contain spaces!');
+			return;
+		}
 
 		// All inputs are valid, register the user at the backend
 
