@@ -10,6 +10,7 @@ import FileViewer from '../FileViewer/FileViewer';
 import { useSetLoadingScreen } from '../../providers/LoadingScreenProvider';
 import Organization from '../../types/Organization';
 import Icon from '../Icon/Icon';
+import Logger from '../../utils/Logger';
 
 interface Props {
 	organizationProp: Organization | undefined;
@@ -34,14 +35,18 @@ function FileUpload({ organizationProp, afterUpload }: Props) {
 		const selectedFiles = event.target.files;
 		if (selectedFiles === null) return;
 		setstagedFiles([...selectedFiles, ...Array.from(stagedFiles)]);
+		setTimeout(() => {
+			addFile([...selectedFiles, ...Array.from(stagedFiles)]);
+		}, 300);
 	};
 
-	const addFile = (force: boolean = false) => {
-		if (stagedFiles.length === 0) {
+	const addFile = (zfiles: File[], force: boolean = false) => {
+		if (zfiles.length === 0) {
+			Logger.log('No files to add');
 			return;
 		}
 		if (!force) {
-			for (const stagedFile of stagedFiles) {
+			for (const stagedFile of zfiles) {
 				for (const file of files) {
 					if (
 						file.name === stagedFile.name &&
@@ -51,7 +56,7 @@ function FileUpload({ organizationProp, afterUpload }: Props) {
 						showChoiceNotification(
 							'File upload',
 							`The file ${stagedFile.name} is already in the list. Do you want to add it anyway?`,
-							() => addFile(true),
+							() => addFile(zfiles, true),
 							() => {},
 							'Yes',
 							'No'
@@ -62,13 +67,13 @@ function FileUpload({ organizationProp, afterUpload }: Props) {
 			}
 		}
 
-		setFiles([...files, ...stagedFiles]);
+		setFiles([...files, ...zfiles]);
 		setstagedFiles([]);
 	};
 
-	const discardFiles = () => {
+	/* const discardFiles = () => {
 		setstagedFiles([]);
-	};
+	}; */
 
 	const removeFile = (index: number) => {
 		const newFiles = [...files];
@@ -166,14 +171,14 @@ function FileUpload({ organizationProp, afterUpload }: Props) {
 					multiple={true}
 				/>
 			</div>
-			<div className="hor mb">
+			{/* <div className="hor mb">
 				<button className="btn" onClick={() => addFile()}>
 					Add
 				</button>
 				<button className="btn" onClick={discardFiles}>
 					Discard
 				</button>
-			</div>
+			</div> */}
 			{files.map((file, index) => (
 				<li className="file" key={index}>
 					<div className="dot"></div>

@@ -38,7 +38,7 @@ function Home() {
 						Hi {username.slice(0, -2)}
 						<span className="db">{username.slice(-2)}</span> 👋
 					</h1>
-					<div className="userStudy">
+					{/* <div className="userStudy">
 						<h2>User Study</h2>
 						<p>
 							<b>
@@ -67,13 +67,47 @@ function Home() {
 								and download the file manually.
 							</i>
 						</p>
-					</div>
+					</div> */}
 					<h2>
 						T<span className="db">ip</span>
 					</h2>
 					<p>
 						<i>{getRandomTip()}</i>
 					</p>
+					<h2>
+						<span className="db">Or</span>ganization
+					</h2>
+					<p>
+						You can view your organizations{' '}
+						<span
+							onClick={() => {
+								navigate('/profile');
+							}}
+							style={{
+								cursor: 'pointer',
+								textDecoration: 'underline',
+							}}
+						>
+							here
+						</span>
+						.
+					</p>
+					<p>
+						Or you can create a new organization{' '}
+						<span
+							onClick={() => {
+								navigate('/organization/create');
+							}}
+							style={{
+								cursor: 'pointer',
+								textDecoration: 'underline',
+							}}
+						>
+							here
+						</span>
+						.
+					</p>
+
 					<h2>
 						Document <span className="db">Up</span>load{' '}
 						<i
