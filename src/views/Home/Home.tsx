@@ -75,6 +75,17 @@ function Home() {
 						<i>{getRandomTip()}</i>
 					</p>
 					<h2>
+						Work<span className="db">fl</span>ow
+					</h2>
+					<button
+						className="btn"
+						onClick={() => {
+							navigate('/workflow/org');
+						}}
+					>
+						Start a Workflow run
+					</button>
+					<h2>
 						<span className="db">Or</span>ganization
 					</h2>
 					<p>

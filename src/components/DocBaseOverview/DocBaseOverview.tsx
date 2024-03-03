@@ -18,12 +18,19 @@ import Icon from '../Icon/Icon';
 interface Props {
 	organizationProp: Organization | undefined;
 	counter: number;
+	showITP?: boolean;
+	onlyITP?: boolean;
 }
 
 /**
  * A list of all DocBases of an organization.
  */
-function DocBaseOverview({ organizationProp, counter }: Props) {
+function DocBaseOverview({
+	organizationProp,
+	counter,
+	showITP = true,
+	onlyITP = false,
+}: Props) {
 	const [docBases, setDocBases] = useState<MyDocument[]>([]);
 	const [fileCount, setFileCount] = useState<number>(0);
 	const [selectedOrgID, setSelectedOrgID] = useState<number>(-1);
@@ -172,30 +179,38 @@ function DocBaseOverview({ organizationProp, counter }: Props) {
 							>
 								{docBase.name}
 							</li>
-							<Icon
-								cls="bi bi-eye icon"
-								onClicked={() => {
-									loadDocBase(docBase);
-								}}
-							>
-								View DocBase
-							</Icon>
-							<Icon
-								cls="bi bi-table icon"
-								onClicked={() => {
-									startInteractiveTablePopulation(docBase);
-								}}
-							>
-								Start interactive table population
-							</Icon>
-							<Icon
-								cls="bi bi-x-circle"
-								onClicked={() => {
-									removeDocument(docBase);
-								}}
-							>
-								Delete DocBase
-							</Icon>
+							{!onlyITP && (
+								<Icon
+									cls="bi bi-eye icon"
+									onClicked={() => {
+										loadDocBase(docBase);
+									}}
+								>
+									View DocBase
+								</Icon>
+							)}
+							{showITP && (
+								<Icon
+									cls="bi bi-table icon"
+									onClicked={() => {
+										startInteractiveTablePopulation(
+											docBase
+										);
+									}}
+								>
+									Start interactive table population
+								</Icon>
+							)}
+							{!onlyITP && (
+								<Icon
+									cls="bi bi-x-circle"
+									onClicked={() => {
+										removeDocument(docBase);
+									}}
+								>
+									Delete DocBase
+								</Icon>
+							)}
 						</div>
 					))}
 				</ul>
