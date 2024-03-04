@@ -9,22 +9,10 @@ function Help() {
 	return (
 		<div className="Help">
 			<Navbar />
-
 			<div className="content">
 				<h1>
 					wanna<span className="db">db</span> <i>HELP CENTER</i>
 				</h1>
-				<div className="container">
-					<nav className="navigation">
-						<a href="#q1">2. How to upload documents?</a>
-						<br />
-
-						<a href="#q2">2. How to use wannadb on my documents?</a>
-						<br />
-						<a href="#q3">3. How can i interact with a DocBase?</a>
-					</nav>
-				</div>
-
 				<p>
 					Welcome to the wanna<span className="db">db</span> help
 					center. Here you will find answers to frequently asked
@@ -32,6 +20,16 @@ function Help() {
 					For all of these functions to work please login or register
 					an new account.
 				</p>
+
+				<div className="container">
+					<nav className="navigation">
+						<a href="#q1">1. How to upload documents?</a>
+						<br />
+						<a href="#q2">2. How to use wannadb on my documents?</a>
+						<br />
+						<a href="#q3">3. How can i interact with a DocBase?</a>
+					</nav>
+				</div>
 				<section id="q1">
 					<h3> How to upload documents?</h3>
 					{
@@ -185,5 +183,4 @@ function Help() {
 		</div>
 	);
 }
-
 export default Help;
