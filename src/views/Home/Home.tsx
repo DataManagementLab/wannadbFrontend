@@ -83,7 +83,8 @@ function Home() {
 							navigate('/workflow/org');
 						}}
 					>
-						Start a Workflow run
+						<i className="bi bi-play-fill icon mr"></i> Start a
+						Workflow run
 					</button>
 					<h2>
 						<span className="db">Or</span>ganization

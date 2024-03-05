@@ -25,7 +25,7 @@ function WorkflowUpload() {
 				<h1>
 					<span className="db">2.</span> Upload your documents
 				</h1>
-				<p>
+				<p className="workflow-step-description">
 					Upload your documents to your organization. You can upload
 					txt and bson files and manage them in your organization.
 				</p>

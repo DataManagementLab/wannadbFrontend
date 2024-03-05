@@ -168,6 +168,12 @@ h2 {
 	letter-spacing: -0.5px;
 }
 
+.workflow-step-description {
+	font-weight: bold;
+	width: 50%;
+	margin-bottom: 50px;
+}
+
 [data-theme='dark'] {
 	--bg-color: #020c13;
 	--btn-color: #010407;

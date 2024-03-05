@@ -27,7 +27,7 @@ function WorkflowTablePopulation() {
 					<span className="db">4.</span> Start a interactive table
 					population
 				</h1>
-				<p>
+				<p className="workflow-step-description">
 					Now you can start a interactive table population from the
 					docbase you just created. There you can accept the generated
 					results for the documents or suggest new ones.

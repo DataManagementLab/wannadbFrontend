@@ -25,7 +25,7 @@ function WorkflowDocbase() {
 				<h1>
 					<span className="db">3.</span> Create a DocBase
 				</h1>
-				<p>
+				<p className="workflow-step-description">
 					Now you can create a from your documents that you just
 					uploaded. You will be redirected to the DocBase creation
 					page. After you have created a DocBase you can come back

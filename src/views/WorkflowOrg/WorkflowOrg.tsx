@@ -40,7 +40,7 @@ function WorkflowOrg() {
 				<h1>
 					<span className="db">1.</span> Add a new organization
 				</h1>
-				<p>
+				<p className="workflow-step-description">
 					Add an organization where you can upload and manage your
 					documents. You can invite other users to join your
 					organization and work together.
