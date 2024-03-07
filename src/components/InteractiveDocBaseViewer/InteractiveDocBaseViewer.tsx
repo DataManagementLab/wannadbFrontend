@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import DocBase from '../../types/DocBase';
 import NuggetDocumentViewer from '../NuggetViewer/NuggetDocumentViewer';
 import './InteractiveDocBaseViewer.scss';
@@ -12,6 +13,14 @@ interface Props {
  * @param docBase The docbase to view
  */
 function InteractiveDocBaseViewer({ docBase }: Props) {
+	const [timeRemaining, setTimer] = React.useState(180);
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setTimer((prevTimer) => prevTimer - 1);
+		}, 1000);
+		return () => clearInterval(interval);
+	}, []);
+
 	return (
 		<>
 			<div
@@ -50,6 +59,8 @@ function InteractiveDocBaseViewer({ docBase }: Props) {
 				<h2>
 					DocBase: <i>{docBase.name}</i>
 				</h2>
+				<h3>Time Remaining:</h3>
+				<p>{timeRemaining}</p>
 				<h2>Documents</h2>
 				{docBase.docs.map((doc, index) => {
 					return (
