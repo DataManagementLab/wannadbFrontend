@@ -28,7 +28,9 @@
 
 ## Installation
 
-1. Clone the repository with:
+### Installation for development
+
+1. Clone this repository with:
 
 ```bash
 git clone https://github.com/cophilot/wannadbFrontend.git
@@ -46,6 +48,35 @@ npm install
 ```bash
 npm run prepare
 ```
+
+5. Check the `.env.development` file and make sure all the variables are set correctly.
+
+6. [Start the frontend development server](#start).
+
+### Installation for production
+
+1. Clone this repository with:
+
+```bash
+git clone https://github.com/cophilot/wannadbFrontend.git
+```
+
+2. Make sure to have [nodejs](https://nodejs.org/en), [npm](https://www.npmjs.com/) installed.
+3. Install the dependencies with:
+
+```bash
+npm install
+```
+
+4. Check the `.env.production` file and make sure all the variables are set correctly.
+
+5. Build the frontend wih:
+
+```bash
+npm run build
+```
+
+6. The built frontend will be in the `dist` folder.
 
 ---
 
@@ -69,7 +100,10 @@ _Check the console for instructions!_
 
 -   **[scripts](scripts)** - Scripts for the project
 -   **[src](src)** - The source code
+    -   **[assets](src/assets)** - The assets
+    -   **[audio](src/audio)** - The audio files
     -   **[components](src/components)** - The React components
+    -   **[data](src/data)** - Some data functions
     -   **[providers](src/providers)** - Custom React providers
     -   **[styles](src/styles)** - The styles
     -   **[types](src/types)** - Typescript types

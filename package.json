@@ -16,6 +16,7 @@
 		"test": "vitest run --coverage --mode development",
 		"test:watch": "vitest",
 		"prepare": "husky install",
+		"setup": "npm install && npm run prepare",
 		"generate": "python scripts/generate.py",
 		"g": "python scripts/generate.py",
 		"comment:check": "python scripts/check_comment.py",

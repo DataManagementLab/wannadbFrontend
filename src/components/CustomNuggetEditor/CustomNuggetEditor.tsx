@@ -94,25 +94,6 @@ function CustomNuggetEditor({ doc, docBase }: Props) {
 				textarea.selectionEnd
 			)
 		);
-
-		// get mouse position
-		/* const selection = window.getSelection();
-		if (selection) {
-			console.log('Selection:', selection);
-			const range = selection.getRangeAt(0);
-			const rect = range.getBoundingClientRect();
-			// set botton position of the confirm button to the top position of the selected text
-			const confirmButton = document.getElementById(
-				'confirm-button' + id
-			);
-			if (confirmButton) {
-				console.log('Setting confirm button position');
-				confirmButton.setAttribute(
-					'style',
-					`top: ${rect.top}px; left: ${rect.right}px; position: absolute;`
-				);
-			}
-		} */
 	};
 
 	return (
