@@ -540,6 +540,11 @@ export function DocBaseTaskProvider({ children }: Props) {
 		Logger.log('Task: Start interactive table population ' + baseName);
 		Logger.log('Task ID: ' + taskId);
 
+		const timeLeft = sessionStorage.getItem('itp-time');
+		if (timeLeft == null) {
+			sessionStorage.setItem('itp-time', '180');
+		}
+
 		sessionStorage.setItem(
 			'docbasetask-type',
 			'interactiveTablePopulation'
@@ -577,6 +582,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 						'Your session has expired. You can rerun the task.'
 					);
 					sessionStorage.removeItem('docbaseId');
+					sessionStorage.removeItem('itp-time');
 					setDocBase(undefined);
 					setUseInteractiveViewer(false);
 

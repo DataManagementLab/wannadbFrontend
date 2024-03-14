@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import DocBase from '../../types/DocBase';
 import NuggetDocumentViewer from '../NuggetViewer/NuggetDocumentViewer';
 import './InteractiveDocBaseViewer.scss';
@@ -13,13 +13,45 @@ interface Props {
  * @param docBase The docbase to view
  */
 function InteractiveDocBaseViewer({ docBase }: Props) {
-	const [timeRemaining, setTimer] = React.useState(180);
+	const [timeRemaining, setTimer] = useState(180);
 	useEffect(() => {
+		const timeLeftStorage = sessionStorage.getItem('itp-time');
+
+		let timeLeft = 180;
+		if (timeLeftStorage !== null) {
+			timeLeft = parseInt(timeLeftStorage);
+		}
+		setTimer(timeLeft);
 		const interval = setInterval(() => {
-			setTimer((prevTimer) => prevTimer - 1);
+			const oldTime = sessionStorage.getItem('itp-time');
+			if (oldTime === null) {
+				clearInterval(interval);
+				return;
+			}
+			const newTime = parseInt(oldTime) - 1;
+			sessionStorage.setItem('itp-time', newTime.toString());
+
+			setTimer(newTime);
 		}, 1000);
 		return () => clearInterval(interval);
 	}, []);
+
+	const parseTime = (seconds: number) => {
+		let minutes = Math.floor(seconds / 60);
+		let remainingSeconds = seconds % 60;
+		if (minutes < 0) {
+			minutes = 0;
+		}
+		if (remainingSeconds < 0) {
+			remainingSeconds = 0;
+		}
+		let secondsString = remainingSeconds.toString();
+		if (secondsString.length === 1) {
+			secondsString = '0' + secondsString;
+		}
+
+		return `${minutes}:${secondsString}`;
+	};
 
 	return (
 		<>
@@ -59,8 +91,6 @@ function InteractiveDocBaseViewer({ docBase }: Props) {
 				<h2>
 					DocBase: <i>{docBase.name}</i>
 				</h2>
-				<h3>Time Remaining:</h3>
-				<p>{timeRemaining}</p>
 				<h2>Documents</h2>
 				{docBase.docs.map((doc, index) => {
 					return (
@@ -76,7 +106,10 @@ function InteractiveDocBaseViewer({ docBase }: Props) {
 			</div>
 			<div className="infobar">
 				<p>
-					<i>Attribute</i>: <b>{docBase.attributes.join(', ')}</b>
+					<i>Attribute:</i> <b>{docBase.attributes.join(', ')}</b>
+				</p>
+				<p>
+					<i>Time Remaining:</i> <b>{parseTime(timeRemaining)}</b>
 				</p>
 			</div>
 		</>
