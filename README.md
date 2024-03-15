@@ -166,17 +166,9 @@ This is for the purpose of consistency. So that all components are generated the
 
 ---
 
-## Add a TODO
+## Stable Version
 
-If you want to add a TODO please use the following command:
-
-```bash
-npm run todo <todo>
-```
-
-This will add a new TODO to the [todos.md](todos.md) file.
-
-> Example usage: `npm run todo Let user register`
+...
 
 ---
 
