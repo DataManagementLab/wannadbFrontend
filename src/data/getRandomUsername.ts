@@ -1,3 +1,4 @@
+/** Get a random username suggestion */
 const getRandomUsername = (): string => {
 	const adjetives = [
 		'goofy',

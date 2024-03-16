@@ -77,6 +77,7 @@ export function useGetFromLS() {
 	}
 	return context.getFromLS;
 }
+
 interface Props {
 	children: ReactNode;
 }

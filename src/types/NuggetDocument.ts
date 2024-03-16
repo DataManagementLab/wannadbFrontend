@@ -1,5 +1,4 @@
 import APIService from '../utils/ApiService';
-import Logger from '../utils/Logger';
 import Nugget from './Nugget';
 
 /**
@@ -41,7 +40,6 @@ class NuggetDocument {
 		this.nuggets.push(
 			new Nugget(startChar, endChar, this.content, this.name)
 		);
-		// order nuggets by startChar
 		this.nuggets.sort((a, b) => a.startChar - b.startChar);
 	}
 
@@ -61,14 +59,10 @@ class NuggetDocument {
 		while (resp.state.toUpperCase().trim() !== 'SUCCESS') {
 			await new Promise((resolve) => setTimeout(resolve, 1000));
 			resp = await APIService.getTaskStatus(taskID);
-			Logger.log('Task status getORderNuggets:');
-			Logger.log(resp);
 			if (resp.state.toUpperCase().trim() === 'SUCCESS') {
 				break;
 			}
 		}
-		Logger.log('Task status getORderNuggets:');
-		Logger.log(resp);
 	}
 }
 

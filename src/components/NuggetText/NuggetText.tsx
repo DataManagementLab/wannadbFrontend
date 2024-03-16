@@ -88,8 +88,6 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 	};
 
 	const confirmNugget = (nugget: Nugget) => {
-		//TODO
-		// get random time between 1000 amd 2000
 		setTimeout(
 			() => {
 				addToConfirmedNuggets(nugget);
@@ -115,31 +113,8 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 			interactiveTaskId
 		).then((res) => {
 			if (res === undefined) {
-				//showNotification('Error', 'Failed to confirm nugget');
 				return;
 			}
-
-			/* const taskId = res;
-			const interval = setInterval(() => {
-				APIService.getTaskStatus(taskId).then((res) => {
-					Logger.log('Confirm nugget start*****' + interval);
-					Logger.log(res);
-					Logger.log('Confirm nugget end*****');
-					if (
-						res == undefined ||
-						res.state.toUpperCase().trim() === 'FAILURE'
-					) {
-						// showNotification('Error', 'Failed to confirm nugget');
-						clearInterval(interval);
-						return;
-					} else if (res.state.toUpperCase().trim() === 'SUCCESS') {
-						// TODO
-						// showNotification('Success', 'Nugget confirmed');
-
-						clearInterval(interval);
-					}
-				});
-			}, 1000); */
 		});
 	};
 
@@ -151,8 +126,6 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 					start
 				)}
 				<span className="box">
-					{/* 					<span className="attribute-label">att</span>
-					 */}
 					<span
 						className={
 							selectedNugget === undefined
@@ -189,19 +162,6 @@ function NuggetText({ doc, docBase, interactive = false }: Props) {
 								>
 									Confirm Nugget
 								</Icon>
-								{/* <Icon
-									style={{
-										color: 'black',
-										fontSize: '1.2rem',
-										paddingRight: '10px',
-									}}
-									cls="bi bi-hand-thumbs-down icon"
-									onClicked={() => {
-										Logger.log('Decline Nugget');
-									}}
-								>
-									Decline Nugget
-								</Icon> */}
 							</>
 						)}
 					</span>

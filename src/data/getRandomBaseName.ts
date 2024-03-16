@@ -1,3 +1,4 @@
+/** Gets a name suggestion for a new docbase. */
 const getRandomBaseName = (): string => {
 	const names = [
 		'TuringBase',

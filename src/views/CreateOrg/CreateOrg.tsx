@@ -105,7 +105,6 @@ function CreateOrg() {
 				<button
 					className="btn"
 					onClick={() => {
-						// go back to last page
 						window.history.back();
 					}}
 				>

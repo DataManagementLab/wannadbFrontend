@@ -71,10 +71,6 @@ function FileUpload({ organizationProp, afterUpload }: Props) {
 		setstagedFiles([]);
 	};
 
-	/* const discardFiles = () => {
-		setstagedFiles([]);
-	}; */
-
 	const removeFile = (index: number) => {
 		const newFiles = [...files];
 		newFiles.splice(index, 1);
@@ -171,14 +167,6 @@ function FileUpload({ organizationProp, afterUpload }: Props) {
 					multiple={true}
 				/>
 			</div>
-			{/* <div className="hor mb">
-				<button className="btn" onClick={() => addFile()}>
-					Add
-				</button>
-				<button className="btn" onClick={discardFiles}>
-					Discard
-				</button>
-			</div> */}
 			{files.map((file, index) => (
 				<li className="file" key={index}>
 					<div className="dot"></div>

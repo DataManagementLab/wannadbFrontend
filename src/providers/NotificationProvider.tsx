@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
 import React, { ReactNode, useState } from 'react';
 import '../index.scss';
@@ -7,25 +8,16 @@ import { MyAudio, usePlayAudio } from './AudioProvider';
 
 const NotificationContext = React.createContext({
 	showNotification: (
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		_heading: string,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		_info: string,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		_buttonText?: string
 	) => {},
 	showChoice: (
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		_heading: string,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		_info: string,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		_onAccept: () => void,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		_onReject: () => void,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		_acceptText?: string,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		_rejectText?: string
 	) => {},
 });

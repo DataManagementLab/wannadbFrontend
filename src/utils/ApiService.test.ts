@@ -230,7 +230,6 @@ describe('APIService', () => {
 		expect(memberList).toBeDefined();
 		expect(memberList).toStrictEqual([salt]);
 	});
-	// missing negative test for getMembersForOrganization
 
 	test('should not be able ot leave organisation if not a member', async () => {
 		await APIService.login(salt, salt);
@@ -278,7 +277,6 @@ describe('APIService', () => {
 	test('should delete file successfully', async () => {
 		await APIService.login(salt, salt);
 
-		// use file that got uploaded in the 'should upload file successfully' test for now
 		const documents = await APIService.getDocumentForOrganization(
 			saltOrganisationID as number
 		);
@@ -293,9 +291,6 @@ describe('APIService', () => {
 			).length
 		);
 	});
-	// test dokumentBase
-
-	// test getTaskStatus
 
 	test('should get user name suggestions successfully', async () => {
 		await APIService.login(salt, salt);
@@ -309,12 +304,6 @@ describe('APIService', () => {
 			['12test', '12test2', '123test', '123test2'].sort()
 		);
 
-		//const sug1 = await APIService.getUserNameSuggestion('1');
-		// TODO
-		//expect(sug1.length).toBe(5);
-		/* expect(sug1.sort()).toEqual(
-			['1test', '12test', '12test2', '123test', '123test2'].sort()
-		); */
 		expect(
 			(await APIService.getUserNameSuggestion('001122233')).length
 		).toBe(0);
@@ -333,11 +322,6 @@ describe('APIService', () => {
 			saltOrganisationID as number
 		);
 		expect(documents).toBeDefined();
-		for (let i = 0; i < documents.length; i++) {
-			//const buffer = Buffer.from(await blobs[i].arrayBuffer());
-			// TODO
-			//expect(documents[i].content).toBe(buffer.toString());
-		}
 	});
 	test('should update file successfully', async () => {
 		await APIService.login(salt, salt);

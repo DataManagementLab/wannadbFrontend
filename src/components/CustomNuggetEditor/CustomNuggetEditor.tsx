@@ -71,9 +71,7 @@ function CustomNuggetEditor({ doc, docBase }: Props) {
 						clearInterval(interval);
 						return;
 					} else if (res.state.toUpperCase().trim() === 'SUCCESS') {
-						// TODO
 						showNotification('Success', 'Nugget confirmed');
-
 						clearInterval(interval);
 					}
 				});

@@ -415,7 +415,6 @@ class APIService {
 	static async getDocumentBaseForOrganization(
 		organizationID: number
 	): Promise<MyDocument[]> {
-		// NILS MACH MA TEST
 		try {
 			const response = await axios
 				.get(

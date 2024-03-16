@@ -1,3 +1,4 @@
+/** Get a tip for the usage of the website */
 const getRandomTip = (): string => {
 	const tips = [
 		'Click on your profile to view and create a organization',

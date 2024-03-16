@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Environment variables
+
+HOME_DIR="/home/wannadb"
+FRONTEND_DIR="$HOME_DIR/frontend"
+BACKEND_DIR="$HOME_DIR/backend"
+
 # check if the flag -b is set
 while getopts b: flag
 do
@@ -10,12 +16,12 @@ done
 
 if [ ! -z "$branch" ]
 then
-    echo "Updating to branch $branch"
+    echo "Updating on branch $branch"
 fi
 
 echo "Updating the frontend..."
 
-cd /home/wannadb/frontend
+cd $FRONTEND_DIR
 
 if [ ! -z "$branch" ]
 then
@@ -25,7 +31,7 @@ fi
 npm run server:update
 
 echo "Updating the backend.."
-cd /home/wannadb/backend
+cd $BACKEND_DIR
 
 if [ ! -z "$branch" ]
 then

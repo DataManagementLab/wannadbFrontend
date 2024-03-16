@@ -310,7 +310,6 @@ export function DocBaseTaskProvider({ children }: Props) {
 		setIsRunning(true);
 
 		const updateInterval = setInterval(() => {
-			// TODO use type
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			APIService.getTaskStatus(taskId).then((res): any => {
 				Logger.log(res);
@@ -688,12 +687,6 @@ export function DocBaseTaskProvider({ children }: Props) {
 		Logger.log('Task ID: ' + taskId);
 
 		sessionStorage.setItem('docbaseId', taskId);
-		/* setLoadingScreen(
-			true,
-			'Loading Docbase ' + baseName + '...',
-			'Please wait...',
-			taskId
-		); */
 
 		//setLoadingScreenLock(true);
 		setIsRunning(true);
@@ -729,37 +722,7 @@ export function DocBaseTaskProvider({ children }: Props) {
 					Logger.log(res);
 					Logger.log(JSON.stringify(res));
 
-					/* const att = res.meta.feedback_request_to_ui.attribute.name;
-					let attList: string[] = [];
-					if (att) {
-						attList = [att];
-					}
-
-					const docBase = new DocBase(
-						baseName,
-						organizationId,
-						attList
-					);
-					try {
-						Logger.log(res.meta.document_base_to_ui.nuggets);
-						for (const nugget of res.meta.document_base_to_ui
-							.nuggets) {
-							docBase.addNugget(
-								nugget.document.name,
-								nugget.document.text,
-								nugget.start_char,
-								nugget.end_char
-							);
-						}
-					} catch (error) {
-						Logger.error(error);
-						showNotification(
-							'Error',
-							'Something went wrong translating the nuggets.'
-						);
-					} */
 					sessionStorage.removeItem('docbaseId');
-					//setDocBase(docBase);
 					setIsRunning(false);
 					clearInterval(updateInterval);
 					return;

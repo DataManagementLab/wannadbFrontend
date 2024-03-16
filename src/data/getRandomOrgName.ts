@@ -1,3 +1,4 @@
+/** Returns a random organization name */
 const getRandomOrgName = (): string => {
 	const adjectives = [
 		'Quantum',

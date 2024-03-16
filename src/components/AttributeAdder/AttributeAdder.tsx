@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './AttributeAdder.scss';
 import Icon from '../Icon/Icon';
 import { useIsDocbaseTaskRunning } from '../../providers/DocBaseTaskProvider';
@@ -12,7 +12,7 @@ interface Props {
 }
 
 /**
- * A component that allows the user to add attributes to there document base
+ * A component that allows the user to add attributes to their document base
  */
 function AttributeAdder({
 	onListChange,
@@ -22,23 +22,9 @@ function AttributeAdder({
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	onRerun = (_list: string[]) => {},
 }: Props) {
-	const [attList, setAttList] = useState<string[]>([]);
+	const [attList, setAttList] = useState<string[]>(initialList);
 
 	const isDocBaseTaskRunning = useIsDocbaseTaskRunning();
-
-	useEffect(
-		() => {
-			if (
-				import.meta.env.VITE_APP_LOG === 'true' &&
-				initialList.length == 0
-			) {
-				initialList.push('Country', 'Animal');
-			}
-			setAttributeList(initialList);
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[]
-	);
 
 	const [inputvalue, setInputValue] = useState<string>('');
 

@@ -37,10 +37,6 @@ class DocBase {
 	}
 
 	async fetchOrderedNuggets() {
-		/* 		for (const doc of this.docs) {
-			await doc.fetchOrderNuggets(this.organizationId, this.name);
-		}
-		*/
 		await this.docs[0].fetchOrderNuggets(this.organizationId, this.name);
 	}
 }

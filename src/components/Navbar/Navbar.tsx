@@ -67,10 +67,7 @@ function Navbar() {
 				<Link to="/">Home</Link>
 				<Link to="/about">About</Link>
 				<Link to="/settings">Settings</Link>
-				<Link to="/help">
-					{/* <i className="bi bi-question-circle icon"></i> */}
-					Help
-				</Link>
+				<Link to="/help">Help</Link>
 				{isLoggedIn() ? (
 					<Link to={'/profile'}>
 						<div className="profilePicture">

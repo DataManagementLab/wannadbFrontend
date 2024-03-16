@@ -71,7 +71,6 @@ export function AudioProvider({ children }: Props) {
 		}
 		const a = new Audio(audio);
 		a.addEventListener('canplaythrough', () => {
-			/* the audio is now playable; play it if permissions allow */
 			a.play();
 		});
 		a.play();

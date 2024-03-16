@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "vite",
 		"serve": "vite",
-		"start": "npm install && npm run backend:check && npm run backend:create && vite --open",
+		"start": "npm run backend:check && npm run backend:create && vite --open",
 		"build": "tsc && vite build",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
@@ -23,8 +23,7 @@
 		"backend:create": "npm run backend:create:tables",
 		"backend:create:tables": "python scripts/create_table.py",
 		"txt:create": "python scripts/create_txt.py",
-		"server:update": "git pull && ./scripts/create_table.sh && npm run build",
-		"postgres:open": "docker exec -it $(docker ps -aqf \"name=postgres\") psql -d userManagement -U postgres"
+		"server:update": "git pull && ./scripts/create_table.sh && npm run build"
 	},
 	"dependencies": {
 		"axios": "^1.6.2",

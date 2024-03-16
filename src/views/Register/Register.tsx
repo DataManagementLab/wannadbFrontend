@@ -41,7 +41,6 @@ function Register() {
 		}
 
 		// All inputs are valid, register the user at the backend
-
 		APIService.register(name, password).then((success) => {
 			if (!success) {
 				setErrorMessage('Username already taken!');
