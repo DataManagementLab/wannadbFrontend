@@ -15,7 +15,7 @@
 -   [Deploying](#deploying)
 -   [Visual Studio Code](#visual-studio-code)
 -   [Scripts](#scripts)
--   [Gnerate a new React component](#gnerate-a-new-react-component)
+-   [Generate a new React component](#generate-a-new-react-component)
 -   [Git hooks](#git-hooks)
 -   [Packages and tools](#packages-and-tools)
 
@@ -185,7 +185,7 @@ npm run <script-name>
 
 ---
 
-## Gnerate a new React component
+## Generate a new React component
 
 Please only use the following command to generate a new React component:
 
