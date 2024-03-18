@@ -73,6 +73,8 @@ npm run build
 
 6. The built frontend will be in the `dist` folder.
 
+> Note that the table structure has to be created that normaly would be done by starting the development server, but you can also create them by running the `scripts/create_table.sh` script.
+
 ---
 
 ## Start the development server
