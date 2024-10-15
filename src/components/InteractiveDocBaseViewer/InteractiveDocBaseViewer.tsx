@@ -53,6 +53,10 @@ function InteractiveDocBaseViewer({ docBase }: Props) {
 		return `${minutes}:${secondsString}`;
 	};
 
+	const performMultiMatch = () => {
+		//TODO: Implement this
+	}
+
 	return (
 		<>
 			<div
@@ -102,8 +106,11 @@ function InteractiveDocBaseViewer({ docBase }: Props) {
 						/>
 					);
 				})}
-				<div className="buffer"></div>
-			</div>
+					<button
+						onClick={() => {performMultiMatch()}}
+					></button>
+					<div className="buffer"></div>
+				</div>
 			<div className="infobar">
 				<p>
 					<i>Attribute:</i> <b>{docBase.attributes.join(', ')}</b>

@@ -18,13 +18,24 @@ interface Props {
 function NuggetDocumentViewer({ docBase, doc, interactive = false }: Props) {
 	const [customNugget, setCustomNugget] = useState<boolean>(false);
 
+	const selectForMultiMatch = () => {
+		// TODO: Implement this
+		// docBase.selectForMultiMatch(doc);
+	};
+
 	return (
 		<div className="ver">
 			<p>
 				<b>
 					Document: <i>{doc.name}</i>
 				</b>
-			</p>
+			</p>	
+			{interactive && (
+				<checkbox
+					className="checkbox"
+					onChange={() => selectForMultiMatch()}
+				></checkbox>
+			)}
 			{!customNugget ? (
 				<NuggetText
 					doc={doc}
